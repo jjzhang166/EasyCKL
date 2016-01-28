@@ -2,7 +2,7 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "cefsimple/simple_handler.h"
+#include "simple_handler.h"
 
 #include <string>
 #include <windows.h>
@@ -11,8 +11,7 @@
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
 
-
-#include "cefsimple/simple_app.h"
+#include "simple_app.h"
 
 #include "callbacks.h"
 
@@ -24,8 +23,8 @@ typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const char* msg);
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const char* text);
 
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
-                                  const CefString& title) {
-  CEF_REQUIRE_UI_THREAD();
+	const CefString& title) {
+	CEF_REQUIRE_UI_THREAD();
 
 }
 
@@ -36,16 +35,16 @@ void SimpleHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser,
 
 
 void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame){
+	CefRefPtr<CefFrame> frame) {
 
 }
 
 void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool isLoading,
 	bool canGoBack,
-	bool canGoForward){
+	bool canGoForward) {
 	CEF_REQUIRE_UI_THREAD();
-	if (chstate_callback){
+	if (chstate_callback) {
 		Chrome_CallBack_ChState a = (Chrome_CallBack_ChState)chstate_callback;
 		a(g_id, isLoading, canGoBack, canGoForward);
 	}
@@ -59,10 +58,10 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefWindowInfo& windowInfo,
 	CefRefPtr<CefClient>& client,
 	CefBrowserSettings& settings,
-	bool* no_javascript_access){
-	if (newwindow_callback){
+	bool* no_javascript_access) {
+	if (newwindow_callback) {
 		Chrome_CallBack_NewWindow a = (Chrome_CallBack_NewWindow)newwindow_callback;
-		if (a(g_id, (char*)target_url.ToString().c_str())){
+		if (a(g_id, (char*)target_url.ToString().c_str())) {
 			return true;
 		}
 	}
@@ -74,19 +73,19 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 void SimpleHandler::OnAddressChange(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame,
 	const CefString& url) {
-	
-	if (churl_callback){
-			Chrome_CallBack_ChUrl a = (Chrome_CallBack_ChUrl)churl_callback;
-			a(g_id, url.ToString().c_str());
-		}
+
+	if (churl_callback) {
+		Chrome_CallBack_ChUrl a = (Chrome_CallBack_ChUrl)churl_callback;
+		a(g_id, url.ToString().c_str());
+	}
 }
 
 void SimpleHandler::OnBeforeDownload(
 	CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefDownloadItem> download_item,
 	const CefString& suggested_name,
-	CefRefPtr<CefBeforeDownloadCallback> callback){
-	if (download_callback){
+	CefRefPtr<CefBeforeDownloadCallback> callback) {
+	if (download_callback) {
 		Chrome_CallBack_Download a = (Chrome_CallBack_Download)download_callback;
 		a(g_id, (char*)download_item->GetURL().ToString().c_str());
 	}
@@ -97,16 +96,16 @@ void SimpleHandler::OnBeforeDownload(
 void SimpleHandler::OnDownloadUpdated(
 	CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefDownloadItem> download_item,
-	CefRefPtr<CefDownloadItemCallback> callback){
+	CefRefPtr<CefDownloadItemCallback> callback) {
 	callback->Cancel();
 }
 
 void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame,
 	CefRefPtr<CefContextMenuParams> params,
-	CefRefPtr<CefMenuModel> model){
+	CefRefPtr<CefMenuModel> model) {
 	cef_context_menu_type_flags_t flag = params->GetTypeFlags();
-	if (rbuttondown_callback){
+	if (rbuttondown_callback) {
 		model->Clear();
 		CefString text = params->GetSelectionText();
 		Chrome_CallBack_RButtonDown a = (Chrome_CallBack_RButtonDown)rbuttondown_callback;
@@ -156,7 +155,7 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefJSDialogCallback> _callback,
 	bool& suppress_message)
 {
-	if (JSDialog_callback && dialog_type==JSDIALOGTYPE_ALERT){
+	if (JSDialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
 		Chrome_CallBack_JSDialog _JSDialog = (Chrome_CallBack_JSDialog)JSDialog_callback;
 		_JSDialog(g_id, message_text.ToString().c_str());
 		_callback->Continue(1, "");
@@ -171,7 +170,7 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 }
 
 
-void SimpleHandler::_CreateBrowser(std::string url, HWND hParent, RECT* rect){
+void SimpleHandler::_CreateBrowser(std::string url, HWND hParent, RECT* rect) {
 	CEF_REQUIRE_UI_THREAD();
 	// Information used when creating the native window.
 	CefWindowInfo window_info;

@@ -2,11 +2,11 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "cefsimple/simple_app.h"
+#include "simple_app.h"
 
 #include <string>
 
-#include "cefsimple/simple_handler.h"
+#include "simple_handler.h"
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
@@ -45,8 +45,8 @@ SimpleApp::SimpleApp() {
 }
 
 void SimpleApp::OnContextInitialized() {
-  CEF_REQUIRE_UI_THREAD();
-  SetEvent(hEvent);
+	CEF_REQUIRE_UI_THREAD();
+	SetEvent(hEvent);
 }
 
 //void SimpleApp::OnWebKitInitialized(){
@@ -70,15 +70,15 @@ void SimpleApp::OnContextInitialized() {
 //	SetEvent(hEvent2);
 //	MessageBoxA(0, "dddd", 0, 0);
 //}
-void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context){
-	if (v8contextcreate){
+void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
+	if (v8contextcreate) {
 		Chrome_CallBack_V8 a = (Chrome_CallBack_V8)v8contextcreate;
 		a(&context);
 	}
-	
+
 	/*CefRefPtr<CefV8Handler> myV8handle = new MyV8Handler();
 	CefRefPtr<CefV8Value> myFun = CefV8Value::CreateFunction(L"MyFunction", myV8handle);
 	CefRefPtr<CefV8Value> pObjApp = context->GetGlobal();
 	pObjApp->SetValue(L"MyFunction", myFun, V8_PROPERTY_ATTRIBUTE_NONE);*/
-	
+
 }

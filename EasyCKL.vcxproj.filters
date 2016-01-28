@@ -29,7 +29,7 @@
     <ClCompile Include="simple_handler_win.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="dll.cpp">
+    <ClCompile Include="CKLMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
