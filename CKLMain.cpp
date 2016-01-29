@@ -1,9 +1,10 @@
-#include<Windows.h>
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 
 #include "simple_app.h"
 #include "include/cef_sandbox_win.h"
 
-#include"callbacks.h"
+#include "callbacks.h"
 #include "simple_handler.h"
 // Set to 0 to disable sandbox support.
 #define CEF_ENABLE_SANDBOX 0
@@ -87,9 +88,9 @@ CKLEXPORT bool WINAPI Chrome_IsUIThread() {
 
 CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage) {
 	SetUnhandledExceptionFilter(excpcallback);
-	hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
-	void* sandbox_info = NULL;
+	void* sandbox_info = nullptr;
 
 #if CEF_ENABLE_SANDBOX
 	// Manage the life span of the sandbox information object. This is necessary
@@ -119,11 +120,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 	CefSettings settings;
 	settings.log_severity = LOGSEVERITY_DISABLE;
 	if (cacheStorage) {
-		cef_string_t cache = { 0 };
-		cache.dtor = 0;
-		cache.str = L".\\cache\\";
-		cache.length = lstrlenW(L".\\cache\\");
-		settings.cache_path = cache;
+		CefString(&settings.cache_path) = ".\\cache\\";
 	}
 
 	settings.command_line_args_disabled = true;
@@ -169,74 +166,68 @@ CKLEXPORT void WINAPI Chrome_Shutdown() {
 	CefShutdown();
 }
 
-CKLEXPORT void WINAPI Chrome_LoadUrl(void* point, char* url) {
+CKLEXPORT void WINAPI Chrome_LoadUrl(SimpleHandler* handler, char* url) {
 	if (!std::string(url).substr(0, 6).compare("chrome"))return;
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->GetMainFrame()->LoadURL(url);
 		}
 	}
 }
-CKLEXPORT HWND WINAPI Chrome_Window(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+
+CKLEXPORT HWND WINAPI Chrome_Window(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			return browser->GetHost()->GetWindowHandle();
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
-CKLEXPORT void WINAPI Chrome_GoBack(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_GoBack(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->GoBack();
 		}
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_GoForward(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_GoForward(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->GoForward();
 		}
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_Refresh(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_Refresh(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->Reload();
 		}
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_Stop(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_Stop(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->StopLoad();
 		}
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_ExecJS(void* point, char* js) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
+CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, char* js) {
+	if (handler) {
 		/*CefString _string(js);
 		_string.ToString();*/
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->GetMainFrame()->ExecuteJavaScript(js, browser->GetMainFrame()->GetURL(), 0);
 		}
 	}
@@ -245,27 +236,24 @@ CKLEXPORT void WINAPI Chrome_ExecJS(void* point, char* js) {
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage() {
 	CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager();
 	//cookiemgr = CefCookieManager::CreateManager(path, force_persist_session_cookies);
-	cookiemgr->SetStoragePath(L".\\cookies\\", false);
-
+	cookiemgr->SetStoragePath(".\\cookies\\", false);
 }
 
 
-CKLEXPORT void WINAPI Chrome_Close(void* point) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			browser->GetHost()->CloseBrowser(true);
 			//delete a;
 		}
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_LoadString(void* point, char* string) {
-	SimpleHandler* a = (SimpleHandler*)point;
-	if (a != NULL) {
-		CefRefPtr<CefBrowser> browser = a->g_browser;
-		if (browser.get()) {
+CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, char* string) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
 			CefString str(string);
 			browser->GetMainFrame()->LoadString(string, browser->GetMainFrame()->GetURL());
 		}

@@ -96,9 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.h" />
-    <ClInclude Include="cefsimple\simple_app.h" />
-    <ClInclude Include="cefsimple\simple_handler.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="simple_app.h" />
+    <ClInclude Include="simple_handler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def" />

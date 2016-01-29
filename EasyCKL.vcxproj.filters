@@ -37,13 +37,13 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="cefsimple\simple_app.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="cefsimple\simple_handler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="callbacks.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_app.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

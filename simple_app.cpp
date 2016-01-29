@@ -18,30 +18,29 @@ extern HANDLE hEvent;
 extern void* v8contextcreate;
 typedef void(WINAPI * Chrome_CallBack_V8)(void* msg);
 
-//class MyV8Handler : public CefV8Handler {
-//public:
-//	MyV8Handler() {}
-//	~MyV8Handler(){}
-//	virtual bool Execute(const CefString& name,
-//		CefRefPtr<CefV8Value> object,
-//		const CefV8ValueList& arguments,
-//		CefRefPtr<CefV8Value>& retval,
-//		CefString& exception) OVERRIDE{
-//
-//		if (name == L"MyFunction") {
-//			MessageBoxA(0, "frh", 0, 0);
-//		}
-//		MessageBox(0, name.c_str(), L"gfgdfh", 0);
-//		// Function does not exist.
-//		return false;
-//	}
-//
-//		// Provide the reference counting implementation for this class.
-//	IMPLEMENT_REFCOUNTING(MyV8Handler);
-//};
+/*class MyV8Handler : public CefV8Handler {
+public:
+	MyV8Handler() {}
+	~MyV8Handler() {}
+	virtual bool Execute(const CefString& name,
+		CefRefPtr<CefV8Value> object,
+		const CefV8ValueList& arguments,
+		CefRefPtr<CefV8Value>& retval,
+		CefString& exception) OVERRIDE {
+
+		if (name == L"MyFunction") {
+			MessageBoxA(0, "frh", 0, 0);
+		}
+		MessageBox(0, name.c_str(), L"gfgdfh", 0);
+		// Function does not exist.
+		return false;
+	}
+
+	// Provide the reference counting implementation for this class.
+	IMPLEMENT_REFCOUNTING(MyV8Handler);
+};*/
 
 SimpleApp::SimpleApp() {
-
 }
 
 void SimpleApp::OnContextInitialized() {
@@ -49,27 +48,28 @@ void SimpleApp::OnContextInitialized() {
 	SetEvent(hEvent);
 }
 
-//void SimpleApp::OnWebKitInitialized(){
-//	CefRefPtr<MyV8Handler> v8handler = new MyV8Handler();
-//	CefString code = L"var example"
-//		L" if (!example)"
-//		L"example = {};"
-//		L"(function() {"
-//		L"example.myfunction = function() {"
-//		L"	native function MyFunction();"
-//		L"	return MyFunction();"
-//		L"};"
-//		L"})(); ";
-//	if (!CefRegisterExtension(L"v8/example", code, new MyV8Handler())){
-//		MessageBoxA(0, "Ê§°Ü", 0, 0);
-//	}
-//	else{
-//		MessageBoxA(0, "fhdhfgthf", 0, 0);
-//	}
-//
-//	SetEvent(hEvent2);
-//	MessageBoxA(0, "dddd", 0, 0);
-//}
+/*void SimpleApp::OnWebKitInitialized() {
+	CefRefPtr<MyV8Handler> v8handler = new MyV8Handler();
+	CefString code = L"var example"
+		L" if (!example)"
+		L"example = {};"
+		L"(function() {"
+		L"example.myfunction = function() {"
+		L"	native function MyFunction();"
+		L"	return MyFunction();"
+		L"};"
+		L"})(); ";
+	if (!CefRegisterExtension(L"v8/example", code, new MyV8Handler())) {
+		MessageBoxA(0, "Ê§°Ü", 0, 0);
+	}
+	else {
+		MessageBoxA(0, "fhdhfgthf", 0, 0);
+	}
+
+	SetEvent(hEvent2);
+	MessageBoxA(0, "dddd", 0, 0);
+}*/
+
 void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
 	if (v8contextcreate) {
 		Chrome_CallBack_V8 a = (Chrome_CallBack_V8)v8contextcreate;

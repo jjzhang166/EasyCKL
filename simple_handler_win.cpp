@@ -15,13 +15,6 @@
 
 #include "callbacks.h"
 
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
-typedef bool(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
-typedef bool(WINAPI * Chrome_CallBack_ChState)(DWORD id, bool isLoading, bool canGoBack, bool canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const char* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const char* text);
-
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
 	CEF_REQUIRE_UI_THREAD();
@@ -45,8 +38,7 @@ void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool canGoForward) {
 	CEF_REQUIRE_UI_THREAD();
 	if (chstate_callback) {
-		Chrome_CallBack_ChState a = (Chrome_CallBack_ChState)chstate_callback;
-		a(g_id, isLoading, canGoBack, canGoForward);
+		chstate_callback(g_id, isLoading, canGoBack, canGoForward);
 	}
 }
 
@@ -60,8 +52,7 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 	if (newwindow_callback) {
-		Chrome_CallBack_NewWindow a = (Chrome_CallBack_NewWindow)newwindow_callback;
-		if (a(g_id, (char*)target_url.ToString().c_str())) {
+		if (newwindow_callback(g_id, (char*)target_url.ToString().c_str())) {
 			return true;
 		}
 	}
@@ -75,8 +66,7 @@ void SimpleHandler::OnAddressChange(CefRefPtr<CefBrowser> browser,
 	const CefString& url) {
 
 	if (churl_callback) {
-		Chrome_CallBack_ChUrl a = (Chrome_CallBack_ChUrl)churl_callback;
-		a(g_id, url.ToString().c_str());
+		churl_callback(g_id, url.ToString().c_str());
 	}
 }
 
@@ -86,8 +76,7 @@ void SimpleHandler::OnBeforeDownload(
 	const CefString& suggested_name,
 	CefRefPtr<CefBeforeDownloadCallback> callback) {
 	if (download_callback) {
-		Chrome_CallBack_Download a = (Chrome_CallBack_Download)download_callback;
-		a(g_id, (char*)download_item->GetURL().ToString().c_str());
+		download_callback(g_id, (char*)download_item->GetURL().ToString().c_str());
 	}
 
 }
@@ -108,8 +97,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	if (rbuttondown_callback) {
 		model->Clear();
 		CefString text = params->GetSelectionText();
-		Chrome_CallBack_RButtonDown a = (Chrome_CallBack_RButtonDown)rbuttondown_callback;
-		a(g_id, flag, text.ToString().c_str());
+		rbuttondown_callback(g_id, flag, text.ToString().c_str());
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE)
@@ -156,8 +144,7 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	bool& suppress_message)
 {
 	if (JSDialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
-		Chrome_CallBack_JSDialog _JSDialog = (Chrome_CallBack_JSDialog)JSDialog_callback;
-		_JSDialog(g_id, message_text.ToString().c_str());
+		JSDialog_callback(g_id, message_text.ToString().c_str());
 		_callback->Continue(1, "");
 		return true;
 	}

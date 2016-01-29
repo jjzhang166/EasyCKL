@@ -14,16 +14,13 @@
 
 #include "callbacks.h"
 
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const char* url);
-
 namespace {
 
-	SimpleHandler* g_instance = NULL;
+	SimpleHandler* g_instance = nullptr;
 
 }  // namespace
 
-SimpleHandler::SimpleHandler(DWORD id, void* _created_callback, void* churl, void* nwin, void* down, void* chstate, void* JSDialog, void* error, void* rbuttondown)
+SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated _created_callback, void* churl, void* nwin, void* down, void* chstate, void* JSDialog, Chrome_CallBack_Error error, void* rbuttondown)
 	: is_closing_(false) {
 	created_callback = _created_callback;
 	churl_callback = churl;
@@ -39,7 +36,7 @@ SimpleHandler::SimpleHandler(DWORD id, void* _created_callback, void* churl, voi
 }
 
 SimpleHandler::~SimpleHandler() {
-	g_instance = NULL;
+	g_instance = nullptr;
 }
 
 // static
@@ -49,11 +46,11 @@ SimpleHandler* SimpleHandler::GetInstance() {
 
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
+
 	if (!g_browser.get()) {
 		g_browser = browser;
 		if (created_callback) {
-			Chrome_CallBack_BrowserCreated a = (Chrome_CallBack_BrowserCreated)created_callback;
-			a(g_id, this);
+			created_callback(g_id, this);
 		}
 	}
 	// Add to the list of existing browsers.
@@ -106,8 +103,7 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 		return;
 
 	if (error_callback) {
-		Chrome_CallBack_Error a = (Chrome_CallBack_Error)error_callback;
-		a(g_id, failedUrl.ToString().c_str());
+		error_callback(g_id, failedUrl.ToString().c_str());
 		return;
 	}
 
@@ -132,7 +128,6 @@ void SimpleHandler::CloseAllBrowsers(bool force_close) {
 	if (browser_list_.empty())
 		return;
 
-	BrowserList::const_iterator it = browser_list_.begin();
-	for (; it != browser_list_.end(); ++it)
+	for (auto it = browser_list_.begin(); it != browser_list_.end(); ++it)
 		(*it)->GetHost()->CloseBrowser(force_close);
 }
