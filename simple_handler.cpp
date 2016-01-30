@@ -15,14 +15,12 @@
 #include "callbacks.h"
 
 namespace {
-
-	SimpleHandler* g_instance = nullptr;
-
+	//CefRefPtr<SimpleHandler> g_instance = nullptr;
 }  // namespace
 
-SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated _created_callback, void* churl, void* nwin, void* down, void* chstate, void* JSDialog, Chrome_CallBack_Error error, void* rbuttondown)
+SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl, Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate, Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown)
 	: is_closing_(false) {
-	created_callback = _created_callback;
+	created_callback = callback;
 	churl_callback = churl;
 	newwindow_callback = nwin;
 	download_callback = down;
@@ -32,23 +30,24 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated _created_c
 	rbuttondown_callback = rbuttondown;
 	g_id = id;
 	//DCHECK(!g_instance);
-	g_instance = this;
+	//g_instance = this;
 }
 
 SimpleHandler::~SimpleHandler() {
-	g_instance = nullptr;
+	//delete g_instance;
 }
 
 // static
-SimpleHandler* SimpleHandler::GetInstance() {
+/*SimpleHandler* SimpleHandler::GetInstance() {
 	return g_instance;
-}
+}*/
 
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (!g_browser.get()) {
-		g_browser = browser;
+	if (!g_browser) {
+		g_browser = browser.get();
+		g_browser->AddRef();
 		if (created_callback) {
 			created_callback(g_id, this);
 		}
@@ -86,6 +85,8 @@ void SimpleHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
 	}
 
 	if (browser_list_.empty()) {
+		if (g_browser)
+			g_browser->Release();
 		// All browser windows have closed. Quit the application message loop.
 		//CefQuitMessageLoop();
 	}

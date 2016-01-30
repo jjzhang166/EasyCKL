@@ -48,7 +48,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source.def">
+    <None Include="Export.def">
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>

@@ -18,3 +18,4 @@ Chrome_ExecJS
 Chrome_EnableCookieStorage
 Chrome_Close
 Chrome_LoadString
+Chrome_CurrentlyOn

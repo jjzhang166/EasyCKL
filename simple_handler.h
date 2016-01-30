@@ -10,6 +10,15 @@
 
 #include <list>
 
+typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
+typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const char* url);
+typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
+typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
+typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
+typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const char* msg);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const char* text);
+
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,
 	public CefLifeSpanHandler,
@@ -19,15 +28,6 @@ class SimpleHandler : public CefClient,
 	public CefJSDialogHandler
 {
 public:
-	typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
-	typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const char* url);
-	typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
-	typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
-	typedef bool(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
-	typedef bool(WINAPI * Chrome_CallBack_ChState)(DWORD id, bool isLoading, bool canGoBack, bool canGoForward);
-	typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const char* msg);
-	typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const char* text);
-
 	Chrome_CallBack_BrowserCreated created_callback = 0;
 	Chrome_CallBack_ChUrl churl_callback = 0;
 	Chrome_CallBack_NewWindow newwindow_callback = 0;
@@ -37,12 +37,12 @@ public:
 	Chrome_CallBack_Error error_callback = 0;
 	Chrome_CallBack_RButtonDown rbuttondown_callback = 0;
 	DWORD g_id;
-	CefRefPtr<CefBrowser> g_browser;
+	CefBrowser* g_browser = nullptr;
 	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl, Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate, Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown);
 	~SimpleHandler();
 
 	// Provide access to the single global instance of this object.
-	static SimpleHandler* GetInstance();
+	//static SimpleHandler* GetInstance();
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {
@@ -63,7 +63,7 @@ public:
 	virtual CefRefPtr<CefJSDialogHandler> GetJSDialogHandler() OVERRIDE {
 		return this;
 	}
-	virtual void _CreateBrowser(std::string url, HWND hParent, RECT* rect);
+	virtual void _CreateBrowser(std::string url, HWND hParent, RECT &rect);
 
 	// CefDisplayHandler methods:
 	virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
