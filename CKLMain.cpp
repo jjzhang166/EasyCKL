@@ -210,10 +210,15 @@ CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, char* js) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_EnableCookieStorage() {
+CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(char* CookiePath) {
 	CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager();
-	//cookiemgr = CefCookieManager::CreateManager(path, force_persist_session_cookies);
-	cookiemgr->SetStoragePath(".\\cookies\\", false);
+	if (!CookiePath)
+		cookiemgr->SetStoragePath(".\\cookies\\", false);
+	else cookiemgr->SetStoragePath(CookiePath, false);
+}
+
+CKLEXPORT void WINAPI Chrome_EnableCookieStorage() {
+	Chrome_EnableCookieStorageEx(0);
 }
 
 CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
