@@ -52,7 +52,7 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefClient>& client,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
-	CEF_REQUIRE_UI_THREAD();
+	//CEF_REQUIRE_UI_THREAD();
 
 	if (newwindow_callback) {
 		if (newwindow_callback(g_id, (char*)target_url.ToString().c_str())) {
