@@ -14,7 +14,7 @@
 
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
-typedef BOOL(WINAPI * V8Handler_CallBack)(const char* name);
+typedef BOOL(WINAPI * V8Handler_CallBack)(const char* name, const void* argu);
 
 class MyV8Handler : public CefV8Handler {
 public:
@@ -30,7 +30,7 @@ public:
 		CefString& exception) OVERRIDE {
 
 		if (handler_callback) {
-			return handler_callback(name.ToString().c_str()) != FALSE;
+			return handler_callback(name.ToString().c_str(), &arguments) != FALSE;
 		}
 		return false;
 	}
@@ -131,8 +131,8 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, char* url, HWND hParent, RE
 	handler->_CreateBrowser(std::string(url), hParent, *rect);
 }
 
-CKLEXPORT void WINAPI Chrome_CreateEx(char* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback, Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate, Chrome_CallBack_JSDialog JSDialog) {
-	Chrome_CreateBrowser(0, url, hParent, rect, created_callback, churl_callback, newwindow, download, chstate, JSDialog, 0, 0);
+CKLEXPORT void WINAPI Chrome_CreateSimple(char* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback) {
+	Chrome_CreateBrowser(0, url, hParent, rect, created_callback, 0, 0, 0, 0, 0, 0, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_MessageLoop() {
@@ -251,4 +251,23 @@ CKLEXPORT void WINAPI Chrome_AddJSFunction(void* _context, char* name) {
 	CefRefPtr<CefV8Value> myFun = CefV8Value::CreateFunction(name, myV8handle);
 	CefRefPtr<CefV8Value> pObjApp = context->GetGlobal();
 	pObjApp->SetValue(name, myFun, V8_PROPERTY_ATTRIBUTE_NONE);
+}
+
+CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(void* list) {
+	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
+	return arguments->size();
+}
+
+CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(void* list, size_t pos) {
+	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
+	const CefRefPtr<CefV8Value> value = arguments->at(pos);
+	return value->GetIntValue();
+}
+
+CKLEXPORT void WINAPI Chrome_GetV8ValueString(void* list, size_t pos, char* buffer, size_t buffer_length) {
+	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
+	const CefRefPtr<CefV8Value> value = arguments->at(pos);
+	CefString s = value->GetStringValue();
+	const char* a = s.ToString().c_str();
+	memcpy(buffer, a, buffer_length);
 }
