@@ -7,7 +7,7 @@
 <br>
 这是在cefsimple的基础上进行开发的，这是一个Visual Studio 2013工程（现在已经升级到了2015）。CEF的版本是 cef_binary_3.2062.1930_windows32 理论上兼容更新的版本。<br>
 <br>
-自带了编译此库所需的CEF3 Lib，但是没有带CEF3工作的DLL，可以下载CEF3源码编译得到。<br>
+自带了编译此库所需的CEF3 Lib (libcef.lib)，libcef_dll_wrapper.lib现在已经改为使用源码形式给出，但是没有带CEF3工作的DLL，可以下载CEF3源码编译得到。<br>
 <br>
 我写的代码逻辑并不明了，注释并不丰富，性能并不好，如果不是有人总是鼓动我做我也就不打算发了，所以请各路前辈轻喷。（如果路过看到的话）<br>
 <br>
