@@ -16,7 +16,7 @@
 
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
-typedef BOOL(WINAPI * V8Handler_CallBack)(const char* name, const void* argu);
+typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
 
 class MyV8Handler : public CefV8Handler {
 public:
@@ -32,7 +32,7 @@ public:
 		CefString& exception) OVERRIDE {
 
 		if (handler_callback) {
-			return handler_callback(name.ToString().c_str(), &arguments) != FALSE;
+			return handler_callback(name.c_str(), &arguments) != FALSE;
 		}
 		return false;
 	}
@@ -104,7 +104,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 	settings.log_severity = LOGSEVERITY_DISABLE;
 #endif // _DEBUG
 	if (cacheStorage) {
-		CefString(&settings.cache_path) = ".\\cache\\";
+		CefString(&settings.cache_path) = L".\\cache\\";
 	}
 
 	settings.command_line_args_disabled = true;
@@ -201,10 +201,8 @@ CKLEXPORT void WINAPI Chrome_Stop(SimpleHandler* handler) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, char* js) {
+CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, wchar_t* js) {
 	if (handler) {
-		/*CefString _string(js);
-		_string.ToString();*/
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
 			browser->GetMainFrame()->ExecuteJavaScript(js, browser->GetMainFrame()->GetURL(), 0);
@@ -212,7 +210,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, char* js) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(char* CookiePath) {
+CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {
 	CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager();
 	if (!CookiePath)
 		cookiemgr->SetStoragePath(".\\cookies\\", false);
@@ -233,22 +231,22 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, char* string) {
-	if (handler) {
-		CefRefPtr<CefBrowser> browser = handler->g_browser;
-		if (browser && browser.get()) {
-			CefString str(string);
-			browser->GetMainFrame()->LoadString(string, browser->GetMainFrame()->GetURL());
-		}
-	}
-}
+//CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, char* string) {
+//	if (handler) {
+//		CefRefPtr<CefBrowser> browser = handler->g_browser;
+//		if (browser && browser.get()) {
+//			CefString str(string);
+//			browser->GetMainFrame()->LoadString(string, browser->GetMainFrame()->GetURL());
+//		}
+//	}
+//}
 
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(void* contextcreate, V8Handler_CallBack handler) {
 	myV8handle = new MyV8Handler(handler);
 	v8contextcreate = contextcreate;
 }
 
-CKLEXPORT void WINAPI Chrome_AddJSFunction(void* _context, char* name) {
+CKLEXPORT void WINAPI Chrome_AddJSFunction(void* _context, wchar_t* name) {
 	CefRefPtr<CefV8Context> context = *(CefRefPtr<CefV8Context>*)_context;
 	CefRefPtr<CefV8Value> myFun = CefV8Value::CreateFunction(name, myV8handle);
 	CefRefPtr<CefV8Value> pObjApp = context->GetGlobal();
@@ -266,12 +264,11 @@ CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(void* list, size_t pos) {
 	return value->GetIntValue();
 }
 
-CKLEXPORT void WINAPI Chrome_GetV8ValueString(void* list, size_t pos, char* buffer, size_t buffer_length) {
+CKLEXPORT void WINAPI Chrome_GetV8ValueString(void* list, size_t pos, wchar_t* buffer, size_t buffer_length) {
 	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
 	const CefRefPtr<CefV8Value> value = arguments->at(pos);
 	CefString s = value->GetStringValue();
-	const wchar_t* a = s.c_str();//不知为何用ToString()不行
-	//那就让调用此库的程序自己转码吧
+	const wchar_t* a = s.c_str();
 	DWORD leng = (wcslen(a) + 1)*sizeof(wchar_t);//获取字节数
 	if(leng <= buffer_length)
 		memcpy(buffer, a, leng);

@@ -106,7 +106,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	if (rbuttondown_callback) {
 		model->Clear();
 		auto text = params->GetSelectionText();
-		rbuttondown_callback(g_id, flag, text.ToString().c_str());
+		rbuttondown_callback(g_id, flag, text.c_str());
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE) {
@@ -152,7 +152,7 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	CEF_REQUIRE_UI_THREAD();
 
 	if (JSDialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
-		JSDialog_callback(g_id, message_text.ToString().c_str());
+		JSDialog_callback(g_id, message_text.c_str());
 		_callback->Continue(1, "");
 		return true;
 	}

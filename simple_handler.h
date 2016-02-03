@@ -16,8 +16,8 @@ typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const char* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const char* text);
+typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t* text);
 
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,

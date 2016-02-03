@@ -17,7 +17,6 @@ Chrome_GetV8ValueInt
 Chrome_GetV8ValueString
 
 Chrome_LoadUrl
-Chrome_LoadString
 
 Chrome_Window
 Chrome_GoBack
