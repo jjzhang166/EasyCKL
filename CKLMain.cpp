@@ -12,6 +12,8 @@
 #pragma comment(lib, "libcef.lib")
 #endif // _DEBUG
 
+#pragma comment(lib, "user32.lib")
+
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const char* name, const void* argu);
@@ -268,6 +270,13 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(void* list, size_t pos, char* buff
 	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
 	const CefRefPtr<CefV8Value> value = arguments->at(pos);
 	CefString s = value->GetStringValue();
-	const char* a = s.ToString().c_str();
-	memcpy(buffer, a, buffer_length);
+	const wchar_t* a = s.c_str();//不知为何用ToString()不行
+	//那就让调用此库的程序自己转码吧
+	DWORD leng = (wcslen(a) + 1)*sizeof(wchar_t);//获取字节数
+	if(leng <= buffer_length)
+		memcpy(buffer, a, leng);
+	else {
+		memcpy(buffer, a, buffer_length - 2);
+		memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
+	}
 }
