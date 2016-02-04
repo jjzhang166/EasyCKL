@@ -14,9 +14,10 @@
 
 #include "callbacks.h"
 
+typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
+
 extern HANDLE hEvent;
 extern void* v8contextcreate;
-typedef void(WINAPI * Chrome_CallBack_V8)(void* msg);
 
 /*class MyV8Handler : public CefV8Handler {
 public:
@@ -72,13 +73,11 @@ void SimpleApp::OnContextInitialized() {
 
 void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
 	if (v8contextcreate) {
-		Chrome_CallBack_V8 a = (Chrome_CallBack_V8)v8contextcreate;
-		a(&context);
+		((Chrome_CallBack_V8)v8contextcreate)(context.get());
 	}
 
 	/*CefRefPtr<CefV8Handler> myV8handle = new MyV8Handler();
 	CefRefPtr<CefV8Value> myFun = CefV8Value::CreateFunction(L"MyFunction", myV8handle);
 	CefRefPtr<CefV8Value> pObjApp = context->GetGlobal();
 	pObjApp->SetValue(L"MyFunction", myFun, V8_PROPERTY_ATTRIBUTE_NONE);*/
-
 }

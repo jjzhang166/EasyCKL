@@ -12,11 +12,10 @@
 #pragma comment(lib, "libcef.lib")
 #endif // _DEBUG
 
-#pragma comment(lib, "user32.lib")
-
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
+typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 
 class MyV8Handler : public CefV8Handler {
 public:
@@ -42,7 +41,7 @@ public:
 };
 
 extern HANDLE hEvent = 0;
-extern void* v8contextcreate = 0;
+void* v8contextcreate = 0;
 
 CefRefPtr<CefV8Handler> myV8handle;
 
@@ -231,49 +230,48 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	}
 }
 
-//CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, char* string) {
-//	if (handler) {
-//		CefRefPtr<CefBrowser> browser = handler->g_browser;
-//		if (browser && browser.get()) {
-//			CefString str(string);
-//			browser->GetMainFrame()->LoadString(string, browser->GetMainFrame()->GetURL());
-//		}
-//	}
-//}
+/*CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, char* string) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			CefString str(string);
+			browser->GetMainFrame()->LoadString(string, browser->GetMainFrame()->GetURL());
+		}
+	}
+}*/
 
-CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(void* contextcreate, V8Handler_CallBack handler) {
+CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler) {
 	myV8handle = new MyV8Handler(handler);
 	v8contextcreate = contextcreate;
 }
 
-CKLEXPORT void WINAPI Chrome_AddJSFunction(void* _context, wchar_t* name) {
-	CefRefPtr<CefV8Context> context = *(CefRefPtr<CefV8Context>*)_context;
-	CefRefPtr<CefV8Value> myFun = CefV8Value::CreateFunction(name, myV8handle);
-	CefRefPtr<CefV8Value> pObjApp = context->GetGlobal();
+CKLEXPORT void WINAPI Chrome_AddJSFunction(CefV8Context* context, wchar_t* name) {
+	auto myFun = CefV8Value::CreateFunction(name, myV8handle);
+	auto pObjApp = context->GetGlobal();
 	pObjApp->SetValue(name, myFun, V8_PROPERTY_ATTRIBUTE_NONE);
 }
 
-CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(void* list) {
-	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
+CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(const CefV8ValueList* arguments) {
 	return arguments->size();
 }
 
-CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(void* list, size_t pos) {
-	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
-	const CefRefPtr<CefV8Value> value = arguments->at(pos);
-	return value->GetIntValue();
+CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(const CefV8ValueList* arguments, size_t pos) {
+	auto value = arguments->at(pos);
+	if (value->IsValid())
+		return value->GetUIntValue();
+	return 0;
 }
 
-CKLEXPORT void WINAPI Chrome_GetV8ValueString(void* list, size_t pos, wchar_t* buffer, size_t buffer_length) {
-	const CefV8ValueList* arguments = (const CefV8ValueList*)list;
-	const CefRefPtr<CefV8Value> value = arguments->at(pos);
-	CefString s = value->GetStringValue();
-	const wchar_t* a = s.c_str();
+CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, size_t pos, wchar_t* buffer, size_t buffer_length) {
+	auto value = arguments->at(pos);
+	if (value->IsValid())
+		std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
+	/*const wchar_t* a = s.c_str();
 	DWORD leng = (wcslen(a) + 1)*sizeof(wchar_t);//获取字节数
 	if(leng <= buffer_length)
 		memcpy(buffer, a, leng);
 	else {
 		memcpy(buffer, a, buffer_length - 2);
 		memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
-	}
+	}*/
 }
