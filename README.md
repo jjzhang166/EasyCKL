@@ -1,7 +1,41 @@
 ﻿##EasyCKL
 
 ###通知：
-反正我也不知道YSC咋弄的，升级内核，用VS处理，我不会弄，折腾了一上午，一直没弄好，最后才发现是CEF的事（这个版本的libcef_dll_wrapper直接用VS2015无法编译！！但2013可以）所以我懒得弄了，还是用VS2013吧，用2013编译出来了，但是EasyCKL的sln等等我早就删掉了，于是就用makefile吧，安装VS2013后，在Tools里面打开“VS2013 x86 本机工具命令提示”，cd到当前目录，然后调用nmake回车就行，以后再想办法改用VS，，<br>
+已经更新到了2015的Lib，**现在仓库里有很多暂时用不到的，打算未来还是用VS的IDE，所以保留着**，但目前依旧采用Makefile编译，编译方法如下：<br>
+
+1.打开VS2015命令提示符：<br>
+![1]()<br>
+2.切换到源码所在目录：<br>
+![2]()<br>
+3.输入nmake密令回车：<br>
+![3]()<br>
+（如果增加了源代码文件，需要改动makefile脚本）<br>
+'''Makefile
+out\EasyCKL.dll : default out\simple_app.obj out\simple_handler.obj out\simple_handler_win.obj out\CKLMain.obj cefsimple.res
+	link /nologo /DLL /DEF:"Export.def" out\*.obj cefsimple.res /out:"out\EasyCKL.dll" /LIBPATH:".\lib"
+
+out\simple_app.obj : simple_app.cpp
+	cl /nologo /EHsc /MT /c simple_app.cpp /Fo:out\simple_app.obj
+
+out\simple_handler.obj : simple_handler.cpp
+	cl /nologo /EHsc /MT /c simple_handler.cpp /Fo:out\simple_handler.obj
+
+out\simple_handler_win.obj : simple_handler_win.cpp
+	cl /nologo /EHsc /MT /c simple_handler_win.cpp /Fo:out\simple_handler_win.obj
+
+out\CKLMain.obj : CKLMain.cpp
+	cl /nologo /EHsc /MT /c CKLMain.cpp /Fo:out\CKLMain.obj
+
+cefsimple.res : cefsimple.rc
+	rc cefsimple.rc
+
+clean:
+	del /f /q out\*.*
+	del /f cefsimple.res
+
+default:
+	if not exist "out" mkdir out
+'''
 
 这是一个基于CEF3（嵌入式 Chromium 框架）二次开发的库，使用BSD许可证开源。<br>
 <br>
