@@ -4,38 +4,12 @@
 已经更新到了2015的Lib，**现在仓库里有很多暂时用不到的，打算未来还是用VS的IDE，所以保留着**，但目前依旧采用Makefile编译，编译方法如下：<br>
 
 1.打开VS2015命令提示符：<br>
-![1]()<br>
+![1](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/1.png)<br>
 2.切换到源码所在目录：<br>
-![2]()<br>
-3.输入nmake密令回车：<br>
-![3]()<br>
+![2](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/2.png)<br>
+3.输入nmake命令回车：<br>
+![3](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/3.png)<br>
 （如果增加了源代码文件，需要改动makefile脚本）<br>
-'''Makefile
-out\EasyCKL.dll : default out\simple_app.obj out\simple_handler.obj out\simple_handler_win.obj out\CKLMain.obj cefsimple.res
-	link /nologo /DLL /DEF:"Export.def" out\*.obj cefsimple.res /out:"out\EasyCKL.dll" /LIBPATH:".\lib"
-
-out\simple_app.obj : simple_app.cpp
-	cl /nologo /EHsc /MT /c simple_app.cpp /Fo:out\simple_app.obj
-
-out\simple_handler.obj : simple_handler.cpp
-	cl /nologo /EHsc /MT /c simple_handler.cpp /Fo:out\simple_handler.obj
-
-out\simple_handler_win.obj : simple_handler_win.cpp
-	cl /nologo /EHsc /MT /c simple_handler_win.cpp /Fo:out\simple_handler_win.obj
-
-out\CKLMain.obj : CKLMain.cpp
-	cl /nologo /EHsc /MT /c CKLMain.cpp /Fo:out\CKLMain.obj
-
-cefsimple.res : cefsimple.rc
-	rc cefsimple.rc
-
-clean:
-	del /f /q out\*.*
-	del /f cefsimple.res
-
-default:
-	if not exist "out" mkdir out
-'''
 
 这是一个基于CEF3（嵌入式 Chromium 框架）二次开发的库，使用BSD许可证开源。<br>
 <br>
