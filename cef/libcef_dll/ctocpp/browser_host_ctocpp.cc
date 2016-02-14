@@ -280,7 +280,8 @@ void CefBrowserHostCToCpp::StopFinding(bool clearSelection) {
 }
 
 void CefBrowserHostCToCpp::ShowDevTools(const CefWindowInfo& windowInfo,
-    CefRefPtr<CefClient> client, const CefBrowserSettings& settings) {
+    CefRefPtr<CefClient> client, const CefBrowserSettings& settings,
+    const CefPoint& inspect_element_at) {
   if (CEF_MEMBER_MISSING(struct_, show_dev_tools))
     return;
 
@@ -290,12 +291,14 @@ void CefBrowserHostCToCpp::ShowDevTools(const CefWindowInfo& windowInfo,
   DCHECK(client.get());
   if (!client.get())
     return;
+  // Unverified params: inspect_element_at
 
   // Execute
   struct_->show_dev_tools(struct_,
       &windowInfo,
       CefClientCppToC::Wrap(client),
-      &settings);
+      &settings,
+      &inspect_element_at);
 }
 
 void CefBrowserHostCToCpp::CloseDevTools() {
@@ -348,6 +351,38 @@ bool CefBrowserHostCToCpp::IsMouseCursorChangeDisabled() {
 
   // Return type: bool
   return _retval?true:false;
+}
+
+void CefBrowserHostCToCpp::ReplaceMisspelling(const CefString& word) {
+  if (CEF_MEMBER_MISSING(struct_, replace_misspelling))
+    return;
+
+  // AUTO-GENERATED CONTENT - DELETE THIS COMMENT BEFORE MODIFYING
+
+  // Verify param: word; type: string_byref_const
+  DCHECK(!word.empty());
+  if (word.empty())
+    return;
+
+  // Execute
+  struct_->replace_misspelling(struct_,
+      word.GetStruct());
+}
+
+void CefBrowserHostCToCpp::AddWordToDictionary(const CefString& word) {
+  if (CEF_MEMBER_MISSING(struct_, add_word_to_dictionary))
+    return;
+
+  // AUTO-GENERATED CONTENT - DELETE THIS COMMENT BEFORE MODIFYING
+
+  // Verify param: word; type: string_byref_const
+  DCHECK(!word.empty());
+  if (word.empty())
+    return;
+
+  // Execute
+  struct_->add_word_to_dictionary(struct_,
+      word.GetStruct());
 }
 
 bool CefBrowserHostCToCpp::IsWindowRenderingDisabled() {
@@ -477,6 +512,16 @@ void CefBrowserHostCToCpp::SendCaptureLostEvent() {
 
   // Execute
   struct_->send_capture_lost_event(struct_);
+}
+
+void CefBrowserHostCToCpp::NotifyMoveOrResizeStarted() {
+  if (CEF_MEMBER_MISSING(struct_, notify_move_or_resize_started))
+    return;
+
+  // AUTO-GENERATED CONTENT - DELETE THIS COMMENT BEFORE MODIFYING
+
+  // Execute
+  struct_->notify_move_or_resize_started(struct_);
 }
 
 CefTextInputContext CefBrowserHostCToCpp::GetNSTextInputContext() {

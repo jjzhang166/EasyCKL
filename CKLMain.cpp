@@ -12,6 +12,8 @@
 #pragma comment(lib, "libcef.lib")
 #endif // _DEBUG
 
+#pragma comment(lib, "libcef_dll_wrapper.lib")
+
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
@@ -264,8 +266,10 @@ CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(const CefV8ValueList* arguments, siz
 
 CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, size_t pos, wchar_t* buffer, size_t buffer_length) {
 	auto value = arguments->at(pos);
-	if (value->IsValid())
+	if (value->IsValid()) {
 		std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
+		memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
+	}
 	/*const wchar_t* a = s.c_str();
 	DWORD leng = (wcslen(a) + 1)*sizeof(wchar_t);//获取字节数
 	if(leng <= buffer_length)
