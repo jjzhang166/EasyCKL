@@ -5,10 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyCKL", "EasyCKL.vcxproj", "{E6907268-86AB-4ADC-86E3-978FEC2D8F49}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9} = {A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}
+		{C50ECCD7-E918-33E1-905B-AA8D6D6192FD} = {C50ECCD7-E918-33E1-905B-AA8D6D6192FD}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcef_dll_wrapper", "cef\libcef_dll_wrapper.vcxproj", "{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcef_dll_wrapper", "cef\libcef_dll_wrapper.vcxproj", "{C50ECCD7-E918-33E1-905B-AA8D6D6192FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +20,10 @@ Global
 		{E6907268-86AB-4ADC-86E3-978FEC2D8F49}.Debug|Win32.Build.0 = Debug|Win32
 		{E6907268-86AB-4ADC-86E3-978FEC2D8F49}.Release|Win32.ActiveCfg = Release|Win32
 		{E6907268-86AB-4ADC-86E3-978FEC2D8F49}.Release|Win32.Build.0 = Release|Win32
-		{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}.Debug|Win32.Build.0 = Debug|Win32
-		{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}.Release|Win32.ActiveCfg = Release|Win32
-		{A9D6DC71-C0DC-4549-AEA0-3B15B44E86A9}.Release|Win32.Build.0 = Release|Win32
+		{C50ECCD7-E918-33E1-905B-AA8D6D6192FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C50ECCD7-E918-33E1-905B-AA8D6D6192FD}.Debug|Win32.Build.0 = Debug|Win32
+		{C50ECCD7-E918-33E1-905B-AA8D6D6192FD}.Release|Win32.ActiveCfg = Release|Win32
+		{C50ECCD7-E918-33E1-905B-AA8D6D6192FD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
