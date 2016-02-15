@@ -1,7 +1,3 @@
-// Copyright (c) 2013 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #include "simple_handler.h"
 
 #include <string>
@@ -18,6 +14,9 @@
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
 	CEF_REQUIRE_UI_THREAD();
+	if (chtitle_callback) {
+		chtitle_callback(g_id, title.c_str());
+	}
 }
 
 void SimpleHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser,

@@ -1,7 +1,3 @@
-// Copyright (c) 2013 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #include "simple_handler.h"
 
 #include <sstream>
@@ -18,7 +14,10 @@ namespace {
 	//CefRefPtr<SimpleHandler> g_instance = nullptr;
 }  // namespace
 
-SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl, Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate, Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown)
+SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
+	Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle)
 	: is_closing_(false) {
 	created_callback = callback;
 	churl_callback = churl;
@@ -28,6 +27,7 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	JSDialog_callback = JSDialog;
 	error_callback = error;
 	rbuttondown_callback = rbuttondown;
+	chtitle_callback = chtitle;
 	g_id = id;
 	//DCHECK(!g_instance);
 	//g_instance = this;

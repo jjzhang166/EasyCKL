@@ -2,8 +2,9 @@ LIBRARY
 EXPORTS
 Chrome_MessageLoop
 Chrome_Shutdown
-Chrome_InitializeEx
+Chrome_Initialize
 Chrome_CreateBrowser
+Chrome_CreateBrowserEx
 Chrome_CreateSimple
 Chrome_Close
 
@@ -15,6 +16,7 @@ Chrome_AddJSFunction
 Chrome_GetV8ValueListSize
 Chrome_GetV8ValueInt
 Chrome_GetV8ValueString
+Chrome_GetV8ValueStringLength
 
 Chrome_LoadUrl
 
@@ -28,3 +30,4 @@ Chrome_ExecJS
 Chrome_EnableCookieStorage
 Chrome_EnableCookieStorageEx
 
+Chrome_SetUserAgent

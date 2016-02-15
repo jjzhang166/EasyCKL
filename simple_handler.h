@@ -1,7 +1,3 @@
-// Copyright (c) 2013 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #ifndef CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
 #define CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
 
@@ -18,6 +14,7 @@ typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t* text);
+typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,
@@ -36,9 +33,13 @@ public:
 	Chrome_CallBack_JSDialog JSDialog_callback = 0;
 	Chrome_CallBack_Error error_callback = 0;
 	Chrome_CallBack_RButtonDown rbuttondown_callback = 0;
+	Chrome_CallBack_ChTitle chtitle_callback = 0;
 	DWORD g_id;
 	CefBrowser* g_browser = nullptr;
-	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl, Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate, Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown);
+	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl, 
+		Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate, 
+		Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+		Chrome_CallBack_ChTitle chtitle);
 	~SimpleHandler();
 
 	// Provide access to the single global instance of this object.

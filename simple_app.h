@@ -1,7 +1,3 @@
-// Copyright (c) 2013 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #ifndef CEF_TESTS_CEFSIMPLE_SIMPLE_APP_H_
 #define CEF_TESTS_CEFSIMPLE_SIMPLE_APP_H_
 
@@ -23,6 +19,7 @@ public:
 	virtual void OnContextInitialized() OVERRIDE;
 	//virtual void OnWebKitInitialized() OVERRIDE;
 	virtual void OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) OVERRIDE;
+	virtual void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) OVERRIDE;
 
 private:
 	// Include the default reference counting implementation.
