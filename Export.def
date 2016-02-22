@@ -3,23 +3,18 @@ EXPORTS
 Chrome_MessageLoop
 Chrome_Shutdown
 Chrome_Initialize
+Chrome_InitializeEx
+
 Chrome_CreateBrowser
 Chrome_CreateBrowserEx
+Chrome_CreateBrowserSync
 Chrome_CreateSimple
 Chrome_Close
 
 Chrome_IsUIThread
 Chrome_CurrentlyOn
 
-Chrome_SetV8ContextCallback
-Chrome_AddJSFunction
-Chrome_GetV8ValueListSize
-Chrome_GetV8ValueInt
-Chrome_GetV8ValueString
-Chrome_GetV8ValueStringLength
-
 Chrome_LoadUrl
-
 Chrome_Window
 Chrome_GoBack
 Chrome_GoForward
@@ -27,7 +22,16 @@ Chrome_Refresh
 Chrome_Stop
 
 Chrome_ExecJS
+Chrome_SetV8ContextCallback
+Chrome_AddJSFunction
+Chrome_GetV8ValueListSize
+Chrome_GetV8ValueInt
+Chrome_GetV8ValueString
+Chrome_GetV8ValueStringLength
+
 Chrome_EnableCookieStorage
 Chrome_EnableCookieStorageEx
+Chrome_DisableCookieStorage
 
 Chrome_SetUserAgent
+Chrome_SetProxyServer

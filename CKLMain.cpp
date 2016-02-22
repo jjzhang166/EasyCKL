@@ -14,6 +14,8 @@
 
 #pragma comment(lib, "libcef_dll_wrapper.lib")
 
+#pragma comment(lib, "user32.lib")
+
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
@@ -48,6 +50,9 @@ void* v8contextcreate = 0;
 extern BOOL isSetUA = FALSE;
 extern CefString useragen("");
 
+extern BOOL isSetProxy = FALSE;
+extern CefString proxyserver("");
+
 CefRefPtr<CefV8Handler> myV8handle;
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -79,29 +84,18 @@ CKLEXPORT BOOL WINAPI Chrome_IsUIThread() {
 	return Chrome_CurrentlyOn(TID_UI);
 }
 
-CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage) {
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage, wchar_t* local) {
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
-	// Provide CEF with command-line arguments.
 	CefMainArgs main_args(hInstance);
-	//CefMainArgs main_args(0);
-
-	// SimpleApp implements application-level callbacks. It will create the first
-	// browser instance in OnContextInitialized() after CEF has initialized.
-	//CefRefPtr<SimpleApp> app(new SimpleApp(std::string(url), hParent, rect));
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 
-	// CEF applications have multiple sub-processes (render, plugin, GPU, etc)
-	// that share the same executable. This function checks the command-line and,
-	// if this is a sub-process, executes the appropriate logic.
 	int exit_code = CefExecuteProcess(main_args, app.get(), nullptr);
 	if (exit_code >= 0) {
-		// The sub-process has completed so return here.
 		return exit_code;
 	}
 
-	// Specify CEF global settings here.
 	CefSettings settings;
 #ifdef _DEBUG
 	settings.log_severity = LOGSEVERITY_INFO;
@@ -115,10 +109,11 @@ CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cac
 	settings.command_line_args_disabled = true;
 	//settings.multi_threaded_message_loop = true;
 	settings.ignore_certificate_errors = nossl;
+	if (local)
+		CefString(&settings.locale) = local;
 
 	settings.no_sandbox = true;
 
-	// Initialize CEF.
 	CefInitialize(main_args, settings, app.get(), nullptr);
 
 	WaitForSingleObject(hEvent, INFINITE);
@@ -129,6 +124,22 @@ CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cac
 	return -1;
 }
 
+CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage) {
+	Chrome_InitializeEx(hInstance, nossl, cacheStorage, 0);
+}
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, char* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, void* rev1, void* rev2) {
+	if (!std::string(url).substr(0, 6).compare("chrome")) return 0;
+
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+		download, chstate, JSDialog, error, rbuttondown, chtitle));
+	return handler->_CreateBrowserSync(std::string(url), hParent, *rect);
+}
+
 CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, char* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
@@ -136,7 +147,7 @@ CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, char* url, HWND hParent, 
 	Chrome_CallBack_ChTitle chtitle, void* rev1, void* rev2) {
 
 	if (!std::string(url).substr(0, 6).compare("chrome")) return;
-	if (!Chrome_IsUIThread()) return;
+	//if (!Chrome_IsUIThread()) return;
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
 		download, chstate, JSDialog, error, rbuttondown, chtitle));
@@ -154,6 +165,16 @@ CKLEXPORT void WINAPI Chrome_CreateSimple(char* url, HWND hParent, RECT* rect, C
 	Chrome_CreateBrowserEx(0, url, hParent, rect, created_callback, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
+//CKLEXPORT void WINAPI ECKL_MessageLoop() {
+//	MSG msg;
+//	while (GetMessage(&msg, NULL, 0, 0))
+//	{
+//		TranslateMessage(&msg);
+//		DispatchMessage(&msg);
+//		CefDoMessageLoopWork();
+//	}
+//}
+
 CKLEXPORT void WINAPI Chrome_MessageLoop() {
 	CefRunMessageLoop();
 }
@@ -165,6 +186,11 @@ CKLEXPORT void WINAPI Chrome_Shutdown() {
 CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* ua) {
 	isSetUA = TRUE;
 	useragen = ua;
+}
+
+CKLEXPORT void WINAPI Chrome_SetProxyServer(wchar_t* proxy) {
+	isSetProxy = TRUE;
+	proxyserver = proxy;
 }
 
 CKLEXPORT void WINAPI Chrome_LoadUrl(SimpleHandler* handler, char* url) {
@@ -243,12 +269,18 @@ CKLEXPORT void WINAPI Chrome_EnableCookieStorage() {
 	Chrome_EnableCookieStorageEx(0);
 }
 
+CKLEXPORT void WINAPI Chrome_DisableCookieStorage() {
+	CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager();
+	cookiemgr->SetStoragePath("", false);
+}
+
 CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
+			ShowWindow(Chrome_Window(handler), 0);
+			SetParent(Chrome_Window(handler), 0);
 			browser->GetHost()->CloseBrowser(true);
-			//browser->Release();
 		}
 	}
 }

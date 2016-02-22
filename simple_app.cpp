@@ -16,6 +16,8 @@ extern HANDLE hEvent;
 extern void* v8contextcreate;
 extern BOOL isSetUA;
 extern CefString useragen;
+extern BOOL isSetProxy;
+extern CefString proxyserver;
 
 SimpleApp::SimpleApp() {
 }
@@ -37,4 +39,6 @@ void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, Cef
 	//command_line->Reset();
 	if (isSetUA)
 		command_line->AppendSwitchWithValue(L"user-agent", useragen);
+	if (isSetProxy)
+		command_line->AppendSwitchWithValue(L"proxy-server", proxyserver);
 }

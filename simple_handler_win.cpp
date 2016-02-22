@@ -105,7 +105,8 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	if (rbuttondown_callback) {
 		model->Clear();
 		auto text = params->GetSelectionText();
-		rbuttondown_callback(g_id, flag, text.c_str());
+		auto link = params->GetLinkUrl();
+		rbuttondown_callback(g_id, flag, text.c_str(), link.c_str());
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE) {
@@ -165,41 +166,19 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 
 void SimpleHandler::_CreateBrowser(std::string url, HWND hParent, RECT &rect) {
 	CEF_REQUIRE_UI_THREAD();
-	// Information used when creating the native window.
+
 	CefWindowInfo window_info;
-
-	// On Windows we need to specify certain flags that will be passed to
-	// CreateWindowEx().
-	//window_info.SetAsPopup(NULL, "cefsimple");
 	window_info.SetAsChild(hParent, rect);
-
-	// SimpleHandler implements browser-level callbacks.
-	//CefRefPtr<SimpleHandler> handler(new SimpleHandler(callbacks));
-
-	// Specify CEF browser settings here.
 	CefBrowserSettings browser_settings;
-
-	// Check if a "--url=" value was provided via the command-line. If so, use
-	// that instead of the default URL.
-
-	//if (!_url.empty()){
-	// CefRefPtr<CefCommandLine> command_line =
-	//  CefCommandLine::GetGlobalCommandLine();
-	// url = command_line->GetSwitchValue("url");
-	//}
-	//else{
-	// url = _url;
-	//}
-
-	// Create the browser window.
-
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
+}
 
-	//_rect.left += 600;
-	//_rect.right += 600;
-	//window_info.SetAsChild(_hParent, _rect);
+void* SimpleHandler::_CreateBrowserSync(std::string url, HWND hParent, RECT &rect) {
+	CEF_REQUIRE_UI_THREAD();
 
-	//ChromeCallBack cb = { 0 };
-	//CefRefPtr<SimpleHandler> handler2(new SimpleHandler(cb));
-	//CefBrowserHost::CreateBrowser(window_info, handler2.get(), url, browser_settings, NULL);
+	CefWindowInfo window_info;
+	window_info.SetAsChild(hParent, rect);
+	CefBrowserSettings browser_settings;
+	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+	return this;
 }
