@@ -10,11 +10,12 @@ typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
 typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const char* url);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url,const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t*, const wchar_t* link);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
+typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,
@@ -22,7 +23,8 @@ class SimpleHandler : public CefClient,
 	public CefLoadHandler,
 	public CefContextMenuHandler,
 	public CefDownloadHandler,
-	public CefJSDialogHandler
+	public CefJSDialogHandler,
+	public CefRequestHandler
 {
 public:
 	Chrome_CallBack_BrowserCreated created_callback = 0;
@@ -34,12 +36,15 @@ public:
 	Chrome_CallBack_Error error_callback = 0;
 	Chrome_CallBack_RButtonDown rbuttondown_callback = 0;
 	Chrome_CallBack_ChTitle chtitle_callback = 0;
+	Chrome_CallBack_CanLoadUrl canloadurl_callback = 0;
 	DWORD g_id;
 	CefBrowser* g_browser = nullptr;
+	std::wstring referer_string;
+
 	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 		Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 		Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-		Chrome_CallBack_ChTitle chtitle);
+		Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl);
 	~SimpleHandler();
 
 	// Provide access to the single global instance of this object.
@@ -62,6 +67,9 @@ public:
 		return this;
 	}
 	virtual CefRefPtr<CefJSDialogHandler> GetJSDialogHandler() OVERRIDE {
+		return this;
+	}
+	virtual CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE {
 		return this;
 	}
 
@@ -145,6 +153,15 @@ public:
 		const CefString& default_prompt_text,
 		CefRefPtr<CefJSDialogCallback> callback,
 		bool& suppress_message);
+
+	virtual bool OnCertificateError(
+		cef_errorcode_t cert_error,
+		const CefString& request_url,
+		CefRefPtr<CefAllowCertificateErrorCallback> callback);
+
+	virtual bool OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+		CefRefPtr<CefFrame> frame,
+		CefRefPtr<CefRequest> request);
 
 	// Request that all existing browser windows close.
 	void CloseAllBrowsers(bool force_close);

@@ -53,6 +53,8 @@ extern CefString useragen("");
 extern BOOL isSetProxy = FALSE;
 extern CefString proxyserver("");
 
+extern CefString localinf("");
+
 CefRefPtr<CefV8Handler> myV8handle;
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -106,11 +108,14 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 		CefString(&settings.cache_path) = L".\\cache\\";
 	}
 
+	//settings.single_process = true;
 	settings.command_line_args_disabled = true;
 	//settings.multi_threaded_message_loop = true;
 	settings.ignore_certificate_errors = nossl;
-	if (local)
+	if (local) {
 		CefString(&settings.locale) = local;
+		localinf = local;
+	}
 
 	settings.no_sandbox = true;
 
@@ -118,9 +123,9 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 
 	WaitForSingleObject(hEvent, INFINITE);
 
-	if (Chrome_IsUIThread())
+	if (Chrome_IsUIThread()) 
 		SetUnhandledExceptionFilter(0);
-
+		
 	return -1;
 }
 
@@ -132,11 +137,11 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, char* url, HWND hParen
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle, void* rev1, void* rev2) {
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
 	if (!std::string(url).substr(0, 6).compare("chrome")) return 0;
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
-		download, chstate, JSDialog, error, rbuttondown, chtitle));
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 	return handler->_CreateBrowserSync(std::string(url), hParent, *rect);
 }
 
@@ -144,13 +149,13 @@ CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, char* url, HWND hParent, 
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle, void* rev1, void* rev2) {
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
 
 	if (!std::string(url).substr(0, 6).compare("chrome")) return;
 	//if (!Chrome_IsUIThread()) return;
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
-		download, chstate, JSDialog, error, rbuttondown, chtitle));
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 	handler->_CreateBrowser(std::string(url), hParent, *rect);
 }
 
@@ -163,6 +168,34 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, char* url, HWND hParent, RE
 
 CKLEXPORT void WINAPI Chrome_CreateSimple(char* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback) {
 	Chrome_CreateBrowserEx(0, url, hParent, rect, created_callback, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+}
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, char* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
+
+	if (!std::string(url).substr(0, 6).compare("chrome")) return 0;
+
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
+	handler->referer_string = std::wstring(referer);
+	return handler->_CreateBrowserSync(std::string(url), hParent, *rect);
+}
+
+CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, char* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
+
+	if (!std::string(url).substr(0, 6).compare("chrome")) return;
+
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
+	handler->referer_string = std::wstring(referer);
+	handler->_CreateBrowser(std::string(url), hParent, *rect);
 }
 
 //CKLEXPORT void WINAPI ECKL_MessageLoop() {
@@ -199,6 +232,26 @@ CKLEXPORT void WINAPI Chrome_LoadUrl(SimpleHandler* handler, char* url) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
 			browser->GetMainFrame()->LoadURL(url);
+		}
+	}
+}
+
+CKLEXPORT DWORD WINAPI Chrome_GetUrlLength_UTF16(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			return browser->GetMainFrame()->GetURL().length();
+		}
+	}
+	return 0;
+}
+
+CKLEXPORT void WINAPI Chrome_GetUrlString_UTF16(SimpleHandler* handler, wchar_t* buffer, DWORD buffer_length) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->GetMainFrame()->GetURL().ToWString().copy(buffer, buffer_length);
+			memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
 		}
 	}
 }

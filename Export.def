@@ -1,14 +1,16 @@
 LIBRARY
 EXPORTS
-Chrome_MessageLoop
-Chrome_Shutdown
 Chrome_Initialize
 Chrome_InitializeEx
+Chrome_MessageLoop
+Chrome_Shutdown
 
+Chrome_CreateSimple
 Chrome_CreateBrowser
 Chrome_CreateBrowserEx
 Chrome_CreateBrowserSync
-Chrome_CreateSimple
+Chrome_CreateBrowserExWithReferer
+Chrome_CreateBrowserSyncWithReferer
 Chrome_Close
 
 Chrome_IsUIThread
@@ -20,6 +22,9 @@ Chrome_GoBack
 Chrome_GoForward
 Chrome_Refresh
 Chrome_Stop
+
+Chrome_GetUrlLength_UTF16
+Chrome_GetUrlString_UTF16
 
 Chrome_ExecJS
 Chrome_SetV8ContextCallback

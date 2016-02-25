@@ -11,6 +11,8 @@
 
 #include "callbacks.h"
 
+extern CefString localinf;
+
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
 	CEF_REQUIRE_UI_THREAD();
@@ -51,10 +53,9 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefClient>& client,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
-	//CEF_REQUIRE_UI_THREAD();
 
 	if (newwindow_callback) {
-		if (newwindow_callback(g_id, (char*)target_url.ToString().c_str())) {
+		if (newwindow_callback(g_id, (char*)target_url.ToString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
 			return true;
 		}
 	}
@@ -161,6 +162,43 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	JSDIALOGTYPE_CONFIRM,
 	JSDIALOGTYPE_PROMPT,*/
 	//MessageBox(0, message_text.c_str(), 0, 0);
+	return false;
+}
+
+bool SimpleHandler::OnCertificateError(
+	cef_errorcode_t cert_error,
+	const CefString& request_url,
+	CefRefPtr<CefAllowCertificateErrorCallback> callback) {
+	CEF_REQUIRE_UI_THREAD();
+	if (error_callback) {
+		error_callback(g_id, request_url.ToString().c_str());
+	}
+	return false;
+}
+
+bool SimpleHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+	CefRefPtr<CefFrame> frame,
+	CefRefPtr<CefRequest> request) {
+
+	std::multimap<CefString, CefString> map;
+	std::pair<CefString, CefString> pair;
+	request->GetHeaderMap(map);
+
+	pair.first = L"Accept-Language";
+	pair.second = localinf;// L"zh-CN";
+	map.insert(pair);
+
+	if (!map.count(L"Referer") && !referer_string.empty())
+	{
+		pair.first = L"Referer";
+		pair.second = referer_string;
+		map.insert(pair);
+		//OutputDebugStringW(L"find a time need referer");
+		//OutputDebugStringW(referer_string.c_str());
+	}
+	request->SetHeaderMap(map);
+	if (canloadurl_callback)
+		return canloadurl_callback(g_id, request->GetURL().ToWString().c_str());
 	return false;
 }
 

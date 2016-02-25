@@ -17,7 +17,7 @@ namespace {
 SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 	Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle)
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl)
 	: is_closing_(false) {
 	created_callback = callback;
 	churl_callback = churl;
@@ -28,6 +28,7 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	error_callback = error;
 	rbuttondown_callback = rbuttondown;
 	chtitle_callback = chtitle;
+	canloadurl_callback = canloadurl;
 	g_id = id;
 	//DCHECK(!g_instance);
 	//g_instance = this;

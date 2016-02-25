@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2171.2069_windows32\libcef_dll\transfer_util.cpp">
@@ -1092,9 +1092,6 @@
     <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2171.2069_windows32\libcef_dll\wrapper\cef_browser_info_map.h">
       <Filter>libcef_dll\wrapper</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\abc\Desktop\cef_binary_3.2171.2069_windows32\libcef_dll\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include\base">

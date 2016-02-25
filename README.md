@@ -31,3 +31,11 @@
 <br>
 我写的代码逻辑并不明了，注释并不丰富，性能并不好，如果不是有人总是鼓动我做我也就不打算发了，所以请各路前辈轻喷。（如果路过看到的话）<br>
 <br>
+
+###鸣谢&软件协议
+
+Chromium Embedded Framework<br>
+New BSD<br>
+
+EasyCKL<br>
+New BSD，See the LICENSE file.<br>
