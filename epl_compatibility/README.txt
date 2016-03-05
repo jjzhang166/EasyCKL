@@ -1,3 +1,0 @@
-易语言不支持在调试模式下使用EasyCKL，这是修改过的CKLMain.cpp，使其能兼容易语言的调试器，原理是使用browser_subprocess_path，因此不打算在标准版本中使用。browser_subprocess_path设置的eckl_epl_compatibility.exe就是一个空壳，用于充当subprocess，就是在cefsimple上把CefBrowserHost::CreateBrowser给注释掉了而已。
-
-鸣谢：嵌入式Chromium框架

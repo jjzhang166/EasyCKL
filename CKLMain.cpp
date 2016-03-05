@@ -16,6 +16,16 @@
 
 #pragma comment(lib, "user32.lib")
 
+//#define _EPL_COMPATIBILITY
+
+#ifdef _EPL_COMPATIBILITY
+#include<Shellapi.h>
+#pragma comment(lib, "Shell32.lib")
+//int WINAPI MessageBoxTimeoutW(IN HWND hWnd, IN LPCWSTR lpText, IN LPCWSTR lpCaption, IN UINT uType, IN WORD wLanguageId, IN DWORD dwMilliseconds);
+NOTIFYICONDATA nid = { 0 };
+#endif 
+
+
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
@@ -90,6 +100,12 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
+#ifdef _EPL_COMPATIBILITY
+	if (!IsDebuggerPresent()) {
+		ExitProcess(-1);
+	}
+#endif
+
 	CefMainArgs main_args(hInstance);
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 
@@ -108,6 +124,9 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 		CefString(&settings.cache_path) = L".\\cache\\";
 	}
 
+#ifdef _EPL_COMPATIBILITY
+	CefString(&settings.browser_subprocess_path) = L"eckl_epl_compatibility.exe";
+#endif
 	//settings.single_process = true;
 	settings.command_line_args_disabled = true;
 	//settings.multi_threaded_message_loop = true;
@@ -123,9 +142,43 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 
 	WaitForSingleObject(hEvent, INFINITE);
 
-	if (Chrome_IsUIThread()) 
+	if (Chrome_IsUIThread()) {
 		SetUnhandledExceptionFilter(0);
-		
+		//MessageBoxTimeoutW(0, L"EasyCKL 正在 EPL 调试兼容模式下工作\r\n\r\n发布你的应用时请使用标准 EasyCKL 库", L"EasyCKL 开发人员工具", MB_ICONINFORMATION | MB_TOPMOST, 0, 6000);
+
+#ifdef _EPL_COMPATIBILITY
+		WNDCLASS wc;
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = DefWindowProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = hInstance;
+		wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+		wc.lpszMenuName = NULL;
+		wc.lpszClassName = L"EasyCKL_Tools";
+
+		if (!RegisterClass(&wc))
+		{
+			MessageBox(NULL, TEXT("Message Window Class Failed!"), TEXT("Error"), MB_ICONERROR);
+			return 0;
+		}
+
+		nid.cbSize = NOTIFYICONDATA_V3_SIZE; //(DWORD)sizeof(NOTIFYICONDATA);
+		nid.hWnd = CreateWindow(L"EasyCKL_Tools", L"", 0, 0, 0, 0, 0, 0, 0, hInstance, 0);
+		nid.uID = 1;
+		nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
+		nid.uCallbackMessage = WM_USER+1;//自定义消息
+		nid.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
+		wcscpy_s(nid.szTip, TEXT("EasyCKL EPL 调试兼容模式"));
+		wcscpy_s(nid.szInfo, TEXT("EasyCKL EPL开发人员工具"));
+		wcscpy_s(nid.szInfoTitle, TEXT("EasyCKL 正在 EPL 调试兼容模式下工作。发布你的应用时请使用标准 EasyCKL 库"));
+		nid.dwInfoFlags = NIIF_WARNING|NIIF_LARGE_ICON;
+		nid.uTimeout = 10000;
+		Shell_NotifyIcon(NIM_ADD, &nid);
+#endif
+	}
 	return -1;
 }
 
@@ -163,7 +216,7 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, char* url, HWND hParent, RE
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown) {
-	Chrome_CreateBrowserEx(0, url, hParent, rect, created_callback, churl_callback, newwindow, download, chstate, JSDialog, error, rbuttondown, 0, 0, 0);
+	Chrome_CreateBrowserEx(id, url, hParent, rect, created_callback, churl_callback, newwindow, download, chstate, JSDialog, error, rbuttondown, 0, 0, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateSimple(char* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback) {
@@ -213,6 +266,9 @@ CKLEXPORT void WINAPI Chrome_MessageLoop() {
 }
 
 CKLEXPORT void WINAPI Chrome_Shutdown() {
+#ifdef _EPL_COMPATIBILITY
+	Shell_NotifyIcon(NIM_DELETE, &nid);
+#endif
 	CefShutdown();
 }
 
