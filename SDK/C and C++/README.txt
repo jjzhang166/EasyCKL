@@ -1,5 +1,8 @@
-ÕâÊÇEasyCKLµÄC/C++ SDK
+è¿™æ˜¯EasyCKLçš„C/C++ SDK
 
-ĞèÒª°üº¬EasyCKL.h£¬Í¬Ê±Á´½ÓEasyCKL.lib
+éœ€è¦åŒ…å«EasyCKL.hï¼ŒåŒæ—¶é“¾æ¥EasyCKL.lib
 
-ÔËĞĞÊ±ĞèÒª EasyCKL.dll ºÍ Ç¶ÈëÊ½Chromium¿ò¼Ü
+å¦‚ä½•ä½¿ç”¨è¯·çœ‹æºç æˆ–APIæ–‡æ¡£ã€‚
+APIæ–‡æ¡£åœ¨çº¿ç‰ˆï¼šhttp://easyckl.esy.es/docs/index.htm
+
+è¿è¡Œæ—¶éœ€è¦ EasyCKL.dll å’Œ åµŒå…¥å¼Chromiumæ¡†æ¶
