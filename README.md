@@ -2,6 +2,10 @@
 
 这是一个基于CEF3（嵌入式 Chromium 框架）二次开发的库，使用BSD许可证开源。<br>
 
+###API 文档
+
+可以在这里在线查看 EasyCKL 的 API 文档：[](http://easyckl.esy.es/docs/index.htm)
+
 ###简介
 
 EasyCKL 致力于封装复杂的 CEF Class，呈现给用户 Win32API 格式的C语言风格接口，便于给程序嵌入 Chromium 内核的web控件<br>
