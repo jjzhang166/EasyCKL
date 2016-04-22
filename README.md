@@ -4,7 +4,8 @@
 
 ###API 文档
 
-可以在这里在线查看 EasyCKL 的 API 文档：[http://easyckl.esy.es/docs/index.htm](http://easyckl.esy.es/docs/index.htm)
+可以在这里在线查看 EasyCKL 的 API 文档：http://easyckl.tk/docs/
+如果上面的连接无法打开，请使用：http://easyckl.esy.es/docs/
 
 ###简介
 
