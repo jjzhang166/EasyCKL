@@ -1,7 +1,12 @@
 LIBRARY
 EXPORTS
+EcKeInitialize
+EcKeCookieStorageControl
+EcKeCreateChildBrowser
+
 Chrome_Initialize
 Chrome_InitializeEx
+Chrome_DoMessageLoopWork
 Chrome_MessageLoop
 Chrome_Shutdown
 
@@ -17,14 +22,16 @@ Chrome_IsUIThread
 Chrome_CurrentlyOn
 
 Chrome_LoadUrl
+Chrome_LoadString
+Chrome_GetWindowHandle
 Chrome_Window
 Chrome_GoBack
 Chrome_GoForward
 Chrome_Refresh
 Chrome_Stop
 
-Chrome_GetUrlLength_UTF16
-Chrome_GetUrlString_UTF16
+Chrome_GetUrlLength
+Chrome_GetUrlString
 
 Chrome_ExecJS
 Chrome_SetV8ContextCallback
@@ -40,3 +47,20 @@ Chrome_DisableCookieStorage
 
 Chrome_SetUserAgent
 Chrome_SetProxyServer
+Chrome_EnableSystemFlash
+
+Chrome_ReleaseFrame
+
+Chrome_ShowDevTools
+
+Chrome_SetUserDataLongPtr
+
+Chrome_QueryBrowserInfomation
+
+Chrome_SetOSModalLoop
+
+EcPkHtmlRefreshContentJumpUrl
+EcPkJavaScriptSetValueByObjectId
+EcPkJavaScriptSetValueByObjectName
+EcPkJavaScriptSubmitByFormId
+EcPkJavaScriptSubmitByFormName

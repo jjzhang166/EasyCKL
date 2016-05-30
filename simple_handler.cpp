@@ -8,8 +8,6 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
-#include "callbacks.h"
-
 namespace {
 	//CefRefPtr<SimpleHandler> g_instance = nullptr;
 }  // namespace
@@ -32,6 +30,8 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	g_id = id;
 	//DCHECK(!g_instance);
 	//g_instance = this;
+	userData = 0;
+	lasterror = 0;
 }
 
 SimpleHandler::~SimpleHandler() {
@@ -104,8 +104,12 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	if (errorCode == ERR_ABORTED)
 		return;
 
+	if (!browser->IsSame(g_browser)) return;
+
+	lasterror = 3;
+
 	if (error_callback) {
-		error_callback(g_id, failedUrl.ToString().c_str());
+		error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);
 		return;
 	}
 

@@ -8,16 +8,13 @@
 #include "include/wrapper/cef_helpers.h"
 #include "include/cef_app.h"
 
-#include "callbacks.h"
-
 typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
 
 extern HANDLE hEvent;
 extern void* v8contextcreate;
-extern BOOL isSetUA;
-extern CefString useragen;
 extern BOOL isSetProxy;
 extern CefString proxyserver;
+extern BOOL flash;
 
 SimpleApp::SimpleApp() {
 }
@@ -37,8 +34,10 @@ void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) {
 	//if (process_type.empty()) return;
 	//command_line->Reset();
-	if (isSetUA)
-		command_line->AppendSwitchWithValue(L"user-agent", useragen);
+	if(flash)
+		command_line->AppendSwitch(L"enable-system-flash");
+	//if (isSetUA)
+	//	command_line->AppendSwitchWithValue(L"user-agent", useragen);
 	if (isSetProxy)
 		command_line->AppendSwitchWithValue(L"proxy-server", proxyserver);
 }

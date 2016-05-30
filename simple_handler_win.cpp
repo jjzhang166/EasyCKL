@@ -9,35 +9,41 @@
 
 #include "simple_app.h"
 
-#include "callbacks.h"
-
 extern CefString localinf;
 
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
 	CEF_REQUIRE_UI_THREAD();
+
+	if (!browser->IsSame(g_browser)) return;
+
 	if (chtitle_callback) {
 		chtitle_callback(g_id, title.c_str());
 	}
 }
 
-void SimpleHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame,
-	int httpStatusCode) {
-	CEF_REQUIRE_UI_THREAD();
-}
-
-
-void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame) {
-	CEF_REQUIRE_UI_THREAD();
-}
+//void SimpleHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser,
+//	CefRefPtr<CefFrame> frame,
+//	int httpStatusCode) {
+//	CEF_REQUIRE_UI_THREAD();
+//}
+//
+//
+//void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
+//	CefRefPtr<CefFrame> frame) {
+//	CEF_REQUIRE_UI_THREAD();
+//}
 
 void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool isLoading,
 	bool canGoBack,
 	bool canGoForward) {
 	CEF_REQUIRE_UI_THREAD();
+
+	if (!browser->IsSame(g_browser)) return;
+
+	if (isLoading) lasterror = 1;
+	else if (lasterror < 3) lasterror = 0;
 
 	if (chstate_callback) {
 		chstate_callback(g_id, isLoading, canGoBack, canGoForward);
@@ -48,14 +54,18 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame,
 	const CefString& target_url,
 	const CefString& target_frame_name,
+	cef_window_open_disposition_t target_disposition,
+	bool user_gesture,
 	const CefPopupFeatures& popupFeatures,
 	CefWindowInfo& windowInfo,
 	CefRefPtr<CefClient>& client,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
+	//OutputDebugStringW(target_url.c_str());
+
 	if (newwindow_callback) {
-		if (newwindow_callback(g_id, (char*)target_url.ToString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
+		if (newwindow_callback(g_id, target_url.ToWString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
 			return true;
 		}
 	}
@@ -69,8 +79,9 @@ void SimpleHandler::OnAddressChange(CefRefPtr<CefBrowser> browser,
 	const CefString& url) {
 	CEF_REQUIRE_UI_THREAD();
 
+	if (!browser->IsSame(g_browser)) return;
 	if (churl_callback) {
-		churl_callback(g_id, url.ToString().c_str());
+		churl_callback(g_id, url.ToWString().c_str());
 	}
 }
 
@@ -82,7 +93,7 @@ void SimpleHandler::OnBeforeDownload(
 	CEF_REQUIRE_UI_THREAD();
 
 	if (download_callback) {
-		download_callback(g_id, (char*)download_item->GetURL().ToString().c_str());
+		download_callback(g_id, download_item->GetURL().ToWString().c_str());
 	}
 
 }
@@ -166,43 +177,57 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 }
 
 bool SimpleHandler::OnCertificateError(
+	CefRefPtr<CefBrowser> browser,
 	cef_errorcode_t cert_error,
 	const CefString& request_url,
-	CefRefPtr<CefAllowCertificateErrorCallback> callback) {
+	CefRefPtr<CefSSLInfo> ssl_info,
+	CefRefPtr<CefRequestCallback> callback) {
 	CEF_REQUIRE_UI_THREAD();
+
+	if (!browser->IsSame(g_browser)) return false;
+
+	lasterror = 4;
+
 	if (error_callback) {
-		error_callback(g_id, request_url.ToString().c_str());
+		error_callback(g_id, request_url.ToWString().c_str(), TRUE);
 	}
 	return false;
 }
 
-bool SimpleHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
+	CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame,
-	CefRefPtr<CefRequest> request) {
+	CefRefPtr<CefRequest> request,
+	CefRefPtr<CefRequestCallback> callback) {
 
 	std::multimap<CefString, CefString> map;
 	std::pair<CefString, CefString> pair;
 	request->GetHeaderMap(map);
 
-	pair.first = L"Accept-Language";
-	pair.second = localinf;// L"zh-CN";
-	map.insert(pair);
-
-	if (!map.count(L"Referer") && !referer_string.empty())
-	{
-		pair.first = L"Referer";
-		pair.second = referer_string;
+	if (!localinf.empty()) {
+		pair.first = L"Accept-Language";
+		pair.second = localinf;// L"zh-CN";
 		map.insert(pair);
-		//OutputDebugStringW(L"find a time need referer");
+	}
+
+	if (request->GetReferrerURL().empty() && !referer_string.empty())
+	{
+		/*pair.first = L"Referer";
+		pair.second = CefString(referer_string);
+		map.insert(pair);*/
+		request->SetReferrer(CefString(referer_string), REFERRER_POLICY_ALWAYS);
+
+		//OutputDebugStringW(L"Referer\r\n");
 		//OutputDebugStringW(referer_string.c_str());
+		referer_string.clear();
 	}
 	request->SetHeaderMap(map);
 	if (canloadurl_callback)
-		return canloadurl_callback(g_id, request->GetURL().ToWString().c_str());
-	return false;
+		if (!canloadurl_callback(g_id, request->GetURL().ToWString().c_str()))return RV_CANCEL;
+	return RV_CONTINUE;
 }
 
-void SimpleHandler::_CreateBrowser(std::string url, HWND hParent, RECT &rect) {
+void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
@@ -211,12 +236,12 @@ void SimpleHandler::_CreateBrowser(std::string url, HWND hParent, RECT &rect) {
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
-void* SimpleHandler::_CreateBrowserSync(std::string url, HWND hParent, RECT &rect) {
+void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
-	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+	CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }

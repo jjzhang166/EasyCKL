@@ -3,8 +3,6 @@
 
 #include "include/cef_app.h"
 
-#include "callbacks.h"
-
 class SimpleApp : public CefApp,
 	public CefBrowserProcessHandler,
 	public CefRenderProcessHandler

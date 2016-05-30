@@ -32,12 +32,12 @@
     <ClCompile Include="CKLMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EcPackApi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="callbacks.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="simple_app.h">

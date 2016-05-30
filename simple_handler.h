@@ -2,15 +2,14 @@
 #define CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
 
 #include "include/cef_client.h"
-#include "callbacks.h"
 
 #include <list>
 
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const char* url);
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const char* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const char* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const char* url,const wchar_t* current_window_url);
+typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const wchar_t* url);
+typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t*, const wchar_t* link);
@@ -38,6 +37,8 @@ public:
 	Chrome_CallBack_ChTitle chtitle_callback = 0;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback = 0;
 	DWORD g_id;
+	LONG_PTR userData;
+	DWORD lasterror;
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
@@ -73,17 +74,33 @@ public:
 		return this;
 	}
 
-	virtual void _CreateBrowser(std::string url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserSync(std::string url, HWND hParent, RECT &rect);
+	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
+	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
 
 	// CefDisplayHandler methods:
 	virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
 		const CefString& title) OVERRIDE;
 
+	virtual void OnAddressChange(CefRefPtr<CefBrowser> browser,
+		CefRefPtr<CefFrame> frame,
+		const CefString& url)OVERRIDE;
+
 	// CefLifeSpanHandler methods:
 	virtual void OnAfterCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
 	virtual bool DoClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
 	virtual void OnBeforeClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
+
+	virtual bool OnBeforePopup(CefRefPtr<CefBrowser> browser,
+		CefRefPtr<CefFrame> frame,
+		const CefString& target_url,
+		const CefString& target_frame_name,
+		cef_window_open_disposition_t target_disposition,
+		bool user_gesture,
+		const CefPopupFeatures& popupFeatures,
+		CefWindowInfo& windowInfo,
+		CefRefPtr<CefClient>& client,
+		CefBrowserSettings& settings,
+		bool* no_javascript_access) OVERRIDE;
 
 	// CefLoadHandler methods:
 	virtual void OnLoadError(CefRefPtr<CefBrowser> browser,
@@ -92,59 +109,48 @@ public:
 		const CefString& errorText,
 		const CefString& failedUrl) OVERRIDE;
 
-	//methods:
-
 	virtual void OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 		bool isLoading,
 		bool canGoBack,
-		bool canGoForward);
+		bool canGoForward)OVERRIDE;
 
-	virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame);
+	//virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
+	//	CefRefPtr<CefFrame> frame)OVERRIDE;
 
-	virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame,
-		int httpStatusCode);
+	//virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
+	//	CefRefPtr<CefFrame> frame,
+	//	int httpStatusCode)OVERRIDE;
 
-
-	virtual bool OnBeforePopup(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame,
-		const CefString& target_url,
-		const CefString& target_frame_name,
-		const CefPopupFeatures& popupFeatures,
-		CefWindowInfo& windowInfo,
-		CefRefPtr<CefClient>& client,
-		CefBrowserSettings& settings,
-		bool* no_javascript_access);
-
-	virtual void OnAddressChange(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame,
-		const CefString& url);
-
+	//CefDownloadHandler methods:
 
 	virtual void OnBeforeDownload(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
 		const CefString& suggested_name,
-		CefRefPtr<CefBeforeDownloadCallback> callback);
+		CefRefPtr<CefBeforeDownloadCallback> callback)OVERRIDE;
 
 	virtual void OnDownloadUpdated(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
-		CefRefPtr<CefDownloadItemCallback> callback);
+		CefRefPtr<CefDownloadItemCallback> callback)OVERRIDE;
+
+	//CefContextMenuHandler methods:
 
 	virtual void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefContextMenuParams> params,
-		CefRefPtr<CefMenuModel> model);
+		CefRefPtr<CefMenuModel> model)OVERRIDE;
 
 	virtual bool OnContextMenuCommand(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefContextMenuParams> params,
 		int command_id,
-		EventFlags event_flags) {
+		EventFlags event_flags) OVERRIDE {
 		return false;
 	}
+
+	//CefJSDialogHandler methods:
+
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,
 		const CefString& origin_url,
 		const CefString& accept_lang,
@@ -152,16 +158,22 @@ public:
 		const CefString& message_text,
 		const CefString& default_prompt_text,
 		CefRefPtr<CefJSDialogCallback> callback,
-		bool& suppress_message);
+		bool& suppress_message)OVERRIDE;
+
+	//CefRequestHandler methods:
 
 	virtual bool OnCertificateError(
+		CefRefPtr<CefBrowser> browser,
 		cef_errorcode_t cert_error,
 		const CefString& request_url,
-		CefRefPtr<CefAllowCertificateErrorCallback> callback);
+		CefRefPtr<CefSSLInfo> ssl_info,
+		CefRefPtr<CefRequestCallback> callback)OVERRIDE;
 
-	virtual bool OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
+	virtual ReturnValue OnBeforeResourceLoad(
+		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
-		CefRefPtr<CefRequest> request);
+		CefRefPtr<CefRequest> request,
+		CefRefPtr<CefRequestCallback> callback)OVERRIDE;
 
 	// Request that all existing browser windows close.
 	void CloseAllBrowsers(bool force_close);
