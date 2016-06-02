@@ -20,11 +20,11 @@
 #include<Shellapi.h>
 #pragma comment(lib, "Shell32.lib")
 NOTIFYICONDATA nid = { 0 };
-#endif 
+#endif // _EPL_COMPATIBILITY
 
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
-typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu);
+typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 
 class MyV8Handler : public CefV8Handler {
@@ -41,7 +41,7 @@ public:
 		CefString& exception) OVERRIDE {
 
 		if (handler_callback) {
-			return handler_callback(name.c_str(), &arguments) != FALSE;
+			return handler_callback(name.c_str(), &arguments, &retval) != FALSE;
 		}
 		return false;
 	}
@@ -131,8 +131,9 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, Brow
 				*(BOOL*)buffer = browser->CanGoForward();
 				break;
 			case BrowserInfomationMainFrame:
-				CefFrame* main; main = browser->GetMainFrame();
-				*(LONG*)buffer = (LONG)main;
+				CefFrame* main; main = browser->GetMainFrame().get();
+				main->AddRef();
+				*(CefFrame**)buffer = main;
 				break;
 			case BrowserInfomationIsLoading:
 				*(BOOL*)buffer = browser->IsLoading();
@@ -181,8 +182,8 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 #endif // _DEBUG
 
 	if (flag & INITFLAG_CACHESTORAGE) {
-		if (cache_path) CefString(&settings.cache_path) = cache_path;
-		else CefString(&settings.cache_path) = L".\\cache\\";
+		if (cache_path) CefString(&settings.cache_path) = CefString(&settings.user_data_path) = cache_path;
+		else CefString(&settings.cache_path) = CefString(&settings.user_data_path) = L".\\cache\\";
 	}
 
 	if (flag & INITFLAG_USECOMPATIBILITY)
@@ -220,7 +221,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 		ExitProcess(-1);
 	}
 	flag |= INITFLAG_USECOMPATIBILITY;
-#endif
+#endif // _EPL_COMPATIBILITY
 
 	if (nossl) flag |= INITFLAG_NOSSL;
 	if (cacheStorage) flag |= INITFLAG_CACHESTORAGE;
@@ -260,7 +261,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 		nid.uTimeout = 10000;
 		Shell_NotifyIcon(NIM_ADD, &nid);
 	}
-#endif
+#endif // _EPL_COMPATIBILITY
 	return ret;
 }
 
@@ -292,6 +293,23 @@ CKLEXPORT void* WINAPI EcKeCreateChildBrowser(DWORD flags, BrowserCallBacks* cal
 	if (referer)
 		handler->referer_string = std::wstring(referer);
 	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
+}
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithJavaScriptReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
+
+	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return 0;
+
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
+
+	if (referer)
+		handler->referer_string = std::wstring(referer);
+
+	return handler->_CreateBrowserWithJSReferer(std::wstring(url), hParent, *rect);
 }
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -531,43 +549,6 @@ CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcrea
 	v8contextcreate = contextcreate;
 }
 
-CKLEXPORT void WINAPI Chrome_AddJSFunction(CefV8Context* context, wchar_t* name) {
-	auto myFun = CefV8Value::CreateFunction(name, myV8handle);
-	auto pObjApp = context->GetGlobal();
-	pObjApp->SetValue(name, myFun, V8_PROPERTY_ATTRIBUTE_NONE);
-}
-
-CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(const CefV8ValueList* arguments) {
-	return arguments->size();
-}
-
-CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(const CefV8ValueList* arguments, size_t pos) {
-	auto value = arguments->at(pos);
-	if (value->IsValid())
-		return value->GetUIntValue();
-	return 0;
-}
-
-CKLEXPORT DWORD WINAPI Chrome_GetV8ValueStringLength(const CefV8ValueList* arguments, size_t pos) {
-	auto value = arguments->at(pos);
-	if (value->IsValid())
-		return std::wstring(value->GetStringValue()).length();
-	return 0;
-}
-
-CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, size_t pos, wchar_t* buffer, size_t buffer_length) {
-	auto value = arguments->at(pos);
-	if (value->IsValid()) {
-		_ECKL_CopyWString(value->GetStringValue(), buffer, buffer_length * sizeof(wchar_t));
-		//std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
-		//memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
-	}
-}
-
-CKLEXPORT void WINAPI Chrome_ReleaseFrame(CefFrame* frame) {
-	frame->Release();
-}
-
 CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
@@ -585,4 +566,51 @@ CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(SimpleHandler* handler, LONG_PTR
 	if (handler) {
 		handler->userData = data;
 	}
+}
+
+#define EC_STRING CefString*
+
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LONG_PTR lpBuffer) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+
+			class Visitor : public CefStringVisitor {
+			public:
+				explicit Visitor(CefRefPtr<CefBrowser> browser, LONG_PTR Buffer) : browser_(browser), Buffer_(Buffer) {}
+				virtual void Visit(const CefString& string) OVERRIDE {
+					*((const EC_STRING*)Buffer_) = &string;
+					//MessageBox(0, string.c_str(), 0, 0);
+					PostQuitMessage(0);
+				}
+			private:
+				CefRefPtr<CefBrowser> browser_;
+				LONG_PTR Buffer_;
+				IMPLEMENT_REFCOUNTING(Visitor);
+			};
+
+
+			CefRefPtr<Visitor> a = new Visitor(browser, lpBuffer);
+			//CefString t_cefstring;
+			browser->GetMainFrame()->GetSource(a);
+
+			MSG msg;
+			while (GetMessage(&msg, NULL, 0, 0))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+				CefDoMessageLoopWork();
+			}
+		}
+	}
+}
+
+CKLEXPORT void WINAPI EcDebugShowStringValue(EC_STRING string, BOOL ShowAsMsgBox) {
+	if (!string) return;
+	CefString str = *string;
+	if (!ShowAsMsgBox) {
+		OutputDebugStringW(str.c_str());
+		OutputDebugStringW(L"\r\n");
+	}
+	else MessageBoxW(0, str.c_str(), L"Debug", MB_ICONINFORMATION);
 }

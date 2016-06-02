@@ -8,15 +8,15 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
-namespace {
-	//CefRefPtr<SimpleHandler> g_instance = nullptr;
-}  // namespace
-
 SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 	Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl)
-	: is_closing_(false) {
+
+	: is_closing_(false), g_id(id), userData(0), lasterror(0), window_rect({ 0 }),
+	need_create_with_referer(FALSE), hParentWnd(0) {
+
+	//…Ë÷√ CallBack ∫Ø ˝÷∏’Î
 	created_callback = callback;
 	churl_callback = churl;
 	newwindow_callback = nwin;
@@ -27,31 +27,30 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	rbuttondown_callback = rbuttondown;
 	chtitle_callback = chtitle;
 	canloadurl_callback = canloadurl;
-	g_id = id;
-	//DCHECK(!g_instance);
-	//g_instance = this;
-	userData = 0;
-	lasterror = 0;
+	//referer_string = std::wstring(L"");
 }
 
-SimpleHandler::~SimpleHandler() {
-	//delete g_instance;
-}
-
-// static
-/*SimpleHandler* SimpleHandler::GetInstance() {
-	return g_instance;
-}*/
+SimpleHandler::~SimpleHandler() {}
 
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 
 	if (!g_browser) {
-		g_browser = browser.get();
-		g_browser->AddRef();
-		if (created_callback) {
-			created_callback(g_id, this);
+		if (need_create_with_referer) {
+			old_browser = browser.get();
+			old_browser->AddRef();
 		}
+		else {
+			g_browser = browser.get();
+			g_browser->AddRef();
+		}
+
+		if (hParentWnd && need_create_with_referer == FALSE)
+			PostQuitMessage(0);
+
+		if (created_callback && need_create_with_referer == FALSE)
+			created_callback(g_id, this);
+
 	}
 	// Add to the list of existing browsers.
 	browser_list_.push_back(browser);
@@ -114,11 +113,11 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	}
 
 	// Display a load error message.
-	std::stringstream ss;
+	std::wstringstream ss;
 	ss << "<html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=gb2312\"></head><body bgcolor=\"white\">"
 		"<h2>Failed to open this page" <<
 		"</h2><p>Error: " << errorCode <<
-		"</p><p>Url: " << std::string(failedUrl) <<
+		"</p><p>Url: " << std::wstring(failedUrl) <<
 		"</p></body></html>";
 	frame->LoadString(ss.str(), failedUrl);
 }

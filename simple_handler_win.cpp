@@ -27,12 +27,17 @@ void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 //	int httpStatusCode) {
 //	CEF_REQUIRE_UI_THREAD();
 //}
-//
-//
-//void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
-//	CefRefPtr<CefFrame> frame) {
-//	CEF_REQUIRE_UI_THREAD();
-//}
+
+void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
+	CefRefPtr<CefFrame> frame) {
+	CEF_REQUIRE_UI_THREAD();
+
+	if (old_browser && !need_create_with_referer) {
+		old_browser->GetHost()->CloseBrowser(true);
+		old_browser->Release();
+		old_browser = 0;
+	}
+}
 
 void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool isLoading,
@@ -62,7 +67,12 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
-	//OutputDebugStringW(target_url.c_str());
+	if (need_create_with_referer) {
+		windowInfo.SetAsChild(hParentWnd, window_rect);
+
+		need_create_with_referer = FALSE;
+		return false;
+	}
 
 	if (newwindow_callback) {
 		if (newwindow_callback(g_id, target_url.ToWString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
@@ -112,6 +122,8 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefContextMenuParams> params,
 	CefRefPtr<CefMenuModel> model) {
 	CEF_REQUIRE_UI_THREAD();
+
+	if (!browser->IsSame(g_browser)) return;
 
 	auto flag = params->GetTypeFlags();
 	if (rbuttondown_callback) {
@@ -200,6 +212,8 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	CefRefPtr<CefRequest> request,
 	CefRefPtr<CefRequestCallback> callback) {
 
+	if (!browser->IsSame(g_browser)) return RV_CONTINUE;
+
 	std::multimap<CefString, CefString> map;
 	std::pair<CefString, CefString> pair;
 	request->GetHeaderMap(map);
@@ -209,8 +223,8 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 		pair.second = localinf;// L"zh-CN";
 		map.insert(pair);
 	}
-
-	if (request->GetReferrerURL().empty() && !referer_string.empty())
+	
+	if (!hParentWnd && request->GetReferrerURL().empty() && !referer_string.empty())
 	{
 		/*pair.first = L"Referer";
 		pair.second = CefString(referer_string);
@@ -221,6 +235,7 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 		//OutputDebugStringW(referer_string.c_str());
 		referer_string.clear();
 	}
+
 	request->SetHeaderMap(map);
 	if (canloadurl_callback)
 		if (!canloadurl_callback(g_id, request->GetURL().ToWString().c_str()))return RV_CANCEL;
@@ -233,6 +248,7 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
 	CefWindowInfo window_info;
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
+	browser_settings.javascript_close_windows = STATE_DISABLED;
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
@@ -242,6 +258,40 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 	CefWindowInfo window_info;
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
+	browser_settings.javascript_close_windows = STATE_DISABLED;
+	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+	return this;
+}
+
+void* SimpleHandler::_CreateBrowserWithJSReferer(std::wstring url, HWND hParent, RECT &rect)
+{
+	CEF_REQUIRE_UI_THREAD();
+	CefWindowInfo window_info;
+
+	window_info.x = window_info.y = window_info.height = window_info.width = 0;
+	window_info.style = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+	window_info.parent_window = hParent;
+
+	hParentWnd = hParent;
+	window_rect = rect;
+	need_create_with_referer = TRUE;
+
+	CefBrowserSettings browser_settings;
+	browser_settings.javascript_close_windows = STATE_DISABLED;
+
 	CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+
+	//browser->GetMainFrame()->ExecuteJavaScript(L"window.open('" + url + L"')", referer_string.c_str(), 0);
+	browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
+
+	//这是一个Modal循环，用于Sync
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+		CefDoMessageLoopWork();
+	}
+
 	return this;
 }

@@ -16,6 +16,7 @@ Chrome_CreateBrowserEx
 Chrome_CreateBrowserSync
 Chrome_CreateBrowserExWithReferer
 Chrome_CreateBrowserSyncWithReferer
+Chrome_CreateBrowserSyncWithJavaScriptReferer
 Chrome_Close
 
 Chrome_IsUIThread
@@ -35,11 +36,14 @@ Chrome_GetUrlString
 
 Chrome_ExecJS
 Chrome_SetV8ContextCallback
+
 Chrome_AddJSFunction
 Chrome_GetV8ValueListSize
 Chrome_GetV8ValueInt
 Chrome_GetV8ValueString
 Chrome_GetV8ValueStringLength
+Chrome_SetV8ReturnValueInt
+Chrome_SetV8ReturnValueString
 
 Chrome_EnableCookieStorage
 Chrome_EnableCookieStorageEx
@@ -59,8 +63,19 @@ Chrome_QueryBrowserInfomation
 
 Chrome_SetOSModalLoop
 
+Chrome_GetHtmlSource
+
+Chrome_FrameLoadUrl
+Chrome_FrameLoadString
+Chrome_FrameIsMain
+Chrome_ReleaseFrame
+Chrome_GetNameFrame
+EcQBIGetMainFrame
+
 EcPkHtmlRefreshContentJumpUrl
 EcPkJavaScriptSetValueByObjectId
 EcPkJavaScriptSetValueByObjectName
 EcPkJavaScriptSubmitByFormId
 EcPkJavaScriptSubmitByFormName
+
+EcDebugShowStringValue

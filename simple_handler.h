@@ -1,5 +1,5 @@
-#ifndef CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
-#define CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
+#ifndef __EASYCKL_SIMPLE_HANDLER_H_
+#define __EASYCKL_SIMPLE_HANDLER_H_
 
 #include "include/cef_client.h"
 
@@ -42,14 +42,21 @@ public:
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
+	CefBrowser* old_browser = nullptr;
+	/* Warning: The "hParentWnd" and "window_rect" is only used when you call _CreateBrowserWithJSReferer to create browser!!! */
+	RECT window_rect;
+	HWND hParentWnd;
+	BOOL need_create_with_referer;
+
 	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 		Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 		Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 		Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl);
 	~SimpleHandler();
 
-	// Provide access to the single global instance of this object.
-	//static SimpleHandler* GetInstance();
+	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
+	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
+	virtual void* _CreateBrowserWithJSReferer(std::wstring url, HWND hParent, RECT &rect);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {
@@ -73,9 +80,6 @@ public:
 	virtual CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE {
 		return this;
 	}
-
-	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
 
 	// CefDisplayHandler methods:
 	virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
@@ -112,14 +116,14 @@ public:
 	virtual void OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 		bool isLoading,
 		bool canGoBack,
-		bool canGoForward)OVERRIDE;
+		bool canGoForward) OVERRIDE;
 
-	//virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
-	//	CefRefPtr<CefFrame> frame)OVERRIDE;
+	virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
+		CefRefPtr<CefFrame> frame)OVERRIDE;
 
 	//virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
 	//	CefRefPtr<CefFrame> frame,
-	//	int httpStatusCode)OVERRIDE;
+	//	int httpStatusCode) OVERRIDE;
 
 	//CefDownloadHandler methods:
 
@@ -127,19 +131,19 @@ public:
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
 		const CefString& suggested_name,
-		CefRefPtr<CefBeforeDownloadCallback> callback)OVERRIDE;
+		CefRefPtr<CefBeforeDownloadCallback> callback) OVERRIDE;
 
 	virtual void OnDownloadUpdated(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
-		CefRefPtr<CefDownloadItemCallback> callback)OVERRIDE;
+		CefRefPtr<CefDownloadItemCallback> callback) OVERRIDE;
 
 	//CefContextMenuHandler methods:
 
 	virtual void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefContextMenuParams> params,
-		CefRefPtr<CefMenuModel> model)OVERRIDE;
+		CefRefPtr<CefMenuModel> model) OVERRIDE;
 
 	virtual bool OnContextMenuCommand(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
@@ -158,7 +162,7 @@ public:
 		const CefString& message_text,
 		const CefString& default_prompt_text,
 		CefRefPtr<CefJSDialogCallback> callback,
-		bool& suppress_message)OVERRIDE;
+		bool& suppress_message) OVERRIDE;
 
 	//CefRequestHandler methods:
 
@@ -167,13 +171,13 @@ public:
 		cef_errorcode_t cert_error,
 		const CefString& request_url,
 		CefRefPtr<CefSSLInfo> ssl_info,
-		CefRefPtr<CefRequestCallback> callback)OVERRIDE;
+		CefRefPtr<CefRequestCallback> callback) OVERRIDE;
 
 	virtual ReturnValue OnBeforeResourceLoad(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefRequest> request,
-		CefRefPtr<CefRequestCallback> callback)OVERRIDE;
+		CefRefPtr<CefRequestCallback> callback) OVERRIDE;
 
 	// Request that all existing browser windows close.
 	void CloseAllBrowsers(bool force_close);
@@ -191,4 +195,4 @@ private:
 	IMPLEMENT_REFCOUNTING(SimpleHandler);
 };
 
-#endif  // CEF_TESTS_CEFSIMPLE_SIMPLE_HANDLER_H_
+#endif //EASYCKL_SIMPLE_HANDLER_H_
