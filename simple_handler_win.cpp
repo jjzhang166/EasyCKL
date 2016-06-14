@@ -32,10 +32,9 @@ void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (old_browser && !need_create_with_referer) {
-		old_browser->GetHost()->CloseBrowser(true);
-		old_browser->Release();
-		old_browser = 0;
+	if (g_browser && hParentWnd) {
+		PostQuitMessage(0);
+		hParentWnd = 0;
 	}
 }
 
@@ -67,9 +66,8 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
-	if (need_create_with_referer) {
+	if (!g_browser) {
 		windowInfo.SetAsChild(hParentWnd, window_rect);
-
 		need_create_with_referer = FALSE;
 		return false;
 	}
@@ -223,7 +221,7 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 		pair.second = localinf;// L"zh-CN";
 		map.insert(pair);
 	}
-	
+
 	if (!hParentWnd && request->GetReferrerURL().empty() && !referer_string.empty())
 	{
 		/*pair.first = L"Referer";
@@ -279,10 +277,10 @@ void* SimpleHandler::_CreateBrowserWithJSReferer(std::wstring url, HWND hParent,
 	CefBrowserSettings browser_settings;
 	browser_settings.javascript_close_windows = STATE_DISABLED;
 
-	CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+	CefRefPtr<CefBrowser> old_browser = CefBrowserHost::CreateBrowserSync(window_info, this, L"about:blank", browser_settings, NULL);
 
 	//browser->GetMainFrame()->ExecuteJavaScript(L"window.open('" + url + L"')", referer_string.c_str(), 0);
-	browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
+	old_browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
 
 	//这是一个Modal循环，用于Sync
 	MSG msg;
@@ -292,6 +290,8 @@ void* SimpleHandler::_CreateBrowserWithJSReferer(std::wstring url, HWND hParent,
 		DispatchMessage(&msg);
 		CefDoMessageLoopWork();
 	}
+
+	old_browser->GetHost()->CloseBrowser(true);
 
 	return this;
 }

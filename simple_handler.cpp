@@ -35,23 +35,14 @@ SimpleHandler::~SimpleHandler() {}
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (!g_browser) {
-		if (need_create_with_referer) {
-			old_browser = browser.get();
-			old_browser->AddRef();
-		}
-		else {
-			g_browser = browser.get();
-			g_browser->AddRef();
-		}
-
-		if (hParentWnd && need_create_with_referer == FALSE)
-			PostQuitMessage(0);
-
-		if (created_callback && need_create_with_referer == FALSE)
+	if (!g_browser && !need_create_with_referer) {
+		g_browser = browser.get();
+		g_browser->AddRef();
+		if (created_callback) {
 			created_callback(g_id, this);
-
+		}
 	}
+
 	// Add to the list of existing browsers.
 	browser_list_.push_back(browser);
 }

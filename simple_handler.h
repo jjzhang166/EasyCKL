@@ -42,12 +42,6 @@ public:
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
-	CefBrowser* old_browser = nullptr;
-	/* Warning: The "hParentWnd" and "window_rect" is only used when you call _CreateBrowserWithJSReferer to create browser!!! */
-	RECT window_rect;
-	HWND hParentWnd;
-	BOOL need_create_with_referer;
-
 	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 		Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 		Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
@@ -188,8 +182,12 @@ private:
 	// List of existing browser windows. Only accessed on the CEF UI thread.
 	typedef std::list<CefRefPtr<CefBrowser> > BrowserList;
 	BrowserList browser_list_;
-
 	bool is_closing_;
+
+	/* Warning: The "hParentWnd" "window_rect" and "need_create_with_referer" is only used when you call _CreateBrowserWithJSReferer to create browser!!! */
+	RECT window_rect;
+	HWND hParentWnd;
+	BOOL need_create_with_referer;
 
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(SimpleHandler);
