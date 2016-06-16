@@ -126,9 +126,20 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	auto flag = params->GetTypeFlags();
 	if (rbuttondown_callback) {
 		model->Clear();
-		auto text = params->GetSelectionText();
-		auto link = params->GetLinkUrl();
-		rbuttondown_callback(g_id, flag, text.c_str(), link.c_str());
+		RBUTTON_DOWN_INFOMATION info;
+		info.cbSzie = sizeof(RBUTTON_DOWN_INFOMATION);
+		info.Flag = flag;
+		info.Retention = 0;
+
+		auto SelectionText = params->GetSelectionText();
+		auto LinkUrl = params->GetLinkUrl();
+		auto SourceUrl = params->GetSourceUrl();
+
+		info.SelectionText = SelectionText.c_str();
+		info.LinkUrl = LinkUrl.c_str();
+		info.SourceUrl = SourceUrl.c_str();
+
+		rbuttondown_callback(g_id, &info);
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE) {
@@ -261,7 +272,7 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 	return this;
 }
 
-void* SimpleHandler::_CreateBrowserWithJSReferer(std::wstring url, HWND hParent, RECT &rect)
+void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect)
 {
 	CEF_REQUIRE_UI_THREAD();
 	CefWindowInfo window_info;

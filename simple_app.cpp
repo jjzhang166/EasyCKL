@@ -12,9 +12,11 @@ typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
 
 extern HANDLE hEvent;
 extern void* v8contextcreate;
+
 extern BOOL isSetProxy;
 extern CefString proxyserver;
 extern BOOL flash;
+extern CefString flash_path;
 
 SimpleApp::SimpleApp() {
 }
@@ -32,10 +34,11 @@ void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 }
 
 void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) {
-	//if (process_type.empty()) return;
-	//command_line->Reset();
-	if(flash)
-		command_line->AppendSwitch(L"enable-system-flash");
+	if (flash) {
+		if (!flash_path.empty())
+			command_line->AppendSwitchWithValue(L"ppapi-flash-path", flash_path);
+		else command_line->AppendSwitch(L"enable-system-flash");
+	}
 	//if (isSetUA)
 	//	command_line->AppendSwitchWithValue(L"user-agent", useragen);
 	if (isSetProxy)

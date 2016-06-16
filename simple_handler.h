@@ -5,6 +5,16 @@
 
 #include <list>
 
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	DWORD cbSzie;
+	int Flag;
+	CefFrame* pFrame;
+	const wchar_t* SelectionText;
+	const wchar_t* LinkUrl;
+	const wchar_t* SourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
 typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const wchar_t* url, BOOL isCertError);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const wchar_t* url);
@@ -12,7 +22,7 @@ typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t*, const wchar_t* link);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFOMATION info);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
@@ -50,7 +60,7 @@ public:
 
 	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
 	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserWithJSReferer(std::wstring url, HWND hParent, RECT &rect);
+	virtual void* _CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {

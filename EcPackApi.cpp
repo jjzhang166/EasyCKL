@@ -4,6 +4,7 @@
 #include "simple_handler.h"
 
 #define __EC_PACK_API_CPP_
+#define __ECKL_SRC_DEV_
 #include "SDK\C and C++\EasyCKL.h"
 
 #undef CKLEXPORT

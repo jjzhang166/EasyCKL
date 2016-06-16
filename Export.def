@@ -2,7 +2,6 @@ LIBRARY
 EXPORTS
 EcKeInitialize
 EcKeCookieStorageControl
-EcKeCreateChildBrowser
 
 Chrome_Initialize
 Chrome_InitializeEx
@@ -10,13 +9,11 @@ Chrome_DoMessageLoopWork
 Chrome_MessageLoop
 Chrome_Shutdown
 
-Chrome_CreateSimple
 Chrome_CreateBrowser
 Chrome_CreateBrowserEx
 Chrome_CreateBrowserSync
 Chrome_CreateBrowserExWithReferer
 Chrome_CreateBrowserSyncWithReferer
-Chrome_CreateBrowserSyncWithJavaScriptReferer
 Chrome_Close
 
 Chrome_IsUIThread
@@ -52,18 +49,12 @@ Chrome_DisableCookieStorage
 Chrome_SetUserAgent
 Chrome_SetProxyServer
 Chrome_EnableSystemFlash
-
-Chrome_ReleaseFrame
+Chrome_LoadFlashPlugin
 
 Chrome_ShowDevTools
-
 Chrome_SetUserDataLongPtr
-
 Chrome_QueryBrowserInfomation
-
 Chrome_SetOSModalLoop
-
-Chrome_GetHtmlSource
 
 Chrome_FrameLoadUrl
 Chrome_FrameLoadString
@@ -71,11 +62,13 @@ Chrome_FrameIsMain
 Chrome_ReleaseFrame
 Chrome_GetNameFrame
 EcQBIGetMainFrame
+Chrome_FrameDoCopy
+Chrome_FrameDoCut
+Chrome_FrameDoDelete
+Chrome_FrameDoPaste
 
 EcPkHtmlRefreshContentJumpUrl
 EcPkJavaScriptSetValueByObjectId
 EcPkJavaScriptSetValueByObjectName
 EcPkJavaScriptSubmitByFormId
 EcPkJavaScriptSubmitByFormName
-
-EcDebugShowStringValue

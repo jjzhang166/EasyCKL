@@ -52,18 +52,16 @@ public:
 
 extern HANDLE hEvent = 0;
 void* v8contextcreate = 0;
+BOOL isSetUA = FALSE;
+CefString ua;
 
 extern BOOL isSetProxy = FALSE;
 extern CefString proxyserver("");
-
 extern BOOL flash = FALSE;
-
+extern CefString flash_path("");
 extern CefString localinf("");
 
 CefRefPtr<CefV8Handler> myV8handle;
-
-BOOL isSetUA = FALSE;
-CefString ua;
 
 void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length) {
 	const wchar_t* a = source.c_str();
@@ -78,8 +76,7 @@ void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length) 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-	)
+	LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
 	{
@@ -159,7 +156,6 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
-
 	CefMainArgs main_args(hInstance);
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 
@@ -212,21 +208,25 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	return -1;
 }
 
-CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage, wchar_t* local, wchar_t* cache_path) {
-	DWORD flag = 0;
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL old_ver, wchar_t* local, wchar_t* cache_path) {
+	DWORD _flag = 0;
 	int ret = 0;
+
+	/* ¼æÈÝ¾É°æ±¾µÄ Chrome_InitializeEx */
+	if (old_ver) {
+		_flag |= INITFLAG_CACHESTORAGE;
+		if (flag) _flag |= INITFLAG_NOSSL;
+	}
+	else _flag = flag &~INITFLAG_USECOMPATIBILITY;
 
 #ifdef _EPL_COMPATIBILITY
 	if (!IsDebuggerPresent()) {
 		ExitProcess(-1);
 	}
-	flag |= INITFLAG_USECOMPATIBILITY;
+	_flag |= INITFLAG_USECOMPATIBILITY;
 #endif // _EPL_COMPATIBILITY
 
-	if (nossl) flag |= INITFLAG_NOSSL;
-	if (cacheStorage) flag |= INITFLAG_CACHESTORAGE;
-
-	ret = EcKeInitialize(hInstance, flag, local, cache_path, 0);
+	ret = EcKeInitialize(hInstance, _flag, local, cache_path, 0);
 
 #ifdef _EPL_COMPATIBILITY
 	if (Chrome_IsUIThread()) {
@@ -266,51 +266,37 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL c
 }
 
 CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage) {
-	Chrome_InitializeEx(hInstance, nossl, cacheStorage, 0, 0);
+	DWORD flag = 0;
+	if (nossl) flag |= INITFLAG_NOSSL;
+	if (cacheStorage) flag |= INITFLAG_CACHESTORAGE;
+	Chrome_InitializeEx(hInstance, flag, 0, 0, 0);
 }
 
-typedef struct tagBrowserCallBacks {
-	SIZE_T size;
-	Chrome_CallBack_BrowserCreated created_callback;
-	Chrome_CallBack_ChUrl churl_callback;
-	Chrome_CallBack_NewWindow newwindow;
-	Chrome_CallBack_Download download;
-	Chrome_CallBack_ChState chstate;
-	Chrome_CallBack_JSDialog JSDialog;
-	Chrome_CallBack_Error error;
-	Chrome_CallBack_RButtonDown rbuttondown;
-	Chrome_CallBack_ChTitle chtitle;
-	Chrome_CallBack_CanLoadUrl canloadurl;
-}BrowserCallBacks, *PBrowserCallBacks;
-
-CKLEXPORT void* WINAPI EcKeCreateChildBrowser(DWORD flags, BrowserCallBacks* callbacks, wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect, void* rev) {
-	if (callbacks->size < sizeof(BrowserCallBacks))
-		return 0;
-
-	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, callbacks->created_callback, callbacks->churl_callback, callbacks->newwindow,
-		callbacks->download, callbacks->chstate, callbacks->JSDialog, callbacks->error, callbacks->rbuttondown, callbacks->chtitle, callbacks->canloadurl));
-
-	if (referer)
-		handler->referer_string = std::wstring(referer);
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
-}
-
-CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithJavaScriptReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
-	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
-	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
-	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
-
-	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return 0;
-
-	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
-		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
-
-	if (referer)
-		handler->referer_string = std::wstring(referer);
-
-	return handler->_CreateBrowserWithJSReferer(std::wstring(url), hParent, *rect);
-}
+//typedef struct tagBrowserCallBacks {
+//	SIZE_T size;
+//	Chrome_CallBack_BrowserCreated created_callback;
+//	Chrome_CallBack_ChUrl churl_callback;
+//	Chrome_CallBack_NewWindow newwindow;
+//	Chrome_CallBack_Download download;
+//	Chrome_CallBack_ChState chstate;
+//	Chrome_CallBack_JSDialog JSDialog;
+//	Chrome_CallBack_Error error;
+//	Chrome_CallBack_RButtonDown rbuttondown;
+//	Chrome_CallBack_ChTitle chtitle;
+//	Chrome_CallBack_CanLoadUrl canloadurl;
+//}BrowserCallBacks, *PBrowserCallBacks;
+//
+//CKLEXPORT void* WINAPI EcKeCreateChildBrowser(DWORD flags, BrowserCallBacks* callbacks, wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect, void* rev) {
+//	if (callbacks->size < sizeof(BrowserCallBacks))
+//		return 0;
+//
+//	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, callbacks->created_callback, callbacks->churl_callback, callbacks->newwindow,
+//		callbacks->download, callbacks->chstate, callbacks->JSDialog, callbacks->error, callbacks->rbuttondown, callbacks->chtitle, callbacks->canloadurl));
+//
+//	if (referer)
+//		handler->referer_string = std::wstring(referer);
+//	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
+//}
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
@@ -323,9 +309,11 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWO
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
 		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 
-	if (referer)
+	if (referer) {
 		handler->referer_string = std::wstring(referer);
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
+		return handler->_CreateBrowserWithReferer(std::wstring(url), hParent, *rect);
+	}
+	else return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -350,8 +338,12 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hPa
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
 
-	return Chrome_CreateBrowserSyncWithReferer(0, id, url, hParent, rect, created_callback, churl_callback,
-		newwindow, download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl, rev);
+	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return 0;
+
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
+
+	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -371,9 +363,9 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, wchar_t* url, HWND hParent,
 	Chrome_CreateBrowserEx(id, url, hParent, rect, created_callback, churl_callback, newwindow, download, chstate, JSDialog, error, rbuttondown, 0, 0, 0);
 }
 
-CKLEXPORT void WINAPI Chrome_CreateSimple(wchar_t* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback) {
-	Chrome_CreateBrowserEx(0, url, hParent, rect, created_callback, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-}
+//CKLEXPORT void WINAPI Chrome_CreateSimple(wchar_t* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback) {
+//	Chrome_CreateBrowserEx(0, url, hParent, rect, created_callback, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+//}
 
 CKLEXPORT void WINAPI Chrome_DoMessageLoopWork() {
 	CefDoMessageLoopWork();
@@ -396,6 +388,11 @@ CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop) {
 
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash() {
 	flash = TRUE;
+}
+
+CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version) {
+	flash = TRUE;
+	flash_path = ppapi_flash_path;
 }
 
 CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* _ua) {
@@ -566,51 +563,4 @@ CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(SimpleHandler* handler, LONG_PTR
 	if (handler) {
 		handler->userData = data;
 	}
-}
-
-#define EC_STRING CefString*
-
-CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LONG_PTR lpBuffer) {
-	if (handler) {
-		CefRefPtr<CefBrowser> browser = handler->g_browser;
-		if (browser && browser.get()) {
-
-			class Visitor : public CefStringVisitor {
-			public:
-				explicit Visitor(CefRefPtr<CefBrowser> browser, LONG_PTR Buffer) : browser_(browser), Buffer_(Buffer) {}
-				virtual void Visit(const CefString& string) OVERRIDE {
-					*((const EC_STRING*)Buffer_) = &string;
-					//MessageBox(0, string.c_str(), 0, 0);
-					PostQuitMessage(0);
-				}
-			private:
-				CefRefPtr<CefBrowser> browser_;
-				LONG_PTR Buffer_;
-				IMPLEMENT_REFCOUNTING(Visitor);
-			};
-
-
-			CefRefPtr<Visitor> a = new Visitor(browser, lpBuffer);
-			//CefString t_cefstring;
-			browser->GetMainFrame()->GetSource(a);
-
-			MSG msg;
-			while (GetMessage(&msg, NULL, 0, 0))
-			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-				CefDoMessageLoopWork();
-			}
-		}
-	}
-}
-
-CKLEXPORT void WINAPI EcDebugShowStringValue(EC_STRING string, BOOL ShowAsMsgBox) {
-	if (!string) return;
-	CefString str = *string;
-	if (!ShowAsMsgBox) {
-		OutputDebugStringW(str.c_str());
-		OutputDebugStringW(L"\r\n");
-	}
-	else MessageBoxW(0, str.c_str(), L"Debug", MB_ICONINFORMATION);
 }

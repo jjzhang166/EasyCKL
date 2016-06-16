@@ -2,6 +2,18 @@
 #define _EASYCKL
 #define CKLEXPORT extern "C" 
 
+#ifndef  __ECKL_SRC_DEV_
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	DWORD cbSzie;
+	int Flag;
+	void* pFrame;
+	const wchar_t* SelectionText;
+	const wchar_t* LinkUrl;
+	const wchar_t* SourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+#endif // __ECKL_SRC_DEV_
+
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
@@ -11,15 +23,21 @@ typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, int flag, const wchar_t*, const wchar_t* link);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFOMATION info);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
 CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);
-CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage, wchar_t* local);
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL old_ver, wchar_t* local, wchar_t* cache_path);
 
-CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithJavaScriptReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
@@ -41,20 +59,6 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, wchar_t* url, HWND hParent,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown);
-
-CKLEXPORT void WINAPI Chrome_CreateSimple(wchar_t* url, HWND hParent, RECT* rect, Chrome_CallBack_BrowserCreated created_callback);
-
-CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
-	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
-	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
-	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
-
-CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
-	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
-	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
-	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
-	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
 
 CKLEXPORT void WINAPI Chrome_MessageLoop();
 CKLEXPORT void WINAPI Chrome_Shutdown();
@@ -79,6 +83,7 @@ CKLEXPORT void WINAPI Chrome_DoMessageLoopWork();
 CKLEXPORT void WINAPI Chrome_LoadString(void* browser, const wchar_t* string, const wchar_t* url);
 CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(void* browser);
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash();
+CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version);
 CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
 
@@ -122,6 +127,10 @@ CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
 CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* browser, wchar_t* name);
 CKLEXPORT void* WINAPI EcQBIGetMainFrame(void* browser);
+CKLEXPORT void WINAPI Chrome_FrameDoCopy(void* frame);
+CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
+CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
+CKLEXPORT void WINAPI Chrome_FrameDoPaste(void* frame);
 #endif // __EC_FRAME_API_CPP_
 
 #ifdef  __ECKL_SRC_DEV_

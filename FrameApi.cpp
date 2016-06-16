@@ -50,3 +50,23 @@ CKLEXPORT CefFrame* WINAPI EcQBIGetMainFrame(SimpleHandler* handler) {
 	Chrome_QueryBrowserInfomation(handler, BrowserInfomationMainFrame, &main);
 	return main;
 }
+
+CKLEXPORT void WINAPI Chrome_FrameDoCopy(CefFrame* frame) {
+	if (frame)
+		frame->Copy();
+}
+
+CKLEXPORT void WINAPI Chrome_FrameDoCut(CefFrame* frame) {
+	if (frame)
+		frame->Cut();
+}
+
+CKLEXPORT void WINAPI Chrome_FrameDoDelete(CefFrame* frame) {
+	if (frame)
+		frame->Delete();
+}
+
+CKLEXPORT void WINAPI Chrome_FrameDoPaste(CefFrame* frame) {
+	if (frame)
+		frame->Paste();
+}
