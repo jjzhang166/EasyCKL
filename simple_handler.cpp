@@ -35,7 +35,12 @@ SimpleHandler::~SimpleHandler() {}
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (!g_browser && !need_create_with_referer) {
+	//MessageBoxA(0, "OnAfterCreated", "", 0);
+
+	//if (!g_browser && !need_create_with_referer) {
+	if (!g_browser) {
+		//MessageBoxA(0, "OnAfterCreated 2", "", 0);
+
 		g_browser = browser.get();
 		g_browser->AddRef();
 		if (created_callback) {

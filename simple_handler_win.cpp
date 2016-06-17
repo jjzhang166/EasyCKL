@@ -33,8 +33,11 @@ void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
 	CEF_REQUIRE_UI_THREAD();
 
 	if (g_browser && hParentWnd) {
-		PostQuitMessage(0);
-		hParentWnd = 0;
+		//PostQuitMessage(0);
+		//g_browser->GetHost()->CloseBrowser(true);
+		g_browser = browser.get();
+		g_browser->AddRef();
+		//hParentWnd = 0;
 	}
 }
 
@@ -66,9 +69,12 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
-	if (!g_browser) {
+	//MessageBoxA(0, "OnBeforePopup", "", 0);
+
+	if (need_create_with_referer) {
 		windowInfo.SetAsChild(hParentWnd, window_rect);
 		need_create_with_referer = FALSE;
+		//MessageBoxA(0, "OnBeforePopup 2", "", 0);
 		return false;
 	}
 
@@ -272,9 +278,10 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 	return this;
 }
 
-void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect)
-{
+
+void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect) {
 	CEF_REQUIRE_UI_THREAD();
+
 	CefWindowInfo window_info;
 
 	window_info.x = window_info.y = window_info.height = window_info.width = 0;
@@ -287,22 +294,54 @@ void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, R
 
 	CefBrowserSettings browser_settings;
 	browser_settings.javascript_close_windows = STATE_DISABLED;
-
 	CefRefPtr<CefBrowser> old_browser = CefBrowserHost::CreateBrowserSync(window_info, this, L"about:blank", browser_settings, NULL);
-
-	//browser->GetMainFrame()->ExecuteJavaScript(L"window.open('" + url + L"')", referer_string.c_str(), 0);
 	old_browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
-
-	//这是一个Modal循环，用于Sync
-	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-		CefDoMessageLoopWork();
-	}
-
-	old_browser->GetHost()->CloseBrowser(true);
-
+	
 	return this;
 }
+
+//void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect)
+//{
+//	CEF_REQUIRE_UI_THREAD();
+//
+//	//MessageBoxA(0, "3", "", 0);
+//	//CefWindowInfo window_info;
+//
+//	//window_info.x = window_info.y = window_info.height = window_info.width = 0;
+//	//window_info.style = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+//	//window_info.parent_window = hParent;
+//
+//	//hParentWnd = hParent;
+//	//window_rect = rect;
+//	//need_create_with_referer = TRUE;
+//
+//	CefWindowInfo window_info;
+//	window_info.SetAsChild(hParent, rect);
+//
+//	CefBrowserSettings browser_settings;
+//	browser_settings.javascript_close_windows = STATE_DISABLED;
+//
+//	//MessageBoxA(0, "start", "", 0);
+//
+//	CefRefPtr<CefBrowser> old_browser = CefBrowserHost::CreateBrowserSync(window_info, this, L"about:blank", browser_settings, NULL);
+//
+//	MessageBoxA(0, "old_browser", "", 0);
+//
+//	//browser->GetMainFrame()->ExecuteJavaScript(L"window.open('" + url + L"')", referer_string.c_str(), 0);
+//	//old_browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
+//
+//	MessageBoxA(0, "LoadString", "", 0);
+//
+//	//这是一个Modal循环，用于Sync
+//	/*MSG msg;
+//	while (GetMessage(&msg, NULL, 0, 0))
+//	{
+//		TranslateMessage(&msg);
+//		DispatchMessage(&msg);
+//		CefDoMessageLoopWork();
+//	}*/
+//
+//	//old_browser->GetHost()->CloseBrowser(true);
+//
+//	return this;
+//}

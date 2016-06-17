@@ -304,14 +304,28 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWO
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev) {
 
+/*
+		if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return 0;
+
+		CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
+			download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
+
+		if (referer)
+			handler->referer_string = std::wstring(referer);
+		return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);*/
+
+
 	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return 0;
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
 		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 
 	if (referer) {
+		//MessageBoxA(0, "0", "", 0);
 		handler->referer_string = std::wstring(referer);
+		//MessageBoxA(0, "1", "", 0);
 		return handler->_CreateBrowserWithReferer(std::wstring(url), hParent, *rect);
+		//return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
 	}
 	else return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
 }
