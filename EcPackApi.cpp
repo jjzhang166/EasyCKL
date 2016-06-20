@@ -16,12 +16,13 @@ CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(SimpleHandler* handler, wcha
 	Chrome_LoadString(handler, (wchar_t*)html.c_str(), referer);
 }
 
-CKLEXPORT void WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks) {
+CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks) {
 	void* browser = Chrome_CreateChildBrowser(BROWSERFLAG_SYNC, callbacks, id, NULL, L":", hParent, rect, 0);
 	if (browser) {
 		std::wstring html = L"<html><head><meta http-equiv=\"refresh\" content=\"0;url=" + std::wstring(url) + L"\"></head><body bgcolor=\"white\"></body></html>";
 		Chrome_LoadString(browser, (wchar_t*)html.c_str(), referer);
 	}
+	return browser;
 }
 
 CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(SimpleHandler* handler, wchar_t* id, wchar_t* value) {

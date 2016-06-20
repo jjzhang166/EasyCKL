@@ -128,7 +128,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		info.LinkUrl = LinkUrl.c_str();
 		info.SourceUrl = SourceUrl.c_str();
 
-		callbacks.rbuttondown_callback(g_id, &info);
+		callbacks.rbuttondown_callback(g_id, 0, &info, 0);
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE) {

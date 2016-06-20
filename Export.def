@@ -9,6 +9,7 @@ Chrome_DoMessageLoopWork
 Chrome_MessageLoop
 Chrome_Shutdown
 
+Chrome_CreateChildBrowser
 Chrome_CreateBrowser
 Chrome_CreateBrowserEx
 Chrome_CreateBrowserSync
@@ -68,6 +69,7 @@ Chrome_FrameDoDelete
 Chrome_FrameDoPaste
 
 EcPkHtmlRefreshContentJumpUrl
+EcPkCreateJSRefererBrowserSync
 EcPkJavaScriptSetValueByObjectId
 EcPkJavaScriptSetValueByObjectName
 EcPkJavaScriptSubmitByFormId

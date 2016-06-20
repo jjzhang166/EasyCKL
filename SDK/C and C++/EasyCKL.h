@@ -11,7 +11,7 @@ typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFOMATION info);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, DWORD uMsg, LPRBUTTON_DOWN_INFOMATION info, DWORD not_used);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
@@ -130,6 +130,7 @@ CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* handler, wchar_t* i
 CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* handler, wchar_t* name, wchar_t* value);
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* handler, wchar_t* id);
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* handler, wchar_t* name);
+CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
 #endif // __EC_PACK_API_CPP_
 
 #ifndef  __EC_CUSTOMIZE_JS_CPP_

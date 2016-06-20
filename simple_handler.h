@@ -22,7 +22,7 @@ typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
 typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
 typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFOMATION info);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, DWORD uMsg, LPRBUTTON_DOWN_INFOMATION info, DWORD not_used);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
