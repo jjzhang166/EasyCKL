@@ -17,8 +17,8 @@ void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 
 	if (!browser->IsSame(g_browser)) return;
 
-	if (chtitle_callback) {
-		chtitle_callback(g_id, title.c_str());
+	if (callbacks.chtitle_callback) {
+		callbacks.chtitle_callback(g_id, title.c_str());
 	}
 }
 
@@ -28,18 +28,10 @@ void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 //	CEF_REQUIRE_UI_THREAD();
 //}
 
-void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
-	CefRefPtr<CefFrame> frame) {
-	CEF_REQUIRE_UI_THREAD();
-
-	if (g_browser && hParentWnd) {
-		//PostQuitMessage(0);
-		//g_browser->GetHost()->CloseBrowser(true);
-		g_browser = browser.get();
-		g_browser->AddRef();
-		//hParentWnd = 0;
-	}
-}
+//void SimpleHandler::OnLoadStart(CefRefPtr<CefBrowser> browser,
+//	CefRefPtr<CefFrame> frame) {
+//	CEF_REQUIRE_UI_THREAD();
+//}
 
 void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool isLoading,
@@ -52,8 +44,8 @@ void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	if (isLoading) lasterror = 1;
 	else if (lasterror < 3) lasterror = 0;
 
-	if (chstate_callback) {
-		chstate_callback(g_id, isLoading, canGoBack, canGoForward);
+	if (callbacks.chstate_callback) {
+		callbacks.chstate_callback(g_id, isLoading, canGoBack, canGoForward);
 	}
 }
 
@@ -69,17 +61,8 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
-	//MessageBoxA(0, "OnBeforePopup", "", 0);
-
-	if (need_create_with_referer) {
-		windowInfo.SetAsChild(hParentWnd, window_rect);
-		need_create_with_referer = FALSE;
-		//MessageBoxA(0, "OnBeforePopup 2", "", 0);
-		return false;
-	}
-
-	if (newwindow_callback) {
-		if (newwindow_callback(g_id, target_url.ToWString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
+	if (callbacks.newwindow_callback) {
+		if (callbacks.newwindow_callback(g_id, target_url.ToWString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
 			return true;
 		}
 	}
@@ -94,8 +77,8 @@ void SimpleHandler::OnAddressChange(CefRefPtr<CefBrowser> browser,
 	CEF_REQUIRE_UI_THREAD();
 
 	if (!browser->IsSame(g_browser)) return;
-	if (churl_callback) {
-		churl_callback(g_id, url.ToWString().c_str());
+	if (callbacks.churl_callback) {
+		callbacks.churl_callback(g_id, url.ToWString().c_str());
 	}
 }
 
@@ -106,8 +89,8 @@ void SimpleHandler::OnBeforeDownload(
 	CefRefPtr<CefBeforeDownloadCallback> callback) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (download_callback) {
-		download_callback(g_id, download_item->GetURL().ToWString().c_str());
+	if (callbacks.download_callback) {
+		callbacks.download_callback(g_id, download_item->GetURL().ToWString().c_str());
 	}
 
 }
@@ -130,7 +113,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	if (!browser->IsSame(g_browser)) return;
 
 	auto flag = params->GetTypeFlags();
-	if (rbuttondown_callback) {
+	if (callbacks.rbuttondown_callback) {
 		model->Clear();
 		RBUTTON_DOWN_INFOMATION info;
 		info.cbSzie = sizeof(RBUTTON_DOWN_INFOMATION);
@@ -145,7 +128,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		info.LinkUrl = LinkUrl.c_str();
 		info.SourceUrl = SourceUrl.c_str();
 
-		rbuttondown_callback(g_id, &info);
+		callbacks.rbuttondown_callback(g_id, &info);
 		return;
 	}
 	if (flag & CM_TYPEFLAG_PAGE) {
@@ -190,8 +173,8 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	bool& suppress_message) {
 	CEF_REQUIRE_UI_THREAD();
 
-	if (JSDialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
-		JSDialog_callback(g_id, message_text.c_str());
+	if (callbacks.jsdialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
+		callbacks.jsdialog_callback(g_id, message_text.c_str());
 		_callback->Continue(1, "");
 		return true;
 	}
@@ -215,8 +198,8 @@ bool SimpleHandler::OnCertificateError(
 
 	lasterror = 4;
 
-	if (error_callback) {
-		error_callback(g_id, request_url.ToWString().c_str(), TRUE);
+	if (callbacks.error_callback) {
+		callbacks.error_callback(g_id, request_url.ToWString().c_str(), TRUE);
 	}
 	return false;
 }
@@ -239,21 +222,18 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 		map.insert(pair);
 	}
 
-	if (!hParentWnd && request->GetReferrerURL().empty() && !referer_string.empty())
+	if (request->GetReferrerURL().empty() && !referer_string.empty())
 	{
 		/*pair.first = L"Referer";
 		pair.second = CefString(referer_string);
 		map.insert(pair);*/
 		request->SetReferrer(CefString(referer_string), REFERRER_POLICY_ALWAYS);
-
-		//OutputDebugStringW(L"Referer\r\n");
-		//OutputDebugStringW(referer_string.c_str());
 		referer_string.clear();
 	}
 
 	request->SetHeaderMap(map);
-	if (canloadurl_callback)
-		if (!canloadurl_callback(g_id, request->GetURL().ToWString().c_str()))return RV_CANCEL;
+	if (callbacks.canloadurl_callback)
+		if (!callbacks.canloadurl_callback(g_id, request->GetURL().ToWString().c_str()))return RV_CANCEL;
 	return RV_CONTINUE;
 }
 
@@ -277,71 +257,3 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }
-
-
-void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect) {
-	CEF_REQUIRE_UI_THREAD();
-
-	CefWindowInfo window_info;
-
-	window_info.x = window_info.y = window_info.height = window_info.width = 0;
-	window_info.style = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-	window_info.parent_window = hParent;
-
-	hParentWnd = hParent;
-	window_rect = rect;
-	need_create_with_referer = TRUE;
-
-	CefBrowserSettings browser_settings;
-	browser_settings.javascript_close_windows = STATE_DISABLED;
-	CefRefPtr<CefBrowser> old_browser = CefBrowserHost::CreateBrowserSync(window_info, this, L"about:blank", browser_settings, NULL);
-	old_browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
-	
-	return this;
-}
-
-//void* SimpleHandler::_CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect)
-//{
-//	CEF_REQUIRE_UI_THREAD();
-//
-//	//MessageBoxA(0, "3", "", 0);
-//	//CefWindowInfo window_info;
-//
-//	//window_info.x = window_info.y = window_info.height = window_info.width = 0;
-//	//window_info.style = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-//	//window_info.parent_window = hParent;
-//
-//	//hParentWnd = hParent;
-//	//window_rect = rect;
-//	//need_create_with_referer = TRUE;
-//
-//	CefWindowInfo window_info;
-//	window_info.SetAsChild(hParent, rect);
-//
-//	CefBrowserSettings browser_settings;
-//	browser_settings.javascript_close_windows = STATE_DISABLED;
-//
-//	//MessageBoxA(0, "start", "", 0);
-//
-//	CefRefPtr<CefBrowser> old_browser = CefBrowserHost::CreateBrowserSync(window_info, this, L"about:blank", browser_settings, NULL);
-//
-//	MessageBoxA(0, "old_browser", "", 0);
-//
-//	//browser->GetMainFrame()->ExecuteJavaScript(L"window.open('" + url + L"')", referer_string.c_str(), 0);
-//	//old_browser->GetMainFrame()->LoadString(L"<html><head></head><body onload=\"javascript:window.open('" + url + L"');\"></body></html>", referer_string.c_str());
-//
-//	MessageBoxA(0, "LoadString", "", 0);
-//
-//	//这是一个Modal循环，用于Sync
-//	/*MSG msg;
-//	while (GetMessage(&msg, NULL, 0, 0))
-//	{
-//		TranslateMessage(&msg);
-//		DispatchMessage(&msg);
-//		CefDoMessageLoopWork();
-//	}*/
-//
-//	//old_browser->GetHost()->CloseBrowser(true);
-//
-//	return this;
-//}

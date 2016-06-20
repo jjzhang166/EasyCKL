@@ -6,7 +6,7 @@
 #include <list>
 
 typedef struct tagRBUTTON_DOWN_INFOMATION {
-	DWORD cbSzie;
+	SIZE_T cbSzie;
 	int Flag;
 	CefFrame* pFrame;
 	const wchar_t* SelectionText;
@@ -26,6 +26,20 @@ typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFO
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
+typedef struct tagBROWSER_CALLBACKS {
+	SIZE_T cbSzie;
+	Chrome_CallBack_BrowserCreated created_callback;
+	Chrome_CallBack_ChUrl churl_callback;
+	Chrome_CallBack_NewWindow newwindow_callback;
+	Chrome_CallBack_Download download_callback;
+	Chrome_CallBack_ChState chstate_callback;
+	Chrome_CallBack_JSDialog jsdialog_callback;
+	Chrome_CallBack_Error error_callback;
+	Chrome_CallBack_RButtonDown rbuttondown_callback;
+	Chrome_CallBack_ChTitle chtitle_callback;
+	Chrome_CallBack_CanLoadUrl canloadurl_callback;
+}BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,
 	public CefLifeSpanHandler,
@@ -36,22 +50,15 @@ class SimpleHandler : public CefClient,
 	public CefRequestHandler
 {
 public:
-	Chrome_CallBack_BrowserCreated created_callback = 0;
-	Chrome_CallBack_ChUrl churl_callback = 0;
-	Chrome_CallBack_NewWindow newwindow_callback = 0;
-	Chrome_CallBack_Download download_callback = 0;
-	Chrome_CallBack_ChState chstate_callback = 0;
-	Chrome_CallBack_JSDialog JSDialog_callback = 0;
-	Chrome_CallBack_Error error_callback = 0;
-	Chrome_CallBack_RButtonDown rbuttondown_callback = 0;
-	Chrome_CallBack_ChTitle chtitle_callback = 0;
-	Chrome_CallBack_CanLoadUrl canloadurl_callback = 0;
+	BROWSER_CALLBACKS callbacks;
+
 	DWORD g_id;
 	LONG_PTR userData;
 	DWORD lasterror;
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
+	SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks);
 	SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 		Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
 		Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
@@ -60,7 +67,6 @@ public:
 
 	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
 	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserWithReferer(std::wstring url, HWND hParent, RECT &rect);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {
@@ -122,8 +128,8 @@ public:
 		bool canGoBack,
 		bool canGoForward) OVERRIDE;
 
-	virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame)OVERRIDE;
+	//virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
+	//	CefRefPtr<CefFrame> frame)OVERRIDE;
 
 	//virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
 	//	CefRefPtr<CefFrame> frame,
@@ -193,11 +199,6 @@ private:
 	typedef std::list<CefRefPtr<CefBrowser> > BrowserList;
 	BrowserList browser_list_;
 	bool is_closing_;
-
-	/* Warning: The "hParentWnd" "window_rect" and "need_create_with_referer" is only used when you call _CreateBrowserWithJSReferer to create browser!!! */
-	RECT window_rect;
-	HWND hParentWnd;
-	BOOL need_create_with_referer;
 
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(SimpleHandler);

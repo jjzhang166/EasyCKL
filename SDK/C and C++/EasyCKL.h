@@ -2,18 +2,6 @@
 #define _EASYCKL
 #define CKLEXPORT extern "C" 
 
-#ifndef  __ECKL_SRC_DEV_
-typedef struct tagRBUTTON_DOWN_INFOMATION {
-	DWORD cbSzie;
-	int Flag;
-	void* pFrame;
-	const wchar_t* SelectionText;
-	const wchar_t* LinkUrl;
-	const wchar_t* SourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
-#endif // __ECKL_SRC_DEV_
-
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
@@ -27,9 +15,43 @@ typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, LPRBUTTON_DOWN_INFO
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
+#ifndef  __ECKL_SRC_DEV_
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	SIZE_T cbSzie;
+	int Flag;
+	void* pFrame;
+	const wchar_t* SelectionText;
+	const wchar_t* LinkUrl;
+	const wchar_t* SourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+typedef struct tagBROWSER_CALLBACKS {
+	SIZE_T cbSzie;
+	Chrome_CallBack_BrowserCreated created_callback;
+	Chrome_CallBack_ChUrl churl_callback;
+	Chrome_CallBack_NewWindow newwindow_callback;
+	Chrome_CallBack_Download download_callback;
+	Chrome_CallBack_ChState chstate_callback;
+	Chrome_CallBack_JSDialog jsdialog_callback;
+	Chrome_CallBack_Error error_callback;
+	Chrome_CallBack_RButtonDown rbuttondown_callback;
+	Chrome_CallBack_ChTitle chtitle_callback;
+	Chrome_CallBack_CanLoadUrl canloadurl_callback;
+}BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+#endif // __ECKL_SRC_DEV_
+
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
 CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);
 CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL old_ver, wchar_t* local, wchar_t* cache_path);
+
+#define BROWSERFLAG_SYNC 0x1
+#define BROWSERFLAG_HEADER_REFERER 0x2
+#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
+#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
+#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD flags, LPBROWSER_CALLBACKS callbacks, DWORD id, wchar_t* referer, wchar_t* url, HWND hParent, RECT* rect, void* notused);
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,

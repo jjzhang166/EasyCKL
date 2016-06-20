@@ -8,25 +8,31 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
+SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0) {
+	SIZE_T length = _callbacks->cbSzie;
+	if (length > sizeof(BROWSER_CALLBACKS))
+		length = sizeof(BROWSER_CALLBACKS);
+	memcpy(&callbacks, _callbacks, length);
+}
+
 SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, Chrome_CallBack_ChUrl churl,
 	Chrome_CallBack_NewWindow nwin, Chrome_CallBack_Download down, Chrome_CallBack_ChState chstate,
-	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_JSDialog jsdialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl)
 
-	: is_closing_(false), g_id(id), userData(0), lasterror(0), window_rect({ 0 }),
-	need_create_with_referer(FALSE), hParentWnd(0) {
+	: is_closing_(false), g_id(id), userData(0), lasterror(0) {
 
 	//…Ë÷√ CallBack ∫Ø ˝÷∏’Î
-	created_callback = callback;
-	churl_callback = churl;
-	newwindow_callback = nwin;
-	download_callback = down;
-	chstate_callback = chstate;
-	JSDialog_callback = JSDialog;
-	error_callback = error;
-	rbuttondown_callback = rbuttondown;
-	chtitle_callback = chtitle;
-	canloadurl_callback = canloadurl;
+	callbacks.created_callback = callback;
+	callbacks.churl_callback = churl;
+	callbacks.newwindow_callback = nwin;
+	callbacks.download_callback = down;
+	callbacks.chstate_callback = chstate;
+	callbacks.jsdialog_callback = jsdialog;
+	callbacks.error_callback = error;
+	callbacks.rbuttondown_callback = rbuttondown;
+	callbacks.chtitle_callback = chtitle;
+	callbacks.canloadurl_callback = canloadurl;
 	//referer_string = std::wstring(L"");
 }
 
@@ -35,16 +41,11 @@ SimpleHandler::~SimpleHandler() {}
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 
-	//MessageBoxA(0, "OnAfterCreated", "", 0);
-
-	//if (!g_browser && !need_create_with_referer) {
 	if (!g_browser) {
-		//MessageBoxA(0, "OnAfterCreated 2", "", 0);
-
 		g_browser = browser.get();
 		g_browser->AddRef();
-		if (created_callback) {
-			created_callback(g_id, this);
+		if (callbacks.created_callback) {
+			callbacks.created_callback(g_id, this);
 		}
 	}
 
@@ -103,8 +104,8 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 
 	lasterror = 3;
 
-	if (error_callback) {
-		error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);
+	if (callbacks.error_callback) {
+		callbacks.error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);
 		return;
 	}
 
