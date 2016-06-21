@@ -2,6 +2,18 @@
 #define _EASYCKL
 #define CKLEXPORT extern "C" 
 
+#ifndef  __ECKL_SRC_DEV_
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	SIZE_T cbSzie;
+	int Flag;
+	void* pFrame;
+	const wchar_t* SelectionText;
+	const wchar_t* LinkUrl;
+	const wchar_t* SourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+#endif // __ECKL_SRC_DEV_
+
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
@@ -16,16 +28,6 @@ typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
 
 #ifndef  __ECKL_SRC_DEV_
-typedef struct tagRBUTTON_DOWN_INFOMATION {
-	SIZE_T cbSzie;
-	int Flag;
-	void* pFrame;
-	const wchar_t* SelectionText;
-	const wchar_t* LinkUrl;
-	const wchar_t* SourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
-
 typedef struct tagBROWSER_CALLBACKS {
 	SIZE_T cbSzie;
 	Chrome_CallBack_BrowserCreated created_callback;
