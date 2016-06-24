@@ -132,36 +132,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="$(ProjectDir)..\\libcef_dll\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32/libcef_dll/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-C:\Users\abc\Desktop\cmake\bin\cmake.exe -HC:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32 -BC:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32 --check-stamp-file $(ProjectDir)..\\libcef_dll\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32/libcef_dll/CMakeLists.txt;$(ProjectDir)..\\libcef_dll\CMakeLists.txt;$(ProjectDir)..\\libcef_dll\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\\libcef_dll\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32/libcef_dll/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-C:\Users\abc\Desktop\cmake\bin\cmake.exe -HC:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32 -BC:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32 --check-stamp-file $(ProjectDir)..\\libcef_dll\CMakeFiles\generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32/libcef_dll/CMakeLists.txt;$(ProjectDir)..\\libcef_dll\CMakeLists.txt;$(ProjectDir)..\\libcef_dll\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\\libcef_dll\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="$(ProjectDir)..\\libcef_dll\transfer_util.h" />
     <ClInclude Include="$(ProjectDir)..\\libcef_dll\wrapper_types.h" />
     <ClInclude Include="$(ProjectDir)..\\libcef_dll\cpptoc\app_cpptoc.h" />

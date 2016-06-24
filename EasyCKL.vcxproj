@@ -43,14 +43,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
     <IncludePath>$(SolutionDir)cef;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)out$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)lib\;$(SolutionDir)out\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)out\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)out\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
     <IncludePath>$(SolutionDir)cef;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(SolutionDir)out$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)lib\;$(SolutionDir)out\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)out\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)out\$(Configuration)\</OutDir>
   </PropertyGroup>

@@ -118,6 +118,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		RBUTTON_DOWN_INFOMATION info;
 		info.cbSzie = sizeof(RBUTTON_DOWN_INFOMATION);
 		info.Flag = flag;
+		info.pFrame = frame;
 		info.Retention = 0;
 
 		auto SelectionText = params->GetSelectionText();
