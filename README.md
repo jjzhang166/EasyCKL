@@ -12,9 +12,9 @@
 
 EasyCKL 致力于封装复杂的 CEF Class，呈现给用户 Win32API 格式的C语言风格接口，便于给程序嵌入 Chromium 内核的web控件<br>
 <br>
-EasyCKL 在cefsimple 的基础上进行开发，是一个Visual Studio 2015工程。CEF的版本（v5.6 Tag采用cef_binary_3.2062.1930_windows32，目前采用cef_binary_3.2171.2069_windows32）理论上兼容更新的版本。<br>
+EasyCKL 在cefsimple 的基础上进行开发，是一个Visual Studio 2015工程。CEF的版本（v5.6 Tag采用cef_binary_3.2062.1930_windows32，目前采用cef_binary_3.2623.1393_windows32）理论上兼容更新的版本。<br>
 <br>
-自带了编译此库所需的CEF3 Lib (libcef.lib)，libcef_dll_wrapper.lib是用Makefile编译需要用到的，VS IDE编译自带libcef_dll_wrapper，CEF3工作需要的DLL，可以下载CEF3源码编译得到。<br>
+自带了编译此库所需的CEF3 Lib (libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程），CEF3工作需要的DLL，可以自行前往相应发布站点获取或通过源代码编译。<br>
 <br>
 
 ###如何编译？
@@ -26,7 +26,7 @@ EasyCKL 在cefsimple 的基础上进行开发，是一个Visual Studio 2015工�
 用Visual Studio直接编译就不用说了吧，用VS2015打开sln工程文件，选择版本然后生成解决方案。（如果有必要，可以手动迁移到低版本VS）<br>
 ![4](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/4.png)<br>
 
-用Makefile脚本编译的方法如下：（只能用VS2015）<br>
+用Makefile脚本编译的方法如下：（只能用VS2015）（暂时仅用于低版本）<br>
 1.打开VS2015 x86命令提示符：<br>
 ![1](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/1.png)<br>
 2.切换到源码所在目录：<br>
