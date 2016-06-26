@@ -369,6 +369,8 @@ CKLEXPORT void WINAPI Chrome_Shutdown() {
 #ifdef _EPL_COMPATIBILITY
 	Shell_NotifyIcon(NIM_DELETE, &nid);
 #endif
+	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
+
 	CefShutdown();
 }
 
@@ -492,8 +494,13 @@ CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath,
 	}
 	else {
 		CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager(NULL);
+		cookiemgr->FlushStore(NULL);
 		cookiemgr->SetStoragePath("", false, NULL);
 	}
+}
+
+CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore(BOOL enable, wchar_t* CookiePath, bool persist_session_cookies) {
+	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
 }
 
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {
@@ -509,6 +516,7 @@ CKLEXPORT void WINAPI Chrome_DisableCookieStorage() {
 }
 
 CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
+	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {

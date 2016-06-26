@@ -527,11 +527,6 @@
     <ClCompile Include="$(ProjectDir)..\\libcef_dll\wrapper\libcef_dll_wrapper.cc" />
     <ClCompile Include="$(ProjectDir)..\\libcef_dll\wrapper\libcef_dll_wrapper2.cc" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="C:/Users/abc/Desktop/cef_binary_3.2623.1393.g9e0fda8_windows32/ZERO_CHECK.vcxproj">
-      <Project>06A790AF-2836-3C75-A17B-FD2685046A46</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

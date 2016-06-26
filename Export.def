@@ -46,6 +46,7 @@ Chrome_SetV8ReturnValueString
 Chrome_EnableCookieStorage
 Chrome_EnableCookieStorageEx
 Chrome_DisableCookieStorage
+Chrome_CookieManagerFlushStore
 
 Chrome_SetUserAgent
 Chrome_SetProxyServer
