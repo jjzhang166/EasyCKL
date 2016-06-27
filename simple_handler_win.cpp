@@ -41,8 +41,8 @@ void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 
 	if (!browser->IsSame(g_browser)) return;
 
-	if (isLoading) lasterror = 1;
-	else if (lasterror < 3) lasterror = 0;
+	if (isLoading) lasterror = BROWSER_LASTERROR_LOADING;
+	else lasterror &= ~BROWSER_LASTERROR_LOADING;
 
 	if (callbacks.chstate_callback) {
 		callbacks.chstate_callback(g_id, isLoading, canGoBack, canGoForward);
@@ -100,7 +100,6 @@ void SimpleHandler::OnDownloadUpdated(
 	CefRefPtr<CefDownloadItem> download_item,
 	CefRefPtr<CefDownloadItemCallback> callback) {
 	CEF_REQUIRE_UI_THREAD();
-
 	callback->Cancel();
 }
 
@@ -197,7 +196,7 @@ bool SimpleHandler::OnCertificateError(
 
 	if (!browser->IsSame(g_browser)) return false;
 
-	lasterror = 4;
+	lasterror |= BROWSER_LASTERROR_CERTERROR;
 
 	if (callbacks.error_callback) {
 		callbacks.error_callback(g_id, request_url.ToWString().c_str(), TRUE);

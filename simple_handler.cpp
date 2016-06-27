@@ -102,7 +102,8 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 
 	if (!browser->IsSame(g_browser)) return;
 
-	lasterror = 3;
+	if(frame->IsMain()) lasterror |= BROWSER_LASTERROR_LOADERROR;
+	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {
 		callbacks.error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);

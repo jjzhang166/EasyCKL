@@ -15,6 +15,11 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
 
+#define BROWSER_LASTERROR_LOADING 0x1
+#define BROWSER_LASTERROR_LOADERROR 0x2
+#define BROWSER_LASTERROR_LOADRESERROR 0x4
+#define BROWSER_LASTERROR_CERTERROR 0x8
+
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
 typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const wchar_t* url, BOOL isCertError);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const wchar_t* url);

@@ -41,6 +41,11 @@ typedef struct tagBROWSER_CALLBACKS {
 	Chrome_CallBack_ChTitle chtitle_callback;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback;
 }BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+
+#define BROWSER_LASTERROR_LOADING 0x1
+#define BROWSER_LASTERROR_LOADERROR 0x2
+#define BROWSER_LASTERROR_LOADRESERROR 0x4
+#define BROWSER_LASTERROR_CERTERROR 0x8
 #endif // __ECKL_SRC_DEV_
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
@@ -98,6 +103,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(void* browser, const wchar_t* js);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
+CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore();
 CKLEXPORT void WINAPI Chrome_Close(void* browser);
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler);
 CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop);

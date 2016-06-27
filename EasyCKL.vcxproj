@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SDK\C and C++\EasyCKL.h" />
     <ClInclude Include="simple_app.h" />
     <ClInclude Include="simple_handler.h" />
   </ItemGroup>
