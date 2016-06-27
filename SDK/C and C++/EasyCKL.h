@@ -12,6 +12,22 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	const wchar_t* SourceUrl;
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+// No node is selected.
+#define MENU_TYPEFLAG_NONE 0
+// The top page is selected.
+#define MENU_TYPEFLAG_PAGE 1 << 0
+// A subframe page is selected.
+#define MENU_TYPEFLAG_FRAME 1 << 1
+// A link is selected.
+#define MENU_TYPEFLAG_LINK 1 << 2
+// A media node is selected.
+#define MENU_TYPEFLAG_MEDIA 1 << 3
+// There is a textual or mixed selection that is selected.
+#define MENU_TYPEFLAG_SELECTION 1 << 4
+// An editable element is selected.
+#define MENU_TYPEFLAG_EDITABLE 1 << 5
+
 #endif // __ECKL_SRC_DEV_
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
