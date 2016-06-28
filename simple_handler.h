@@ -5,31 +5,50 @@
 
 #include <list>
 
-typedef struct tagRBUTTON_DOWN_INFOMATION {
-	SIZE_T cbSzie;
-	int Flag;
-	CefFrame* pFrame;
-	const wchar_t* SelectionText;
-	const wchar_t* LinkUrl;
-	const wchar_t* SourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+#define BROWSERFLAG_SYNC 0x1
+#define BROWSERFLAG_HEADER_REFERER 0x2
+#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
+#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
+#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
 
 #define BROWSER_LASTERROR_LOADING 0x1
 #define BROWSER_LASTERROR_LOADERROR 0x2
 #define BROWSER_LASTERROR_LOADRESERROR 0x4
 #define BROWSER_LASTERROR_CERTERROR 0x8
 
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const wchar_t* url, BOOL isCertError);
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const wchar_t* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
-typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, DWORD uMsg, LPRBUTTON_DOWN_INFOMATION info, DWORD not_used);
-typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
-typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
+/* 回调函数中使用的结构 */
+typedef struct tagNEW_WINDOW_INFOMATION {
+	SIZE_T cbSzie;
+	CefFrame* lpFrame;
+	const wchar_t* szNewWindowUrl;
+	const wchar_t* szCurrentWindowUrl;
+	const wchar_t* szTargetFrameName;
+	BOOL bUserGesture;
+	DWORD dwOpenDisposition;
+}NEW_WINDOW_INFOMATION, *LPNEW_WINDOW_INFOMATION;
+
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	SIZE_T cbSzie;
+	DWORD dwFlag;
+	CefFrame* lpFrame;
+	const wchar_t* szSelectionText;
+	const wchar_t* szLinkUrl;
+	const wchar_t* szSourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+/* 回调函数的定义 */
+
+typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
+typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
+typedef BOOL(WINAPI * Chrome_CallBack_ChState)(LONG_PTR id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
+typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
+typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
+typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
 
 typedef struct tagBROWSER_CALLBACKS {
 	SIZE_T cbSzie;
@@ -57,9 +76,10 @@ class SimpleHandler : public CefClient,
 public:
 	BROWSER_CALLBACKS callbacks;
 
-	DWORD g_id;
+	LONG_PTR g_id;
 	LONG_PTR userData;
 	DWORD lasterror;
+	DWORD flags;
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
@@ -97,18 +117,13 @@ public:
 	}
 
 	// CefDisplayHandler methods:
-	virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
-		const CefString& title) OVERRIDE;
-
-	virtual void OnAddressChange(CefRefPtr<CefBrowser> browser,
-		CefRefPtr<CefFrame> frame,
-		const CefString& url)OVERRIDE;
+	virtual void OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) OVERRIDE;
+	virtual void OnAddressChange(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& url) OVERRIDE;
 
 	// CefLifeSpanHandler methods:
 	virtual void OnAfterCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
 	virtual bool DoClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
 	virtual void OnBeforeClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
-
 	virtual bool OnBeforePopup(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		const CefString& target_url,
@@ -127,7 +142,6 @@ public:
 		ErrorCode errorCode,
 		const CefString& errorText,
 		const CefString& failedUrl) OVERRIDE;
-
 	virtual void OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 		bool isLoading,
 		bool canGoBack,
@@ -135,31 +149,26 @@ public:
 
 	//virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
 	//	CefRefPtr<CefFrame> frame)OVERRIDE;
-
 	//virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
 	//	CefRefPtr<CefFrame> frame,
 	//	int httpStatusCode) OVERRIDE;
 
 	//CefDownloadHandler methods:
-
 	virtual void OnBeforeDownload(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
 		const CefString& suggested_name,
 		CefRefPtr<CefBeforeDownloadCallback> callback) OVERRIDE;
-
 	virtual void OnDownloadUpdated(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefDownloadItem> download_item,
 		CefRefPtr<CefDownloadItemCallback> callback) OVERRIDE;
 
 	//CefContextMenuHandler methods:
-
 	virtual void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefContextMenuParams> params,
 		CefRefPtr<CefMenuModel> model) OVERRIDE;
-
 	virtual bool OnContextMenuCommand(CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
 		CefRefPtr<CefContextMenuParams> params,
@@ -169,7 +178,6 @@ public:
 	}
 
 	//CefJSDialogHandler methods:
-
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,
 		const CefString& origin_url,
 		const CefString& accept_lang,
@@ -180,14 +188,12 @@ public:
 		bool& suppress_message) OVERRIDE;
 
 	//CefRequestHandler methods:
-
 	virtual bool OnCertificateError(
 		CefRefPtr<CefBrowser> browser,
 		cef_errorcode_t cert_error,
 		const CefString& request_url,
 		CefRefPtr<CefSSLInfo> ssl_info,
 		CefRefPtr<CefRequestCallback> callback) OVERRIDE;
-
 	virtual ReturnValue OnBeforeResourceLoad(
 		CefRefPtr<CefBrowser> browser,
 		CefRefPtr<CefFrame> frame,
@@ -196,7 +202,6 @@ public:
 
 	// Request that all existing browser windows close.
 	void CloseAllBrowsers(bool force_close);
-
 	bool IsClosing() const { return is_closing_; }
 
 private:

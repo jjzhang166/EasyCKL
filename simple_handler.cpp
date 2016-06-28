@@ -8,7 +8,7 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
 
-SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0) {
+SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
 	SIZE_T length = _callbacks->cbSzie;
 	if (length > sizeof(BROWSER_CALLBACKS))
 		length = sizeof(BROWSER_CALLBACKS);
@@ -20,7 +20,7 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	Chrome_CallBack_JSDialog jsdialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl)
 
-	: is_closing_(false), g_id(id), userData(0), lasterror(0) {
+	: callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
 
 	//…Ë÷√ CallBack ∫Ø ˝÷∏’Î
 	callbacks.created_callback = callback;
@@ -55,6 +55,8 @@ void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
 
 bool SimpleHandler::DoClose(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
+
+	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
 
 	// Closing the main window requires special handling. See the DoClose()
 	// documentation in the CEF header for a detailed destription of this
@@ -102,7 +104,7 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 
 	if (!browser->IsSame(g_browser)) return;
 
-	if(frame->IsMain()) lasterror |= BROWSER_LASTERROR_LOADERROR;
+	if (frame->IsMain()) lasterror |= BROWSER_LASTERROR_LOADERROR;
 	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {

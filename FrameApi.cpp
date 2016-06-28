@@ -70,3 +70,8 @@ CKLEXPORT void WINAPI Chrome_FrameDoPaste(CefFrame* frame) {
 	if (frame)
 		frame->Paste();
 }
+
+CKLEXPORT void WINAPI Chrome_FrameDoSelectAll(CefFrame* frame) {
+	if (frame)
+		frame->SelectAll();
+}
