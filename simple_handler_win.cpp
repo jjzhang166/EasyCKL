@@ -61,15 +61,18 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 
-	NEW_WINDOW_INFOMATION info;
-	info.cbSzie = sizeof(NEW_WINDOW_INFOMATION);
-	info.lpFrame = frame;
-	info.szNewWindowUrl = target_url.ToWString().c_str();
-	info.szCurrentWindowUrl = g_browser->GetMainFrame()->GetURL().c_str();
-	info.bUserGesture = user_gesture;
-	info.dwOpenDisposition = target_disposition;
-
 	if (callbacks.newwindow_callback) {
+		CefString CurrentWindowUrl = browser->GetMainFrame()->GetURL();
+
+		NEW_WINDOW_INFOMATION info;
+		info.cbSzie = sizeof(NEW_WINDOW_INFOMATION);
+		info.lpFrame = frame;
+		info.szNewWindowUrl = target_url.c_str();
+		info.szCurrentWindowUrl = CurrentWindowUrl.c_str();
+		info.szTargetFrameName = target_frame_name.c_str();
+		info.bUserGesture = user_gesture;
+		info.dwOpenDisposition = target_disposition;
+
 		if (callbacks.newwindow_callback(g_id, 0, &info, 0)) {
 			return true;
 		}

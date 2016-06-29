@@ -74,8 +74,10 @@ Chrome_FrameDoSelectAll
 
 Chrome_RegisterSchemeInitialize
 Chrome_RegisterScheme
+EcCSGetRequestUrlLength
 EcCSGetRequestUrl
-EcCSGetRequestHeader
+EcCSGetRequestHeaderStringLength
+EcCSGetRequestHeaderString
 EcCSGetRequestPostDataSize
 EcCSGetRequestPostData
 EcCSSetData

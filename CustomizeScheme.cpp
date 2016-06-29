@@ -14,16 +14,19 @@
 #undef CKLEXPORT
 #define CKLEXPORT extern "C" __declspec(dllexport)
 
-extern class EcSchemeHandler;
-extern class EcSchemeHandlerFactory;
-extern SchemeProcessRequest _callback;
-
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
 typedef std::vector<unsigned char> BytesVector;
 void inline __ECKL_InsertBytesVector(BytesVector& vector_, unsigned char* rawBuffer_, size_t size_) {
 	vector_.insert(vector_.end(), rawBuffer_, rawBuffer_ + size_);
 }
+
+class EcSchemeHandler;
+class EcSchemeHandlerFactory;
+
+CefRefPtr<EcSchemeHandler> SchemeHandler;
+CefRefPtr<EcSchemeHandlerFactory> HandlerFactory;
+SchemeProcessRequest _callback;
 
 class EcSchemeHandler : public CefResourceHandler {
 public:
@@ -73,18 +76,14 @@ public:
 		CefString& redirectUrl) OVERRIDE {
 		CEF_REQUIRE_IO_THREAD();
 
-		DCHECK(!data_.empty());
-
-		response->SetMimeType(mime_type_);
-		response->SetStatus(status_);
-
-		// Set the resulting response length
-		response_length = data_.size();
+		if (!data_.empty()) {
+			response->SetMimeType(mime_type_);
+			response->SetStatus(status_);
+			response_length = data_.size();
+		}
 	}
 
-	virtual void Cancel() OVERRIDE {
-		CEF_REQUIRE_IO_THREAD();
-	}
+	virtual void Cancel() OVERRIDE { CEF_REQUIRE_IO_THREAD(); }
 
 	virtual bool ReadResponse(void* data_out,
 		int bytes_to_read,
@@ -99,7 +98,6 @@ public:
 		if (offset_ < data_.size()) {
 			memcpy(data_out, &data_[offset_], transfer_size);
 			offset_ += transfer_size;
-
 			bytes_read = transfer_size;
 			has_data = true;
 		}
@@ -129,11 +127,6 @@ public:
 	IMPLEMENT_REFCOUNTING(EcSchemeHandlerFactory);
 };
 
-
-CefRefPtr<EcSchemeHandler> SchemeHandler;
-CefRefPtr<EcSchemeHandlerFactory> HandlerFactory;
-SchemeProcessRequest _callback;
-
 CKLEXPORT void WINAPI Chrome_RegisterSchemeInitialize(SchemeProcessRequest callback) {
 	SchemeHandler = new EcSchemeHandler();
 	HandlerFactory = new EcSchemeHandlerFactory();
@@ -144,15 +137,36 @@ CKLEXPORT void WINAPI Chrome_RegisterScheme(const wchar_t* szSchemeName, const w
 	CefRegisterSchemeHandlerFactory(szSchemeName, szDomainName, HandlerFactory);
 }
 
-CKLEXPORT void WINAPI EcCSGetRequestUrl(CefRequest* lpRequest, const wchar_t** lpszUrl) {
-	*lpszUrl = lpRequest->GetURL().c_str();
+CKLEXPORT SIZE_T WINAPI EcCSGetRequestUrlLength(CefRequest* lpRequest) {
+	if (lpRequest) {
+		return lpRequest->GetURL().length();
+	}
+	return 0;
 }
 
-CKLEXPORT void WINAPI EcCSGetRequestHeader(CefRequest* lpRequest, wchar_t* szHeaderName, const wchar_t** lpszContent) {
-	CefRequest::HeaderMap HeaderMap;
-	lpRequest->GetHeaderMap(HeaderMap);
-	CefRequest::HeaderMap::iterator iterator = HeaderMap.find(szHeaderName);
-	*lpszContent = (*iterator).second.c_str();
+CKLEXPORT void WINAPI EcCSGetRequestUrl(CefRequest* lpRequest, wchar_t* lpUrlBuffer, ULONG ulLength) {
+	if (lpUrlBuffer && lpRequest) {
+		_ECKL_CopyWString(lpRequest->GetURL(), lpUrlBuffer, ulLength * sizeof(wchar_t));
+	}
+}
+
+CKLEXPORT SIZE_T WINAPI EcCSGetRequestHeaderStringLength(CefRequest* lpRequest, wchar_t* szHeaderName) {
+	if (lpRequest) {
+		CefRequest::HeaderMap HeaderMap;
+		lpRequest->GetHeaderMap(HeaderMap);
+		CefRequest::HeaderMap::iterator iterator = HeaderMap.find(szHeaderName);
+		return (*iterator).second.length();
+	}
+	return 0;
+}
+
+CKLEXPORT void WINAPI EcCSGetRequestHeaderString(CefRequest* lpRequest, wchar_t* szHeaderName, wchar_t* lpBuffer, ULONG ulLength) {
+	if (lpRequest) {
+		CefRequest::HeaderMap HeaderMap;
+		lpRequest->GetHeaderMap(HeaderMap);
+		CefRequest::HeaderMap::iterator iterator = HeaderMap.find(szHeaderName);
+		_ECKL_CopyWString((*iterator).second, lpBuffer, ulLength * sizeof(wchar_t));
+	}
 }
 
 CKLEXPORT SIZE_T WINAPI EcCSGetRequestPostDataSize(CefRequest* lpRequest) {
@@ -208,15 +222,15 @@ CKLEXPORT void WINAPI EcCSGetRequestPostData(CefRequest* lpRequest, BYTE* lpData
 	}
 }
 
-CKLEXPORT void WINAPI EcCSSetData(CefRequest* lpRequest, BytesVector* lpData, unsigned char* lpDataBuffer, SIZE_T nSize) {
+CKLEXPORT void WINAPI EcCSSetData(BytesVector* lpData, unsigned char* lpDataBuffer, SIZE_T nSize) {
 	(*lpData).clear();
 	__ECKL_InsertBytesVector(*lpData, lpDataBuffer, nSize);
 }
 
-CKLEXPORT void WINAPI EcCSSetMimeType(CefRequest* lpRequest, std::wstring* lpMimeType, const wchar_t* szMimeType) {
+CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* szMimeType) {
 	(*lpMimeType) = szMimeType;
 }
 
-CKLEXPORT void WINAPI EcCSSetStatus(CefRequest* lpRequest, int* lpStatus, int iStatus) {
+CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus) {
 	(*lpStatus) = iStatus;
 }
