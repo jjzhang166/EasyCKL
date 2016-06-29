@@ -41,6 +41,9 @@
     <ClCompile Include="FrameApi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CustomizeScheme.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

@@ -93,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="CKLMain.cpp" />
     <ClCompile Include="CustomizeJS.cpp" />
+    <ClCompile Include="CustomizeScheme.cpp" />
     <ClCompile Include="EcPackApi.cpp" />
     <ClCompile Include="FrameApi.cpp" />
     <ClCompile Include="simple_app.cpp" />

@@ -1,6 +1,7 @@
 #include <Windows.h>
 
-#include "include/cef_sandbox_win.h"
+#include "include/cef_client.h"
+#include "include/wrapper/cef_helpers.h"
 
 #include "simple_app.h"
 #include "simple_handler.h"
@@ -14,7 +15,7 @@
 #pragma comment(lib, "libcef_dll_wrapper.lib")
 #pragma comment(lib, "user32.lib")
 
-#define _EPL_COMPATIBILITY
+//#define _EPL_COMPATIBILITY
 
 #ifdef _EPL_COMPATIBILITY
 #include<Shellapi.h>
@@ -150,8 +151,8 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, Brow
 #define INITFLAG_SINGLEPROCESS 0x4
 #define INITFLAG_USECOMPATIBILITY 0x8
 #define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
+#define INITFLAG_EXTENDARG 0x10
 
-//Un Document
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, void* recvd) {
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
@@ -272,15 +273,10 @@ CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL ca
 	Chrome_InitializeEx(hInstance, flag, 0, 0, 0);
 }
 
-#define BROWSERFLAG_SYNC 0x1
-#define BROWSERFLAG_HEADER_REFERER 0x2
-#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
-#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
-#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
-
 CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD flags, LPBROWSER_CALLBACKS callbacks, DWORD id, wchar_t* referer, wchar_t* url, HWND hParent, RECT* rect, void* notused) {
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, callbacks));
+	handler->flags = flags;
 
 	if ((flags & BROWSERFLAG_HEADER_REFERER) && referer)
 		handler->referer_string = std::wstring(referer);
@@ -557,8 +553,32 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
 	}
 }
 
+CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(SimpleHandler* handler, HWND hParent, RECT* rect, HWND* devtools_hwnd) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			CefWindowInfo dt_wininfo;
+			dt_wininfo.SetAsChild(hParent, *rect);
+			CefBrowserSettings browser_settings;
+			CefPoint point;
+			browser->GetHost()->ShowDevTools(dt_wininfo, handler, browser_settings, point);
+		}
+	}
+}
+
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(SimpleHandler* handler, LONG_PTR data) {
 	if (handler) {
 		handler->userData = data;
+	}
+}
+
+CKLEXPORT void WINAPI Chrome_PrintToPDF(SimpleHandler* handler, wchar_t* pdf_path) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			CefPdfPrintSettings settings;
+			settings.backgrounds_enabled = TRUE;
+			browser->GetHost()->PrintToPDF(pdf_path, settings, 0);
+		}
 	}
 }

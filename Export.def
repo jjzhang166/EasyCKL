@@ -54,9 +54,11 @@ Chrome_EnableSystemFlash
 Chrome_LoadFlashPlugin
 
 Chrome_ShowDevTools
+Chrome_ShowDevToolsChild
 Chrome_SetUserDataLongPtr
 Chrome_QueryBrowserInfomation
 Chrome_SetOSModalLoop
+Chrome_PrintToPDF
 
 Chrome_FrameLoadUrl
 Chrome_FrameLoadString
@@ -68,6 +70,19 @@ Chrome_FrameDoCopy
 Chrome_FrameDoCut
 Chrome_FrameDoDelete
 Chrome_FrameDoPaste
+Chrome_FrameDoSelectAll
+
+Chrome_RegisterSchemeInitialize
+Chrome_RegisterScheme
+EcCSGetRequestUrlLength
+EcCSGetRequestUrl
+EcCSGetRequestHeaderStringLength
+EcCSGetRequestHeaderString
+EcCSGetRequestPostDataSize
+EcCSGetRequestPostData
+EcCSSetData
+EcCSSetMimeType
+EcCSSetStatus
 
 EcPkHtmlRefreshContentJumpUrl
 EcPkCreateJSRefererBrowserSync

@@ -62,7 +62,18 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	bool* no_javascript_access) {
 
 	if (callbacks.newwindow_callback) {
-		if (callbacks.newwindow_callback(g_id, target_url.ToWString().c_str(), g_browser->GetMainFrame()->GetURL().c_str())) {
+		CefString CurrentWindowUrl = browser->GetMainFrame()->GetURL();
+
+		NEW_WINDOW_INFOMATION info;
+		info.cbSzie = sizeof(NEW_WINDOW_INFOMATION);
+		info.lpFrame = frame;
+		info.szNewWindowUrl = target_url.c_str();
+		info.szCurrentWindowUrl = CurrentWindowUrl.c_str();
+		info.szTargetFrameName = target_frame_name.c_str();
+		info.bUserGesture = user_gesture;
+		info.dwOpenDisposition = target_disposition;
+
+		if (callbacks.newwindow_callback(g_id, 0, &info, 0)) {
 			return true;
 		}
 	}
@@ -116,17 +127,17 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		model->Clear();
 		RBUTTON_DOWN_INFOMATION info;
 		info.cbSzie = sizeof(RBUTTON_DOWN_INFOMATION);
-		info.Flag = flag;
-		info.pFrame = frame;
+		info.dwFlag = flag;
+		info.lpFrame = frame;
 		info.Retention = 0;
 
 		auto SelectionText = params->GetSelectionText();
 		auto LinkUrl = params->GetLinkUrl();
 		auto SourceUrl = params->GetSourceUrl();
 
-		info.SelectionText = SelectionText.c_str();
-		info.LinkUrl = LinkUrl.c_str();
-		info.SourceUrl = SourceUrl.c_str();
+		info.szSelectionText = SelectionText.c_str();
+		info.szLinkUrl = LinkUrl.c_str();
+		info.szSourceUrl = SourceUrl.c_str();
 
 		callbacks.rbuttondown_callback(g_id, 0, &info, 0);
 		return;
@@ -244,6 +255,12 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
 	browser_settings.javascript_close_windows = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_JAVASCRIPT)
+		browser_settings.javascript = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_LOAD_IMAGE)
+		browser_settings.image_loading = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
+		browser_settings.web_security = STATE_DISABLED;
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
@@ -254,6 +271,12 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
 	browser_settings.javascript_close_windows = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_JAVASCRIPT)
+		browser_settings.javascript = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_LOAD_IMAGE)
+		browser_settings.image_loading = STATE_DISABLED;
+	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
+		browser_settings.web_security = STATE_DISABLED;
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }

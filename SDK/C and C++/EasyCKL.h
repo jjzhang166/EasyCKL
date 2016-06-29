@@ -3,15 +3,15 @@
 #define CKLEXPORT extern "C" 
 
 #ifndef  __ECKL_SRC_DEV_
-typedef struct tagRBUTTON_DOWN_INFOMATION {
+typedef struct tagNEW_WINDOW_INFOMATION {
 	SIZE_T cbSzie;
-	int Flag;
-	void* pFrame;
-	const wchar_t* SelectionText;
-	const wchar_t* LinkUrl;
-	const wchar_t* SourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+	void* lpFrame;
+	const wchar_t* szNewWindowUrl;
+	const wchar_t* szCurrentWindowUrl;
+	const wchar_t* szTargetFrameName;
+	BOOL bUserGesture;
+	DWORD dwOpenDisposition;
+}NEW_WINDOW_INFOMATION, *LPNEW_WINDOW_INFOMATION;
 
 // No node is selected.
 #define MENU_TYPEFLAG_NONE 0
@@ -28,20 +28,29 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 // An editable element is selected.
 #define MENU_TYPEFLAG_EDITABLE 1 << 5
 
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	SIZE_T cbSzie;
+	DWORD dwFlag;
+	void* lpFrame;
+	const wchar_t* szSelectionText;
+	const wchar_t* szLinkUrl;
+	const wchar_t* szSourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
 #endif // __ECKL_SRC_DEV_
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(DWORD id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(DWORD id, const wchar_t* url, BOOL isCertError);
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(DWORD id, const wchar_t* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(DWORD id, const wchar_t* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(DWORD id, const wchar_t* url, const wchar_t* current_window_url);
-typedef BOOL(WINAPI * Chrome_CallBack_ChState)(DWORD id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(DWORD id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(DWORD id, DWORD uMsg, LPRBUTTON_DOWN_INFOMATION info, DWORD not_used);
-typedef void(WINAPI * Chrome_CallBack_ChTitle)(DWORD id, const wchar_t* text);
-typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(DWORD id, const wchar_t* url);
+typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
+typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
+typedef BOOL(WINAPI * Chrome_CallBack_ChState)(LONG_PTR id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
+typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
+typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
+typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagBROWSER_CALLBACKS {
@@ -57,11 +66,6 @@ typedef struct tagBROWSER_CALLBACKS {
 	Chrome_CallBack_ChTitle chtitle_callback;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback;
 }BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
-
-#define BROWSER_LASTERROR_LOADING 0x1
-#define BROWSER_LASTERROR_LOADERROR 0x2
-#define BROWSER_LASTERROR_LOADRESERROR 0x4
-#define BROWSER_LASTERROR_CERTERROR 0x8
 #endif // __ECKL_SRC_DEV_
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
@@ -131,7 +135,9 @@ CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(void* browser);
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash();
 CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version);
 CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
+CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* browser, HWND hParent, RECT* rect);
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
+CKLEXPORT void WINAPI Chrome_PrintToPDF(void* browser, wchar_t* pdf_path);
 
 enum BrowserInfomationType
 {
@@ -143,17 +149,24 @@ enum BrowserInfomationType
 	BrowserInfomationLastError = 5
 };
 
+#ifndef  __ECKL_SRC_DEV_
+#define BROWSER_LASTERROR_LOADING 0x1
+#define BROWSER_LASTERROR_LOADERROR 0x2
+#define BROWSER_LASTERROR_LOADRESERROR 0x4
+#define BROWSER_LASTERROR_CERTERROR 0x8
+#endif // __ECKL_SRC_DEV_
+
 CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* browser, BrowserInfomationType type, void* buffer);
 
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, void* recvd);
 CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath, bool persist_session_cookies);
 
 #ifndef __EC_PACK_API_CPP_
-CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* handler, wchar_t* url, wchar_t* referer);
-CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* handler, wchar_t* id, wchar_t* value);
-CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* handler, wchar_t* name, wchar_t* value);
-CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* handler, wchar_t* id);
-CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* handler, wchar_t* name);
+CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* browser, wchar_t* url, wchar_t* referer);
+CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* browser, wchar_t* id, wchar_t* value);
+CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* browser, wchar_t* name, wchar_t* value);
+CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* browser, wchar_t* id);
+CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* browser, wchar_t* name);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
 #endif // __EC_PACK_API_CPP_
 
@@ -178,7 +191,24 @@ CKLEXPORT void WINAPI Chrome_FrameDoCopy(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoPaste(void* frame);
+CKLEXPORT void WINAPI Chrome_FrameDoSelectAll(void* frame);
 #endif // __EC_FRAME_API_CPP_
+
+#ifndef  __EC_CUSTOMIZE_SCHEME_CPP_
+typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
+
+CKLEXPORT void WINAPI Chrome_RegisterSchemeInitialize(SchemeProcessRequest callback);
+CKLEXPORT void WINAPI Chrome_RegisterScheme(const wchar_t* szSchemeName, const wchar_t* szDomainName);
+CKLEXPORT SIZE_T WINAPI EcCSGetRequestUrlLength(void* lpRequest);
+CKLEXPORT void WINAPI EcCSGetRequestUrl(void* lpRequest, wchar_t* lpUrlBuffer, ULONG ulLength);
+CKLEXPORT SIZE_T WINAPI EcCSGetRequestHeaderStringLength(void* lpRequest, wchar_t* szHeaderName);
+CKLEXPORT void WINAPI EcCSGetRequestHeaderString(void* lpRequest, wchar_t* szHeaderName, wchar_t* lpBuffer, ULONG ulLength);
+CKLEXPORT SIZE_T WINAPI EcCSGetRequestPostDataSize(void* lpRequest);
+CKLEXPORT void WINAPI EcCSGetRequestPostData(void* lpRequest, BYTE* lpDataBuffer, ULONG_PTR notused);
+CKLEXPORT void WINAPI EcCSSetData(void* lpData, unsigned char* lpDataBuffer, SIZE_T nSize);
+CKLEXPORT void WINAPI EcCSSetMimeType(void* lpMimeType, const wchar_t* szMimeType);
+CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
+#endif // __EC_CUSTOMIZE_SCHEME_CPP_
 
 #ifdef  __ECKL_SRC_DEV_
 void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length);
