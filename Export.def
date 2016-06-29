@@ -72,6 +72,16 @@ Chrome_FrameDoDelete
 Chrome_FrameDoPaste
 Chrome_FrameDoSelectAll
 
+Chrome_RegisterSchemeInitialize
+Chrome_RegisterScheme
+EcCSGetRequestUrl
+EcCSGetRequestHeader
+EcCSGetRequestPostDataSize
+EcCSGetRequestPostData
+EcCSSetData
+EcCSSetMimeType
+EcCSSetStatus
+
 EcPkHtmlRefreshContentJumpUrl
 EcPkCreateJSRefererBrowserSync
 EcPkJavaScriptSetValueByObjectId

@@ -1,6 +1,7 @@
 #include <Windows.h>
 
-#include "include/cef_sandbox_win.h"
+#include "include/cef_client.h"
+#include "include/wrapper/cef_helpers.h"
 
 #include "simple_app.h"
 #include "simple_handler.h"
@@ -552,7 +553,7 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(SimpleHandler* handler, HWND hParent, RECT* rect,HWND* devtools_hwnd) {
+CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(SimpleHandler* handler, HWND hParent, RECT* rect, HWND* devtools_hwnd) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
@@ -572,7 +573,6 @@ CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(SimpleHandler* handler, LONG_PTR
 }
 
 CKLEXPORT void WINAPI Chrome_PrintToPDF(SimpleHandler* handler, wchar_t* pdf_path) {
-	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
