@@ -77,8 +77,19 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL o
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
 #define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
 #define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
 
-CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD flags, LPBROWSER_CALLBACKS callbacks, DWORD id, wchar_t* referer, wchar_t* url, HWND hParent, RECT* rect, void* notused);
+#ifndef  __ECKL_SRC_DEV_
+typedef struct tagCREATE_BROWSER_EXTDATA {
+	SIZE_T cbSzie;
+	wchar_t* szDefaultEncoding;
+	DWORD dwBackColor;
+}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
+#endif // __ECKL_SRC_DEV_
+
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData);
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
@@ -138,6 +149,8 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
 CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* browser, HWND hParent, RECT* rect);
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
 CKLEXPORT void WINAPI Chrome_PrintToPDF(void* browser, wchar_t* pdf_path);
+CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
+CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 
 enum BrowserInfomationType
 {

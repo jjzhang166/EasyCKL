@@ -248,7 +248,7 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
+void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
@@ -261,10 +261,16 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
 		browser_settings.image_loading = STATE_DISABLED;
 	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
 		browser_settings.web_security = STATE_DISABLED;
+	if (flags & BROWSERFLAG_EXTDATA) {
+		if (flags & BROWSERFLAG_DEF_ENCODING)
+			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
+		if (flags & BROWSERFLAG_BACK_COLOR)
+			browser_settings.background_color = extdata->dwBackColor;
+	}
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
-void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect) {
+void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
@@ -277,6 +283,12 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 		browser_settings.image_loading = STATE_DISABLED;
 	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
 		browser_settings.web_security = STATE_DISABLED;
+	if (flags & BROWSERFLAG_EXTDATA) {
+		if (flags & BROWSERFLAG_DEF_ENCODING)
+			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
+		if (flags & BROWSERFLAG_BACK_COLOR)
+			browser_settings.background_color = extdata->dwBackColor;
+	}
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }

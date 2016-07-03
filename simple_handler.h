@@ -10,11 +10,20 @@
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
 #define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
 #define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
 
 #define BROWSER_LASTERROR_LOADING 0x1
 #define BROWSER_LASTERROR_LOADERROR 0x2
 #define BROWSER_LASTERROR_LOADRESERROR 0x4
 #define BROWSER_LASTERROR_CERTERROR 0x8
+
+typedef struct tagCREATE_BROWSER_EXTDATA {
+	SIZE_T cbSzie;
+	wchar_t* szDefaultEncoding;
+	DWORD dwBackColor;
+}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 
 /* 回调函数中使用的结构 */
 typedef struct tagNEW_WINDOW_INFOMATION {
@@ -90,8 +99,8 @@ public:
 		Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl);
 	~SimpleHandler();
 
-	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
+	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
+	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {

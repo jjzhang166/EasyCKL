@@ -2,6 +2,7 @@
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"
+#include "include/cef_parser.h"
 
 #include "simple_app.h"
 #include "simple_handler.h"
@@ -230,7 +231,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL o
 	ret = EcKeInitialize(hInstance, _flag, local, cache_path, 0);
 
 #ifdef _EPL_COMPATIBILITY
-	if (Chrome_IsUIThread()) {
+	if (Chrome_IsUIThread() && GetFileAttributes(L".\\disable-epl-debug-compatibility-warning") != INVALID_FILE_ATTRIBUTES) {
 		WNDCLASS wc;
 		wc.style = CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc = DefWindowProc;
@@ -273,16 +274,16 @@ CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL ca
 	Chrome_InitializeEx(hInstance, flag, 0, 0, 0);
 }
 
-CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD flags, LPBROWSER_CALLBACKS callbacks, DWORD id, wchar_t* referer, wchar_t* url, HWND hParent, RECT* rect, void* notused) {
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData) {
 
-	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, callbacks));
-	handler->flags = flags;
+	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, lpCallbacks));
+	handler->flags = dwFlags;
 
-	if ((flags & BROWSERFLAG_HEADER_REFERER) && referer)
-		handler->referer_string = std::wstring(referer);
-	if (flags & BROWSERFLAG_SYNC)
-		return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
-	else handler->_CreateBrowser(std::wstring(url), hParent, *rect);
+	if ((dwFlags & BROWSERFLAG_HEADER_REFERER) && szHeaderReferer)
+		handler->referer_string = std::wstring(szHeaderReferer);
+	if (dwFlags & BROWSERFLAG_SYNC)
+		return handler->_CreateBrowserSync(std::wstring(szUrl), hParent, *rcBrowserRect, lpExtData);
+	else handler->_CreateBrowser(std::wstring(szUrl), hParent, *rcBrowserRect, lpExtData);
 	return 0;
 }
 
@@ -299,7 +300,7 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWO
 
 	if (referer)
 		handler->referer_string = std::wstring(referer);
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
+	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -315,7 +316,7 @@ CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD 
 
 	if (referer)
 		handler->referer_string = std::wstring(referer);
-	handler->_CreateBrowser(std::wstring(url), hParent, *rect);
+	handler->_CreateBrowser(std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -329,7 +330,7 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hPa
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
 		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect);
+	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -581,4 +582,25 @@ CKLEXPORT void WINAPI Chrome_PrintToPDF(SimpleHandler* handler, wchar_t* pdf_pat
 			browser->GetHost()->PrintToPDF(pdf_path, settings, 0);
 		}
 	}
+}
+
+CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset) {
+	std::wstring encode_string;
+	if (szCharset)
+		encode_string = L"data:" + std::wstring(szMimeType) + L";charset=" + szCharset + L";base64," +
+		CefURIEncode(CefBase64Encode(lpData, dwSize), false).ToWString();
+	else encode_string = L"data:" + std::wstring(szMimeType) + L";base64," +
+		CefURIEncode(CefBase64Encode(lpData, dwSize), false).ToWString();
+
+	size_t stringlength = encode_string.length();
+
+	wchar_t* buffer = (wchar_t*)malloc(stringlength + 1);
+	encode_string.copy(buffer, stringlength);
+	buffer[stringlength] = 0;
+
+	return buffer;
+}
+
+CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer) {
+	free(lpBuffer);
 }
