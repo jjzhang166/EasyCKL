@@ -152,11 +152,13 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, Brow
 #define INITFLAG_SINGLEPROCESS 0x4
 #define INITFLAG_USECOMPATIBILITY 0x8
 #define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
-#define INITFLAG_EXTENDARG 0x10
 
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, void* recvd) {
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+
+	if (flag & INITFLAG_ENABLEHIGHDPISUPPORT)
+		CefEnableHighDPISupport();
 
 	CefMainArgs main_args(hInstance);
 	CefRefPtr<SimpleApp> app(new SimpleApp);
@@ -201,9 +203,6 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	CefInitialize(main_args, settings, app.get(), nullptr);
 	WaitForSingleObject(hEvent, INFINITE);
 
-	if (flag & INITFLAG_ENABLEHIGHDPISUPPORT)
-		CefEnableHighDPISupport();
-
 	if (Chrome_IsUIThread()) {
 		SetUnhandledExceptionFilter(0);
 	}
@@ -231,7 +230,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL o
 	ret = EcKeInitialize(hInstance, _flag, local, cache_path, 0);
 
 #ifdef _EPL_COMPATIBILITY
-	if (Chrome_IsUIThread() && GetFileAttributes(L".\\disable-epl-debug-compatibility-warning") != INVALID_FILE_ATTRIBUTES) {
+	if (Chrome_IsUIThread() && GetFileAttributes(L".\\disable-epl-debug-compatibility-warning") == INVALID_FILE_ATTRIBUTES) {
 		WNDCLASS wc;
 		wc.style = CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc = DefWindowProc;
@@ -584,6 +583,26 @@ CKLEXPORT void WINAPI Chrome_PrintToPDF(SimpleHandler* handler, wchar_t* pdf_pat
 	}
 }
 
+CKLEXPORT double WINAPI Chrome_GetZoomLevel(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			return browser->GetHost()->GetZoomLevel();
+		}
+	}
+	return 0;
+}
+
+
+CKLEXPORT void WINAPI Chrome_SetZoomLevel(SimpleHandler* handler, double dbZoomLevel) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->GetHost()->SetZoomLevel(dbZoomLevel);
+		}
+	}
+}
+
 CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset) {
 	std::wstring encode_string;
 	if (szCharset)
@@ -594,7 +613,7 @@ CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize,
 
 	size_t stringlength = encode_string.length();
 
-	wchar_t* buffer = (wchar_t*)malloc(stringlength + 1);
+	wchar_t* buffer = (wchar_t*)malloc((stringlength + 1) * sizeof(wchar_t));
 	encode_string.copy(buffer, stringlength);
 	buffer[stringlength] = 0;
 

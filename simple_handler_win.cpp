@@ -176,17 +176,16 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 
 bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	const CefString& origin_url,
-	const CefString& accept_lang,
 	JSDialogType dialog_type,
 	const CefString& message_text,
 	const CefString& default_prompt_text,
-	CefRefPtr<CefJSDialogCallback> _callback,
+	CefRefPtr<CefJSDialogCallback> callback,
 	bool& suppress_message) {
 	CEF_REQUIRE_UI_THREAD();
 
 	if (callbacks.jsdialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
 		callbacks.jsdialog_callback(g_id, message_text.c_str());
-		_callback->Continue(1, "");
+		callback->Continue(1, "");
 		return true;
 	}
 	/*
@@ -210,7 +209,14 @@ bool SimpleHandler::OnCertificateError(
 	lasterror |= BROWSER_LASTERROR_CERTERROR;
 
 	if (callbacks.error_callback) {
-		callbacks.error_callback(g_id, request_url.ToWString().c_str(), TRUE);
+		ERROR_INFOMATION info;
+		info.cbSzie = sizeof(ERROR_INFOMATION);
+		info.szFailedUrl = request_url.c_str();
+		info.bCertError = TRUE;
+		info.iErrorCode = cert_error;
+		info.lpFrame = 0;
+		info.lpSslInfo = ssl_info;
+		callbacks.error_callback(g_id, 0, &info, 0);
 	}
 	return false;
 }

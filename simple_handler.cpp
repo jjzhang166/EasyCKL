@@ -122,7 +122,14 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {
-		callbacks.error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);
+		ERROR_INFOMATION info;
+		info.cbSzie = sizeof(ERROR_INFOMATION);
+		info.szFailedUrl = failedUrl.c_str();
+		info.bCertError = FALSE;
+		info.iErrorCode = errorCode;
+		info.lpFrame = frame;
+		info.lpSslInfo = 0;
+		callbacks.error_callback(g_id, 0, &info, 0);
 		return;
 	}
 

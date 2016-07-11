@@ -46,10 +46,19 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
 
+typedef struct tagERROR_INFOMATION {
+	SIZE_T cbSzie;
+	CefFrame* lpFrame;
+	BOOL bCertError;
+	int iErrorCode;
+	const wchar_t* szFailedUrl;
+	void* lpSslInfo;
+}ERROR_INFOMATION, *LPERROR_INFOMATION;
+
 /* 回调函数的定义 */
 
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
@@ -189,7 +198,6 @@ public:
 	//CefJSDialogHandler methods:
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,
 		const CefString& origin_url,
-		const CefString& accept_lang,
 		JSDialogType dialog_type,
 		const CefString& message_text,
 		const CefString& default_prompt_text,

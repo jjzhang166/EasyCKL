@@ -59,6 +59,10 @@ Chrome_SetUserDataLongPtr
 Chrome_QueryBrowserInfomation
 Chrome_SetOSModalLoop
 Chrome_PrintToPDF
+Chrome_GetZoomLevel
+Chrome_SetZoomLevel
+Chrome_DataURIBase64Encode
+Chrome_ReleaseBuffer
 
 Chrome_FrameLoadUrl
 Chrome_FrameLoadString

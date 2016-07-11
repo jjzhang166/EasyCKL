@@ -37,12 +37,21 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	const wchar_t* szSourceUrl;
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+typedef struct tagERROR_INFOMATION {
+	SIZE_T cbSzie;
+	CefFrame* lpFrame;
+	BOOL bCertError;
+	int iErrorCode;
+	const wchar_t* szFailedUrl;
+	void* lpSslInfo;
+}ERROR_INFOMATION, *LPERROR_INFOMATION;
 #endif // __ECKL_SRC_DEV_
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
@@ -66,6 +75,12 @@ typedef struct tagBROWSER_CALLBACKS {
 	Chrome_CallBack_ChTitle chtitle_callback;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback;
 }BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+
+#define INITFLAG_NOSSL 0x1
+#define INITFLAG_CACHESTORAGE 0x2
+#define INITFLAG_SINGLEPROCESS 0x4
+#define INITFLAG_USECOMPATIBILITY 0x8
+#define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
 #endif // __ECKL_SRC_DEV_
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
@@ -149,6 +164,8 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
 CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* browser, HWND hParent, RECT* rect);
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
 CKLEXPORT void WINAPI Chrome_PrintToPDF(void* browser, wchar_t* pdf_path);
+CKLEXPORT double WINAPI Chrome_GetZoomLevel(void* browser);
+CKLEXPORT void WINAPI Chrome_SetZoomLevel(void* browser, double dbZoomLevel);
 CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 
