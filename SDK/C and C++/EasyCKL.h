@@ -37,12 +37,21 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	const wchar_t* szSourceUrl;
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+typedef struct tagERROR_INFOMATION {
+	SIZE_T cbSzie;
+	CefFrame* lpFrame;
+	BOOL bCertError;
+	int iErrorCode;
+	const wchar_t* szFailedUrl;
+	void* lpSslInfo;
+}ERROR_INFOMATION, *LPERROR_INFOMATION;
 #endif // __ECKL_SRC_DEV_
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
@@ -66,6 +75,12 @@ typedef struct tagBROWSER_CALLBACKS {
 	Chrome_CallBack_ChTitle chtitle_callback;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback;
 }BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+
+#define INITFLAG_NOSSL 0x1
+#define INITFLAG_CACHESTORAGE 0x2
+#define INITFLAG_SINGLEPROCESS 0x4
+#define INITFLAG_USECOMPATIBILITY 0x8
+#define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
 #endif // __ECKL_SRC_DEV_
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
@@ -77,8 +92,19 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL o
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
 #define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
 #define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
 
-CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD flags, LPBROWSER_CALLBACKS callbacks, DWORD id, wchar_t* referer, wchar_t* url, HWND hParent, RECT* rect, void* notused);
+#ifndef  __ECKL_SRC_DEV_
+typedef struct tagCREATE_BROWSER_EXTDATA {
+	SIZE_T cbSzie;
+	wchar_t* szDefaultEncoding;
+	DWORD dwBackColor;
+}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
+#endif // __ECKL_SRC_DEV_
+
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData);
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
@@ -138,6 +164,10 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
 CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* browser, HWND hParent, RECT* rect);
 CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
 CKLEXPORT void WINAPI Chrome_PrintToPDF(void* browser, wchar_t* pdf_path);
+CKLEXPORT double WINAPI Chrome_GetZoomLevel(void* browser);
+CKLEXPORT void WINAPI Chrome_SetZoomLevel(void* browser, double dbZoomLevel);
+CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
+CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 
 enum BrowserInfomationType
 {

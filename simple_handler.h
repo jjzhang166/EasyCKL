@@ -10,11 +10,20 @@
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
 #define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
 #define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
 
 #define BROWSER_LASTERROR_LOADING 0x1
 #define BROWSER_LASTERROR_LOADERROR 0x2
 #define BROWSER_LASTERROR_LOADRESERROR 0x4
 #define BROWSER_LASTERROR_CERTERROR 0x8
+
+typedef struct tagCREATE_BROWSER_EXTDATA {
+	SIZE_T cbSzie;
+	wchar_t* szDefaultEncoding;
+	DWORD dwBackColor;
+}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 
 /* 回调函数中使用的结构 */
 typedef struct tagNEW_WINDOW_INFOMATION {
@@ -37,10 +46,19 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 	void* Retention;
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
 
+typedef struct tagERROR_INFOMATION {
+	SIZE_T cbSzie;
+	CefFrame* lpFrame;
+	BOOL bCertError;
+	int iErrorCode;
+	const wchar_t* szFailedUrl;
+	void* lpSslInfo;
+}ERROR_INFOMATION, *LPERROR_INFOMATION;
+
 /* 回调函数的定义 */
 
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, const wchar_t* url, BOOL isCertError);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
 typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
@@ -90,8 +108,8 @@ public:
 		Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl);
 	~SimpleHandler();
 
-	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect);
-	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect);
+	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
+	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {
@@ -180,7 +198,6 @@ public:
 	//CefJSDialogHandler methods:
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,
 		const CefString& origin_url,
-		const CefString& accept_lang,
 		JSDialogType dialog_type,
 		const CefString& message_text,
 		const CefString& default_prompt_text,

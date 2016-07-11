@@ -176,17 +176,16 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 
 bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	const CefString& origin_url,
-	const CefString& accept_lang,
 	JSDialogType dialog_type,
 	const CefString& message_text,
 	const CefString& default_prompt_text,
-	CefRefPtr<CefJSDialogCallback> _callback,
+	CefRefPtr<CefJSDialogCallback> callback,
 	bool& suppress_message) {
 	CEF_REQUIRE_UI_THREAD();
 
 	if (callbacks.jsdialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
 		callbacks.jsdialog_callback(g_id, message_text.c_str());
-		_callback->Continue(1, "");
+		callback->Continue(1, "");
 		return true;
 	}
 	/*
@@ -210,7 +209,14 @@ bool SimpleHandler::OnCertificateError(
 	lasterror |= BROWSER_LASTERROR_CERTERROR;
 
 	if (callbacks.error_callback) {
-		callbacks.error_callback(g_id, request_url.ToWString().c_str(), TRUE);
+		ERROR_INFOMATION info;
+		info.cbSzie = sizeof(ERROR_INFOMATION);
+		info.szFailedUrl = request_url.c_str();
+		info.bCertError = TRUE;
+		info.iErrorCode = cert_error;
+		info.lpFrame = 0;
+		info.lpSslInfo = ssl_info;
+		callbacks.error_callback(g_id, 0, &info, 0);
 	}
 	return false;
 }
@@ -248,7 +254,7 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
+void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
@@ -261,10 +267,16 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect) {
 		browser_settings.image_loading = STATE_DISABLED;
 	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
 		browser_settings.web_security = STATE_DISABLED;
+	if (flags & BROWSERFLAG_EXTDATA) {
+		if (flags & BROWSERFLAG_DEF_ENCODING)
+			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
+		if (flags & BROWSERFLAG_BACK_COLOR)
+			browser_settings.background_color = extdata->dwBackColor;
+	}
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
-void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect) {
+void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 
 	CefWindowInfo window_info;
@@ -277,6 +289,12 @@ void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &re
 		browser_settings.image_loading = STATE_DISABLED;
 	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
 		browser_settings.web_security = STATE_DISABLED;
+	if (flags & BROWSERFLAG_EXTDATA) {
+		if (flags & BROWSERFLAG_DEF_ENCODING)
+			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
+		if (flags & BROWSERFLAG_BACK_COLOR)
+			browser_settings.background_color = extdata->dwBackColor;
+	}
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }

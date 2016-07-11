@@ -1,15 +1,15 @@
 Chromium Embedded Framework (CEF) Standard Binary Distribution for Windows
 -------------------------------------------------------------------------------
 
-Date:             March 11, 2016
+Date:             June 20, 2016
 
-CEF Version:      3.2623.1393.g9e0fda8
+CEF Version:      3.2704.1431.ge7ddb8a
 CEF URL:          https://bitbucket.org/chromiumembedded/cef.git
-                  @9e0fda80bdc3dd98e420bf3f9f193c5ff59a4561
+                  @e7ddb8a9a9f3bf95d5c0e5c2d6d213ee2280988f
 
-Chromium Verison: 49.0.2623.54
+Chromium Verison: 51.0.2704.84
 Chromium URL:     https://chromium.googlesource.com/chromium/src.git
-                  @c0646e90c9bd41cf5f906fb26d3839fc0ef38be7
+                  @38fd4ea549900bb7a3b958a96b7f2270c3410fdd
 
 This distribution contains all components necessary to build and distribute an
 application using CEF on the Windows platform. Please see the LICENSING
@@ -26,6 +26,8 @@ cefclient   Contains the cefclient sample application configured to build
 cefsimple   Contains the cefsimple sample application configured to build
             using the files in this distribution. This application demonstrates
             the minimal functionality required to create a browser window.
+
+cmake       Contains CMake configuration files shared by all targets.
 
 Debug       Contains libcef.dll, libcef.lib and other components required to
             build and run the debug version of CEF-based applications. By
@@ -123,11 +125,6 @@ run but any related functionality may become broken or disabled.
   * libGLESv2.dll
   Without these files HTML5 accelerated content like 2D canvas, 3D CSS and WebGL
   will not function.
-
-* Windows Vista 64-bit sandbox support (32-bit distributions only)
-  * wow_helper.exe
-  Without this file the 32-bit build of CEF will not run on 64-bit Vista
-  machines with the sandbox enabled.
 
 
 LICENSING

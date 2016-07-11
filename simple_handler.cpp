@@ -7,6 +7,20 @@
 #include "include/cef_app.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_helpers.h"
+#include "include/cef_parser.h"
+
+CefString GetDataURI(const std::string& data,
+	const std::wstring& mime_type) {
+	return CefString(L"data:" + mime_type + L";base64," +
+		CefURIEncode(CefBase64Encode(data.data(), data.size()), false).ToWString());
+}
+
+CefString GetDataURI(const std::string& data,
+	const std::wstring& mime_type, const std::wstring& charset) {
+	//UTF-8 GB
+	return CefString(L"data:" + mime_type + L";charset=" + charset + L";base64," +
+		CefURIEncode(CefBase64Encode(data.data(), data.size()), false).ToWString());
+}
 
 SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
 	SIZE_T length = _callbacks->cbSzie;
@@ -108,18 +122,25 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {
-		callbacks.error_callback(g_id, failedUrl.ToWString().c_str(), FALSE);
+		ERROR_INFOMATION info;
+		info.cbSzie = sizeof(ERROR_INFOMATION);
+		info.szFailedUrl = failedUrl.c_str();
+		info.bCertError = FALSE;
+		info.iErrorCode = errorCode;
+		info.lpFrame = frame;
+		info.lpSslInfo = 0;
+		callbacks.error_callback(g_id, 0, &info, 0);
 		return;
 	}
 
 	// Display a load error message.
-	std::wstringstream ss;
-	ss << "<html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=gb2312\"></head><body bgcolor=\"white\">"
+	std::stringstream s;
+	s << "<html><head><meta http-equiv=\"content-type\" content=\"text/html;charset=gb2312\"></head><body bgcolor=\"white\">"
 		"<h2>Failed to open this page" <<
 		"</h2><p>Error: " << errorCode <<
-		"</p><p>Url: " << std::wstring(failedUrl) <<
+		"</p><p>Url: " << std::string(failedUrl) <<
 		"</p></body></html>";
-	frame->LoadString(ss.str(), failedUrl);
+	frame->LoadURL(GetDataURI(s.str(), L"text/html"));
 }
 
 void SimpleHandler::CloseAllBrowsers(bool force_close) {

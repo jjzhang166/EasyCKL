@@ -1,1227 +1,1063 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\transfer_util.cc">
+    <ClCompile Include="transfer_util.cc">
       <Filter>libcef_dll</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_atomicops_x86_gcc.cc">
+    <ClCompile Include="base\cef_atomicops_x86_gcc.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_bind_helpers.cc">
+    <ClCompile Include="base\cef_bind_helpers.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_callback_helpers.cc">
+    <ClCompile Include="base\cef_callback_helpers.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_callback_internal.cc">
+    <ClCompile Include="base\cef_callback_internal.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_lock.cc">
+    <ClCompile Include="base\cef_lock.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_lock_impl.cc">
+    <ClCompile Include="base\cef_lock_impl.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_logging.cc">
+    <ClCompile Include="base\cef_logging.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_ref_counted.cc">
+    <ClCompile Include="base\cef_ref_counted.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_string16.cc">
+    <ClCompile Include="base\cef_string16.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_thread_checker_impl.cc">
+    <ClCompile Include="base\cef_thread_checker_impl.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_thread_collision_warner.cc">
+    <ClCompile Include="base\cef_thread_collision_warner.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\base\cef_weak_ptr.cc">
+    <ClCompile Include="base\cef_weak_ptr.cc">
       <Filter>libcef_dll\base</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\app_cpptoc.cc">
+    <ClCompile Include="cpptoc\app_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\base_cpptoc.cc">
+    <ClCompile Include="cpptoc\base_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\browser_process_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\browser_process_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\client_cpptoc.cc">
+    <ClCompile Include="cpptoc\client_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\completion_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\completion_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\context_menu_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\context_menu_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\cookie_visitor_cpptoc.cc">
+    <ClCompile Include="cpptoc\cookie_visitor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\delete_cookies_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\delete_cookies_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\dialog_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\dialog_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\display_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\display_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\domvisitor_cpptoc.cc">
+    <ClCompile Include="cpptoc\domvisitor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\download_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\download_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\drag_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\download_image_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\end_tracing_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\drag_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\find_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\end_tracing_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\focus_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\find_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\geolocation_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\focus_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\get_geolocation_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\geolocation_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\jsdialog_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\get_geolocation_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\keyboard_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\jsdialog_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\life_span_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\keyboard_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\load_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\life_span_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\navigation_entry_visitor_cpptoc.cc">
+    <ClCompile Include="cpptoc\load_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\pdf_print_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\menu_model_delegate_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\print_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\navigation_entry_visitor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\read_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\pdf_print_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\render_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\print_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\render_process_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\read_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\request_context_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\render_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\request_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\render_process_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resolve_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\request_context_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resource_bundle_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\request_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resource_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\resolve_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\response_filter_cpptoc.cc">
+    <ClCompile Include="cpptoc\resource_bundle_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\run_file_dialog_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\resource_handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\scheme_handler_factory_cpptoc.cc">
+    <ClCompile Include="cpptoc\response_filter_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\set_cookie_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\run_file_dialog_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\string_visitor_cpptoc.cc">
+    <ClCompile Include="cpptoc\scheme_handler_factory_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\task_cpptoc.cc">
+    <ClCompile Include="cpptoc\set_cookie_callback_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\urlrequest_client_cpptoc.cc">
+    <ClCompile Include="cpptoc\string_visitor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\v8accessor_cpptoc.cc">
+    <ClCompile Include="cpptoc\task_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\v8handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\urlrequest_client_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\web_plugin_info_visitor_cpptoc.cc">
+    <ClCompile Include="cpptoc\v8accessor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\web_plugin_unstable_callback_cpptoc.cc">
+    <ClCompile Include="cpptoc\v8handler_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\write_handler_cpptoc.cc">
+    <ClCompile Include="cpptoc\web_plugin_info_visitor_cpptoc.cc">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\auth_callback_ctocpp.cc">
+    <ClCompile Include="cpptoc\web_plugin_unstable_callback_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\write_handler_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\browser_view_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\button_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\menu_button_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\panel_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\textfield_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\view_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="cpptoc\views\window_delegate_cpptoc.cc">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\auth_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\before_download_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\before_download_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\binary_value_ctocpp.cc">
+    <ClCompile Include="ctocpp\binary_value_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\browser_ctocpp.cc">
+    <ClCompile Include="ctocpp\browser_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\browser_host_ctocpp.cc">
+    <ClCompile Include="ctocpp\browser_host_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\command_line_ctocpp.cc">
+    <ClCompile Include="ctocpp\command_line_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\context_menu_params_ctocpp.cc">
+    <ClCompile Include="ctocpp\context_menu_params_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\cookie_manager_ctocpp.cc">
+    <ClCompile Include="ctocpp\cookie_manager_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\dictionary_value_ctocpp.cc">
+    <ClCompile Include="ctocpp\dictionary_value_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\domdocument_ctocpp.cc">
+    <ClCompile Include="ctocpp\domdocument_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\domnode_ctocpp.cc">
+    <ClCompile Include="ctocpp\domnode_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\download_item_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\download_item_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\download_item_ctocpp.cc">
+    <ClCompile Include="ctocpp\download_item_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\drag_data_ctocpp.cc">
+    <ClCompile Include="ctocpp\drag_data_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\file_dialog_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\file_dialog_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\frame_ctocpp.cc">
+    <ClCompile Include="ctocpp\frame_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\geolocation_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\geolocation_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\jsdialog_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\image_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\list_value_ctocpp.cc">
+    <ClCompile Include="ctocpp\jsdialog_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\menu_model_ctocpp.cc">
+    <ClCompile Include="ctocpp\list_value_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\navigation_entry_ctocpp.cc">
+    <ClCompile Include="ctocpp\menu_model_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\post_data_ctocpp.cc">
+    <ClCompile Include="ctocpp\navigation_entry_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\post_data_element_ctocpp.cc">
+    <ClCompile Include="ctocpp\post_data_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_dialog_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\post_data_element_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_job_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\print_dialog_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_settings_ctocpp.cc">
+    <ClCompile Include="ctocpp\print_job_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\process_message_ctocpp.cc">
+    <ClCompile Include="ctocpp\print_settings_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\process_message_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_context_ctocpp.cc">
+    <ClCompile Include="ctocpp\request_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_ctocpp.cc">
+    <ClCompile Include="ctocpp\request_context_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\resource_bundle_ctocpp.cc">
+    <ClCompile Include="ctocpp\request_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\response_ctocpp.cc">
+    <ClCompile Include="ctocpp\resource_bundle_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\run_context_menu_callback_ctocpp.cc">
+    <ClCompile Include="ctocpp\response_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\scheme_registrar_ctocpp.cc">
+    <ClCompile Include="ctocpp\run_context_menu_callback_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\sslcert_principal_ctocpp.cc">
+    <ClCompile Include="ctocpp\scheme_registrar_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\sslinfo_ctocpp.cc">
+    <ClCompile Include="ctocpp\sslcert_principal_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\stream_reader_ctocpp.cc">
+    <ClCompile Include="ctocpp\sslinfo_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\stream_writer_ctocpp.cc">
+    <ClCompile Include="ctocpp\stream_reader_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\task_runner_ctocpp.cc">
+    <ClCompile Include="ctocpp\stream_writer_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\urlrequest_ctocpp.cc">
+    <ClCompile Include="ctocpp\task_runner_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8context_ctocpp.cc">
+    <ClCompile Include="ctocpp\urlrequest_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8exception_ctocpp.cc">
+    <ClCompile Include="ctocpp\v8context_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8stack_frame_ctocpp.cc">
+    <ClCompile Include="ctocpp\v8exception_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8stack_trace_ctocpp.cc">
+    <ClCompile Include="ctocpp\v8stack_frame_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8value_ctocpp.cc">
+    <ClCompile Include="ctocpp\v8stack_trace_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\value_ctocpp.cc">
+    <ClCompile Include="ctocpp\v8value_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\web_plugin_info_ctocpp.cc">
+    <ClCompile Include="ctocpp\value_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\xml_reader_ctocpp.cc">
+    <ClCompile Include="ctocpp\web_plugin_info_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\zip_reader_ctocpp.cc">
+    <ClCompile Include="ctocpp\xml_reader_ctocpp.cc">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_byte_read_handler.cc">
+    <ClCompile Include="ctocpp\zip_reader_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\box_layout_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\browser_view_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\button_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\display_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\fill_layout_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\label_button_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\layout_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\menu_button_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\panel_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\scroll_view_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\textfield_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\view_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="ctocpp\views\window_ctocpp.cc">
+      <Filter>libcef_dll\ctocpp\views</Filter>
+    </ClCompile>
+    <ClCompile Include="wrapper\cef_byte_read_handler.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_closure_task.cc">
+    <ClCompile Include="wrapper\cef_closure_task.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_message_router.cc">
+    <ClCompile Include="wrapper\cef_message_router.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_resource_manager.cc">
+    <ClCompile Include="wrapper\cef_resource_manager.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_stream_resource_handler.cc">
+    <ClCompile Include="wrapper\cef_stream_resource_handler.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_xml_object.cc">
+    <ClCompile Include="wrapper\cef_xml_object.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_zip_archive.cc">
+    <ClCompile Include="wrapper\cef_zip_archive.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\libcef_dll_wrapper.cc">
+    <ClCompile Include="wrapper\libcef_dll_wrapper.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\libcef_dll_wrapper2.cc">
+    <ClCompile Include="wrapper\libcef_dll_wrapper2.cc">
       <Filter>libcef_dll\wrapper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\transfer_util.h">
+    <ClInclude Include="transfer_util.h">
       <Filter>libcef_dll</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper_types.h">
+    <ClInclude Include="wrapper_types.h">
       <Filter>libcef_dll</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\app_cpptoc.h">
+    <ClInclude Include="cpptoc\app_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\base_cpptoc.h">
+    <ClInclude Include="cpptoc\base_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\browser_process_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\browser_process_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\client_cpptoc.h">
+    <ClInclude Include="cpptoc\client_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\completion_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\completion_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\context_menu_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\context_menu_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\cookie_visitor_cpptoc.h">
+    <ClInclude Include="cpptoc\cookie_visitor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\cpptoc.h">
+    <ClInclude Include="cpptoc\cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\delete_cookies_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\delete_cookies_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\dialog_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\dialog_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\display_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\display_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\domvisitor_cpptoc.h">
+    <ClInclude Include="cpptoc\domvisitor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\download_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\download_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\drag_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\download_image_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\end_tracing_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\drag_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\find_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\end_tracing_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\focus_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\find_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\geolocation_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\focus_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\get_geolocation_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\geolocation_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\jsdialog_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\get_geolocation_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\keyboard_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\jsdialog_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\life_span_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\keyboard_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\load_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\life_span_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\navigation_entry_visitor_cpptoc.h">
+    <ClInclude Include="cpptoc\load_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\pdf_print_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\menu_model_delegate_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\print_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\navigation_entry_visitor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\read_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\pdf_print_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\render_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\print_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\render_process_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\read_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\request_context_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\render_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\request_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\render_process_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resolve_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\request_context_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resource_bundle_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\request_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\resource_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\resolve_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\response_filter_cpptoc.h">
+    <ClInclude Include="cpptoc\resource_bundle_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\run_file_dialog_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\resource_handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\scheme_handler_factory_cpptoc.h">
+    <ClInclude Include="cpptoc\response_filter_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\set_cookie_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\run_file_dialog_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\string_visitor_cpptoc.h">
+    <ClInclude Include="cpptoc\scheme_handler_factory_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\task_cpptoc.h">
+    <ClInclude Include="cpptoc\set_cookie_callback_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\urlrequest_client_cpptoc.h">
+    <ClInclude Include="cpptoc\string_visitor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\v8accessor_cpptoc.h">
+    <ClInclude Include="cpptoc\task_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\v8handler_cpptoc.h">
+    <ClInclude Include="cpptoc\urlrequest_client_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\web_plugin_info_visitor_cpptoc.h">
+    <ClInclude Include="cpptoc\v8accessor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\web_plugin_unstable_callback_cpptoc.h">
+    <ClInclude Include="cpptoc\v8handler_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\cpptoc\write_handler_cpptoc.h">
+    <ClInclude Include="cpptoc\web_plugin_info_visitor_cpptoc.h">
       <Filter>libcef_dll\cpptoc</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\auth_callback_ctocpp.h">
+    <ClInclude Include="cpptoc\web_plugin_unstable_callback_cpptoc.h">
+      <Filter>libcef_dll\cpptoc</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\write_handler_cpptoc.h">
+      <Filter>libcef_dll\cpptoc</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\browser_view_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\button_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\menu_button_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\panel_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\textfield_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\view_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="cpptoc\views\window_delegate_cpptoc.h">
+      <Filter>libcef_dll\cpptoc\views</Filter>
+    </ClInclude>
+    <ClInclude Include="ctocpp\auth_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\before_download_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\before_download_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\binary_value_ctocpp.h">
+    <ClInclude Include="ctocpp\binary_value_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\browser_ctocpp.h">
+    <ClInclude Include="ctocpp\browser_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\browser_host_ctocpp.h">
+    <ClInclude Include="ctocpp\browser_host_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\callback_ctocpp.h">
+    <ClInclude Include="ctocpp\callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\command_line_ctocpp.h">
+    <ClInclude Include="ctocpp\command_line_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\context_menu_params_ctocpp.h">
+    <ClInclude Include="ctocpp\context_menu_params_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\cookie_manager_ctocpp.h">
+    <ClInclude Include="ctocpp\cookie_manager_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\ctocpp.h">
+    <ClInclude Include="ctocpp\ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\dictionary_value_ctocpp.h">
+    <ClInclude Include="ctocpp\dictionary_value_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\domdocument_ctocpp.h">
+    <ClInclude Include="ctocpp\domdocument_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\domnode_ctocpp.h">
+    <ClInclude Include="ctocpp\domnode_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\download_item_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\download_item_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\download_item_ctocpp.h">
+    <ClInclude Include="ctocpp\download_item_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\drag_data_ctocpp.h">
+    <ClInclude Include="ctocpp\drag_data_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\file_dialog_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\file_dialog_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\frame_ctocpp.h">
+    <ClInclude Include="ctocpp\frame_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\geolocation_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\geolocation_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\jsdialog_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\image_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\list_value_ctocpp.h">
+    <ClInclude Include="ctocpp\jsdialog_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\menu_model_ctocpp.h">
+    <ClInclude Include="ctocpp\list_value_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\navigation_entry_ctocpp.h">
+    <ClInclude Include="ctocpp\menu_model_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\post_data_ctocpp.h">
+    <ClInclude Include="ctocpp\navigation_entry_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\post_data_element_ctocpp.h">
+    <ClInclude Include="ctocpp\post_data_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_dialog_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\post_data_element_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_job_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\print_dialog_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\print_settings_ctocpp.h">
+    <ClInclude Include="ctocpp\print_job_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\process_message_ctocpp.h">
+    <ClInclude Include="ctocpp\print_settings_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\process_message_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_context_ctocpp.h">
+    <ClInclude Include="ctocpp\request_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\request_ctocpp.h">
+    <ClInclude Include="ctocpp\request_context_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\resource_bundle_ctocpp.h">
+    <ClInclude Include="ctocpp\request_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\response_ctocpp.h">
+    <ClInclude Include="ctocpp\resource_bundle_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\run_context_menu_callback_ctocpp.h">
+    <ClInclude Include="ctocpp\response_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\scheme_registrar_ctocpp.h">
+    <ClInclude Include="ctocpp\run_context_menu_callback_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\sslcert_principal_ctocpp.h">
+    <ClInclude Include="ctocpp\scheme_registrar_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\sslinfo_ctocpp.h">
+    <ClInclude Include="ctocpp\sslcert_principal_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\stream_reader_ctocpp.h">
+    <ClInclude Include="ctocpp\sslinfo_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\stream_writer_ctocpp.h">
+    <ClInclude Include="ctocpp\stream_reader_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\task_runner_ctocpp.h">
+    <ClInclude Include="ctocpp\stream_writer_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\urlrequest_ctocpp.h">
+    <ClInclude Include="ctocpp\task_runner_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8context_ctocpp.h">
+    <ClInclude Include="ctocpp\urlrequest_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8exception_ctocpp.h">
+    <ClInclude Include="ctocpp\v8context_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8stack_frame_ctocpp.h">
+    <ClInclude Include="ctocpp\v8exception_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8stack_trace_ctocpp.h">
+    <ClInclude Include="ctocpp\v8stack_frame_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\v8value_ctocpp.h">
+    <ClInclude Include="ctocpp\v8stack_trace_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\value_ctocpp.h">
+    <ClInclude Include="ctocpp\v8value_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\web_plugin_info_ctocpp.h">
+    <ClInclude Include="ctocpp\value_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\xml_reader_ctocpp.h">
+    <ClInclude Include="ctocpp\web_plugin_info_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\ctocpp\zip_reader_ctocpp.h">
+    <ClInclude Include="ctocpp\xml_reader_ctocpp.h">
       <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_app.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\zip_reader_ctocpp.h">
+      <Filter>libcef_dll\ctocpp</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_auth_callback.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\box_layout_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_base.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\browser_view_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_browser.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\button_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_browser_process_handler.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\display_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_callback.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\fill_layout_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_client.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\label_button_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_command_line.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\layout_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_context_menu_handler.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\menu_button_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_cookie.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\panel_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_dialog_handler.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\scroll_view_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_display_handler.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\textfield_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_dom.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\view_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_download_handler.h">
-      <Filter>include</Filter>
+    <ClInclude Include="ctocpp\views\window_ctocpp.h">
+      <Filter>libcef_dll\ctocpp\views</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_download_item.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_drag_data.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_drag_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_find_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_focus_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_frame.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_geolocation.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_geolocation_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_jsdialog_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_keyboard_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_life_span_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_load_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_menu_model.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_navigation_entry.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_origin_whitelist.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_pack_resources.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_pack_strings.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_parser.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_path_util.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_print_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_print_settings.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_process_message.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_process_util.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_render_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_render_process_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_request.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_request_context.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_request_context_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_request_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_resource_bundle.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_resource_bundle_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_resource_handler.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_response.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_response_filter.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_runnable.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_scheme.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_ssl_info.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_stream.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_string_visitor.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_task.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_trace.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_urlrequest.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_v8.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_values.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_version.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_web_plugin.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_xml_reader.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_zip_reader.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\cef_sandbox_win.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_atomic_ref_count.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_atomicops.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_basictypes.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_bind.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_bind_helpers.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_build.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_callback.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_callback_forward.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_callback_helpers.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_callback_list.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_cancelable_callback.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_lock.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_logging.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_macros.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_move.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_platform_thread.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_ref_counted.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_scoped_ptr.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_string16.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_template_util.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_thread_checker.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_thread_collision_warner.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_trace_event.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_tuple.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\cef_weak_ptr.h">
-      <Filter>include\base</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_bind_internal.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_callback_internal.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_lock_impl.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_raw_scoped_refptr_mismatch_checker.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_thread_checker_impl.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_atomicops_x86_msvc.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\base\internal\cef_bind_internal_win.h">
-      <Filter>include\base\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_app_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_auth_callback_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_base_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_browser_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_browser_process_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_callback_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_client_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_command_line_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_context_menu_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_cookie_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_dialog_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_display_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_dom_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_download_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_download_item_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_drag_data_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_drag_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_find_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_focus_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_frame_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_geolocation_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_geolocation_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_jsdialog_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_keyboard_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_life_span_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_load_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_menu_model_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_navigation_entry_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_origin_whitelist_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_parser_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_path_util_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_print_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_print_settings_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_process_message_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_process_util_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_render_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_render_process_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_request_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_request_context_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_request_context_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_request_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_resource_bundle_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_resource_bundle_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_resource_handler_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_response_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_response_filter_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_scheme_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_ssl_info_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_stream_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_string_visitor_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_task_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_trace_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_urlrequest_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_v8_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_values_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_web_plugin_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_xml_reader_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\capi\cef_zip_reader_capi.h">
-      <Filter>include\capi</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_export.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_logging_internal.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_ptr.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string_list.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string_map.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string_multimap.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string_types.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_string_wrappers.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_thread_internal.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_time.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_trace_event_internal.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_types.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_types_wrappers.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_types_win.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\internal\cef_win.h">
-      <Filter>include\internal</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_byte_read_handler.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_closure_task.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_helpers.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_message_router.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_resource_manager.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_stream_resource_handler.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_xml_object.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\include\wrapper\cef_zip_archive.h">
-      <Filter>include\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\wrapper\cef_browser_info_map.h">
+    <ClInclude Include="wrapper\cef_browser_info_map.h">
       <Filter>libcef_dll\wrapper</Filter>
     </ClInclude>
+    <ClInclude Include="include\cef_app.h" />
+    <ClInclude Include="include\cef_auth_callback.h" />
+    <ClInclude Include="include\cef_base.h" />
+    <ClInclude Include="include\cef_browser.h" />
+    <ClInclude Include="include\cef_browser_process_handler.h" />
+    <ClInclude Include="include\cef_callback.h" />
+    <ClInclude Include="include\cef_client.h" />
+    <ClInclude Include="include\cef_command_line.h" />
+    <ClInclude Include="include\cef_context_menu_handler.h" />
+    <ClInclude Include="include\cef_cookie.h" />
+    <ClInclude Include="include\cef_dialog_handler.h" />
+    <ClInclude Include="include\cef_display_handler.h" />
+    <ClInclude Include="include\cef_dom.h" />
+    <ClInclude Include="include\cef_download_handler.h" />
+    <ClInclude Include="include\cef_download_item.h" />
+    <ClInclude Include="include\cef_drag_data.h" />
+    <ClInclude Include="include\cef_drag_handler.h" />
+    <ClInclude Include="include\cef_find_handler.h" />
+    <ClInclude Include="include\cef_focus_handler.h" />
+    <ClInclude Include="include\cef_frame.h" />
+    <ClInclude Include="include\cef_geolocation.h" />
+    <ClInclude Include="include\cef_geolocation_handler.h" />
+    <ClInclude Include="include\cef_image.h" />
+    <ClInclude Include="include\cef_jsdialog_handler.h" />
+    <ClInclude Include="include\cef_keyboard_handler.h" />
+    <ClInclude Include="include\cef_life_span_handler.h" />
+    <ClInclude Include="include\cef_load_handler.h" />
+    <ClInclude Include="include\cef_menu_model.h" />
+    <ClInclude Include="include\cef_menu_model_delegate.h" />
+    <ClInclude Include="include\cef_navigation_entry.h" />
+    <ClInclude Include="include\cef_origin_whitelist.h" />
+    <ClInclude Include="include\cef_pack_resources.h" />
+    <ClInclude Include="include\cef_pack_strings.h" />
+    <ClInclude Include="include\cef_parser.h" />
+    <ClInclude Include="include\cef_path_util.h" />
+    <ClInclude Include="include\cef_print_handler.h" />
+    <ClInclude Include="include\cef_print_settings.h" />
+    <ClInclude Include="include\cef_process_message.h" />
+    <ClInclude Include="include\cef_process_util.h" />
+    <ClInclude Include="include\cef_render_handler.h" />
+    <ClInclude Include="include\cef_render_process_handler.h" />
+    <ClInclude Include="include\cef_request.h" />
+    <ClInclude Include="include\cef_request_context.h" />
+    <ClInclude Include="include\cef_request_context_handler.h" />
+    <ClInclude Include="include\cef_request_handler.h" />
+    <ClInclude Include="include\cef_resource_bundle.h" />
+    <ClInclude Include="include\cef_resource_bundle_handler.h" />
+    <ClInclude Include="include\cef_resource_handler.h" />
+    <ClInclude Include="include\cef_response.h" />
+    <ClInclude Include="include\cef_response_filter.h" />
+    <ClInclude Include="include\cef_scheme.h" />
+    <ClInclude Include="include\cef_ssl_info.h" />
+    <ClInclude Include="include\cef_stream.h" />
+    <ClInclude Include="include\cef_string_visitor.h" />
+    <ClInclude Include="include\cef_task.h" />
+    <ClInclude Include="include\cef_trace.h" />
+    <ClInclude Include="include\cef_urlrequest.h" />
+    <ClInclude Include="include\cef_v8.h" />
+    <ClInclude Include="include\cef_values.h" />
+    <ClInclude Include="include\cef_version.h" />
+    <ClInclude Include="include\cef_web_plugin.h" />
+    <ClInclude Include="include\cef_xml_reader.h" />
+    <ClInclude Include="include\cef_zip_reader.h" />
+    <ClInclude Include="include\cef_sandbox_win.h" />
+    <ClInclude Include="include\base\cef_atomic_ref_count.h" />
+    <ClInclude Include="include\base\cef_atomicops.h" />
+    <ClInclude Include="include\base\cef_basictypes.h" />
+    <ClInclude Include="include\base\cef_bind.h" />
+    <ClInclude Include="include\base\cef_bind_helpers.h" />
+    <ClInclude Include="include\base\cef_build.h" />
+    <ClInclude Include="include\base\cef_callback.h" />
+    <ClInclude Include="include\base\cef_callback_forward.h" />
+    <ClInclude Include="include\base\cef_callback_helpers.h" />
+    <ClInclude Include="include\base\cef_callback_list.h" />
+    <ClInclude Include="include\base\cef_cancelable_callback.h" />
+    <ClInclude Include="include\base\cef_lock.h" />
+    <ClInclude Include="include\base\cef_logging.h" />
+    <ClInclude Include="include\base\cef_macros.h" />
+    <ClInclude Include="include\base\cef_move.h" />
+    <ClInclude Include="include\base\cef_platform_thread.h" />
+    <ClInclude Include="include\base\cef_ref_counted.h" />
+    <ClInclude Include="include\base\cef_scoped_ptr.h" />
+    <ClInclude Include="include\base\cef_string16.h" />
+    <ClInclude Include="include\base\cef_template_util.h" />
+    <ClInclude Include="include\base\cef_thread_checker.h" />
+    <ClInclude Include="include\base\cef_thread_collision_warner.h" />
+    <ClInclude Include="include\base\cef_trace_event.h" />
+    <ClInclude Include="include\base\cef_tuple.h" />
+    <ClInclude Include="include\base\cef_weak_ptr.h" />
+    <ClInclude Include="include\base\internal\cef_bind_internal.h" />
+    <ClInclude Include="include\base\internal\cef_callback_internal.h" />
+    <ClInclude Include="include\base\internal\cef_lock_impl.h" />
+    <ClInclude Include="include\base\internal\cef_raw_scoped_refptr_mismatch_checker.h" />
+    <ClInclude Include="include\base\internal\cef_thread_checker_impl.h" />
+    <ClInclude Include="include\base\internal\cef_atomicops_x86_msvc.h" />
+    <ClInclude Include="include\base\internal\cef_bind_internal_win.h" />
+    <ClInclude Include="include\capi\cef_app_capi.h" />
+    <ClInclude Include="include\capi\cef_auth_callback_capi.h" />
+    <ClInclude Include="include\capi\cef_base_capi.h" />
+    <ClInclude Include="include\capi\cef_browser_capi.h" />
+    <ClInclude Include="include\capi\cef_browser_process_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_callback_capi.h" />
+    <ClInclude Include="include\capi\cef_client_capi.h" />
+    <ClInclude Include="include\capi\cef_command_line_capi.h" />
+    <ClInclude Include="include\capi\cef_context_menu_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_cookie_capi.h" />
+    <ClInclude Include="include\capi\cef_dialog_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_display_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_dom_capi.h" />
+    <ClInclude Include="include\capi\cef_download_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_download_item_capi.h" />
+    <ClInclude Include="include\capi\cef_drag_data_capi.h" />
+    <ClInclude Include="include\capi\cef_drag_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_find_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_focus_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_frame_capi.h" />
+    <ClInclude Include="include\capi\cef_geolocation_capi.h" />
+    <ClInclude Include="include\capi\cef_geolocation_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_image_capi.h" />
+    <ClInclude Include="include\capi\cef_jsdialog_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_keyboard_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_life_span_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_load_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_menu_model_capi.h" />
+    <ClInclude Include="include\capi\cef_menu_model_delegate_capi.h" />
+    <ClInclude Include="include\capi\cef_navigation_entry_capi.h" />
+    <ClInclude Include="include\capi\cef_origin_whitelist_capi.h" />
+    <ClInclude Include="include\capi\cef_parser_capi.h" />
+    <ClInclude Include="include\capi\cef_path_util_capi.h" />
+    <ClInclude Include="include\capi\cef_print_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_print_settings_capi.h" />
+    <ClInclude Include="include\capi\cef_process_message_capi.h" />
+    <ClInclude Include="include\capi\cef_process_util_capi.h" />
+    <ClInclude Include="include\capi\cef_render_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_render_process_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_request_capi.h" />
+    <ClInclude Include="include\capi\cef_request_context_capi.h" />
+    <ClInclude Include="include\capi\cef_request_context_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_request_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_resource_bundle_capi.h" />
+    <ClInclude Include="include\capi\cef_resource_bundle_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_resource_handler_capi.h" />
+    <ClInclude Include="include\capi\cef_response_capi.h" />
+    <ClInclude Include="include\capi\cef_response_filter_capi.h" />
+    <ClInclude Include="include\capi\cef_scheme_capi.h" />
+    <ClInclude Include="include\capi\cef_ssl_info_capi.h" />
+    <ClInclude Include="include\capi\cef_stream_capi.h" />
+    <ClInclude Include="include\capi\cef_string_visitor_capi.h" />
+    <ClInclude Include="include\capi\cef_task_capi.h" />
+    <ClInclude Include="include\capi\cef_trace_capi.h" />
+    <ClInclude Include="include\capi\cef_urlrequest_capi.h" />
+    <ClInclude Include="include\capi\cef_v8_capi.h" />
+    <ClInclude Include="include\capi\cef_values_capi.h" />
+    <ClInclude Include="include\capi\cef_web_plugin_capi.h" />
+    <ClInclude Include="include\capi\cef_xml_reader_capi.h" />
+    <ClInclude Include="include\capi\cef_zip_reader_capi.h" />
+    <ClInclude Include="include\capi\views\cef_box_layout_capi.h" />
+    <ClInclude Include="include\capi\views\cef_browser_view_capi.h" />
+    <ClInclude Include="include\capi\views\cef_browser_view_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_button_capi.h" />
+    <ClInclude Include="include\capi\views\cef_button_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_display_capi.h" />
+    <ClInclude Include="include\capi\views\cef_fill_layout_capi.h" />
+    <ClInclude Include="include\capi\views\cef_label_button_capi.h" />
+    <ClInclude Include="include\capi\views\cef_layout_capi.h" />
+    <ClInclude Include="include\capi\views\cef_menu_button_capi.h" />
+    <ClInclude Include="include\capi\views\cef_menu_button_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_panel_capi.h" />
+    <ClInclude Include="include\capi\views\cef_panel_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_scroll_view_capi.h" />
+    <ClInclude Include="include\capi\views\cef_textfield_capi.h" />
+    <ClInclude Include="include\capi\views\cef_textfield_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_view_capi.h" />
+    <ClInclude Include="include\capi\views\cef_view_delegate_capi.h" />
+    <ClInclude Include="include\capi\views\cef_window_capi.h" />
+    <ClInclude Include="include\capi\views\cef_window_delegate_capi.h" />
+    <ClInclude Include="include\internal\cef_export.h" />
+    <ClInclude Include="include\internal\cef_logging_internal.h" />
+    <ClInclude Include="include\internal\cef_ptr.h" />
+    <ClInclude Include="include\internal\cef_string.h" />
+    <ClInclude Include="include\internal\cef_string_list.h" />
+    <ClInclude Include="include\internal\cef_string_map.h" />
+    <ClInclude Include="include\internal\cef_string_multimap.h" />
+    <ClInclude Include="include\internal\cef_string_types.h" />
+    <ClInclude Include="include\internal\cef_string_wrappers.h" />
+    <ClInclude Include="include\internal\cef_thread_internal.h" />
+    <ClInclude Include="include\internal\cef_time.h" />
+    <ClInclude Include="include\internal\cef_trace_event_internal.h" />
+    <ClInclude Include="include\internal\cef_types.h" />
+    <ClInclude Include="include\internal\cef_types_wrappers.h" />
+    <ClInclude Include="include\internal\cef_types_win.h" />
+    <ClInclude Include="include\internal\cef_win.h" />
+    <ClInclude Include="include\views\cef_box_layout.h" />
+    <ClInclude Include="include\views\cef_browser_view.h" />
+    <ClInclude Include="include\views\cef_browser_view_delegate.h" />
+    <ClInclude Include="include\views\cef_button.h" />
+    <ClInclude Include="include\views\cef_button_delegate.h" />
+    <ClInclude Include="include\views\cef_display.h" />
+    <ClInclude Include="include\views\cef_fill_layout.h" />
+    <ClInclude Include="include\views\cef_label_button.h" />
+    <ClInclude Include="include\views\cef_layout.h" />
+    <ClInclude Include="include\views\cef_menu_button.h" />
+    <ClInclude Include="include\views\cef_menu_button_delegate.h" />
+    <ClInclude Include="include\views\cef_panel.h" />
+    <ClInclude Include="include\views\cef_panel_delegate.h" />
+    <ClInclude Include="include\views\cef_scroll_view.h" />
+    <ClInclude Include="include\views\cef_textfield.h" />
+    <ClInclude Include="include\views\cef_textfield_delegate.h" />
+    <ClInclude Include="include\views\cef_view.h" />
+    <ClInclude Include="include\views\cef_view_delegate.h" />
+    <ClInclude Include="include\views\cef_window.h" />
+    <ClInclude Include="include\views\cef_window_delegate.h" />
+    <ClInclude Include="include\wrapper\cef_byte_read_handler.h" />
+    <ClInclude Include="include\wrapper\cef_closure_task.h" />
+    <ClInclude Include="include\wrapper\cef_helpers.h" />
+    <ClInclude Include="include\wrapper\cef_message_router.h" />
+    <ClInclude Include="include\wrapper\cef_resource_manager.h" />
+    <ClInclude Include="include\wrapper\cef_stream_resource_handler.h" />
+    <ClInclude Include="include\wrapper\cef_xml_object.h" />
+    <ClInclude Include="include\wrapper\cef_zip_archive.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\abc\Desktop\cef_binary_3.2623.1393.g9e0fda8_windows32\libcef_dll\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="include\base\internal">
-      <UniqueIdentifier>{61323703-D61A-398E-AD90-40C5A7792D81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\base">
-      <UniqueIdentifier>{7003DB3C-A1A8-315E-84DE-A93E5E879DE1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\capi">
-      <UniqueIdentifier>{A05D63A3-B413-3E08-8037-8026EDDF0DD7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\internal">
-      <UniqueIdentifier>{FAD380CE-9259-3701-B3CE-15705E3CA1CF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\wrapper">
-      <UniqueIdentifier>{BB380B10-E77E-3AA9-8C7E-1703507AD237}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libcef_dll">
-      <UniqueIdentifier>{B555CDCB-F34B-3765-9257-9AF53F3D6A4C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{FA4DA55E-D04C-3662-A473-6E7C3F50501A}</UniqueIdentifier>
-    </Filter>
     <Filter Include="libcef_dll\base">
-      <UniqueIdentifier>{19B88DED-A800-31EE-B4E9-3117DC1FA17F}</UniqueIdentifier>
+      <UniqueIdentifier>{307AFB8A-8E5D-3EFC-9E36-C6CE1447F4BD}</UniqueIdentifier>
     </Filter>
     <Filter Include="libcef_dll\cpptoc">
-      <UniqueIdentifier>{D8F38D7B-9076-31DD-AFCE-FCA6DED539FC}</UniqueIdentifier>
+      <UniqueIdentifier>{D30EF8AF-E63F-3D89-BA5F-29442588E70F}</UniqueIdentifier>
     </Filter>
     <Filter Include="libcef_dll\ctocpp">
-      <UniqueIdentifier>{809513CA-8429-368A-BC1F-56499A532119}</UniqueIdentifier>
+      <UniqueIdentifier>{322C8858-81D9-30E4-A0E4-A9CD91D9028A}</UniqueIdentifier>
     </Filter>
     <Filter Include="libcef_dll\wrapper">
-      <UniqueIdentifier>{452731D4-3A27-3F41-A02E-090021BA16F7}</UniqueIdentifier>
+      <UniqueIdentifier>{B147EC1A-1C28-302C-9EFC-FAD88222A9F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base">
+      <UniqueIdentifier>{4D37970A-2A1C-3493-B5AE-74DC6D51122A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\capi">
+      <UniqueIdentifier>{F466910A-FB12-346B-BB8B-6712D0A3B2E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\internal">
+      <UniqueIdentifier>{9834FA1B-4899-30E1-A2A6-A7F66FEC5A13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\views">
+      <UniqueIdentifier>{E65F25C3-903A-3A56-9AA4-6599D0F8C468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\wrapper">
+      <UniqueIdentifier>{9D3C0F75-A03A-3798-A5F4-60C00C1065F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libcef_dll\cpptoc\views">
+      <UniqueIdentifier>{C0FD21C8-1288-38DA-81A1-DDF8C7F7F467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libcef_dll\ctocpp\views">
+      <UniqueIdentifier>{9177A751-D291-31C2-ADF7-7DD55C773815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libcef_dll">
+      <UniqueIdentifier>{7FFABF97-ADCA-3526-81EC-1CB0DD554D66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{3D8F3C1F-3BC4-3D9F-BD3C-6AB04D95F5D5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\capi\views">
+      <UniqueIdentifier>{6C3C7FB5-F80D-3447-8B33-FD1F04F3B002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\internal">
+      <UniqueIdentifier>{5C15F0CC-A844-33D4-926D-0B1C0614BE83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
