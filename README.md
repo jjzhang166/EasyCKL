@@ -28,23 +28,38 @@ EasyCKL 在cefsimple 的基础上进行开发，是一个 Visual Studio 2015 工
 
 ### 如何编译？
 
-推荐使用VS2015编译，可以获得最佳体验
+1. **方法1** 使用 Visual Studio 2015
 
-编译方法有两种，可以用VS IDE直接编译（推荐），也可以使用Makefile脚本编译
+	用 Visual Studio 2015 打开sln工程文件，选择版本，然后依次选择“生成”->“生成解决方案”（如果有必要，可以手动迁移到低版本VS）
 
-用Visual Studio直接编译就不用说了吧，用VS2015打开sln工程文件，选择版本然后生成解决方案。（如果有必要，可以手动迁移到低版本VS）
+2. **方法2** 用 MSVC NMake Makefile 编译
 
-![4](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/4.png)
+	1. 打开 “开始菜单”->“所有程序（应用）”->“Visual Studio”->“Visual Studio 开发人员命令提示”
 
-用Makefile脚本编译的方法如下：（只能用VS2015）（暂时仅用于低版本）
+	2. 编译 libcef_dll_wrapper
 
-1.打开VS2015 x86命令提示符：<br>
-![1](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/1.png)<br>
-2.切换到源码所在目录：<br>
-![2](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/2.png)<br>
-3.输入nmake命令回车：<br>
-![3](http://git.oschina.net/daemon_process/EasyCKL/raw/master/pic/3.png)<br>
-（如果增加了源代码文件，需要改动makefile脚本）<br>
+		```
+		> cd ./cef
+		
+		> nmake
+		```
+
+		将编译后的 libcef_dll_wrapper.lib 移动到 out 文件夹
+
+	3. 编译 EasyCKL
+
+		```
+		> cd ..
+	
+		> nmake
+		```
+	
+	4. 注意，如果更换了CEF版本或改动了源码文件，需要改动 Makefile 脚本，另外，提供了 getobjs.sh 脚本帮助你直接生成需要的所有目标文件列表，用于编写 Makefile。这个脚本是一个 Shell 脚本，在 Windows 环境运行需要 MSYS 环境或 Cygwin 环境。
+
+ 
+3. **方法3** 使用 MinGW 编译
+
+	此编译方法请期待新版本
 
 ### 鸣谢
 

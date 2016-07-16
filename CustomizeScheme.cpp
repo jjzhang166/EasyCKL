@@ -93,7 +93,7 @@ public:
 
 		bool has_data = false;
 		bytes_read = 0;
-		int transfer_size = std::min(bytes_to_read, (int)(data_.size() - offset_));
+		int transfer_size = (std::min)(bytes_to_read, (int)(data_.size() - offset_));
 
 		if (offset_ < data_.size()) {
 			memcpy(data_out, &data_[offset_], transfer_size);
