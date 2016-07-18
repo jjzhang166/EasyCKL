@@ -40,7 +40,7 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 
 typedef struct tagERROR_INFOMATION {
 	SIZE_T cbSzie;
-	CefFrame* lpFrame;
+	void* lpFrame;
 	BOOL bCertError;
 	int iErrorCode;
 	const wchar_t* szFailedUrl;

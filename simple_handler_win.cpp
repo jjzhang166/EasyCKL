@@ -176,6 +176,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 
 bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	const CefString& origin_url,
+	const CefString& accept_lang,
 	JSDialogType dialog_type,
 	const CefString& message_text,
 	const CefString& default_prompt_text,
