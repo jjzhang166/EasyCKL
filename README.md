@@ -22,9 +22,9 @@ http://git.oschina.net/daemon_process/EasyCKL/attach_files
 
 EasyCKL 致力于封装复杂的 CEF Class，呈现给用户 Win32API 格式的C语言风格接口，便于给应用程序嵌入 Chromium 内核的 Web 控件。EasyCKL 使用 Visual Studio 2015 编译可以获得最佳效果。
 
-CEF的版本为 cef_binary_3.2704.1431.ge7ddb8a_windows32
+CEF的版本为 cef_binary_3.2623.1401.gb90a3be_windows32 
 
-> **注意** 由于这个版本已经不再支持 Windows XP，我们可能会在未来降低内核版本来兼容 XP 系统
+> 这个版本是支持 Windows XP 的最后一个版本，但是我们同样携带了新版（cef_binary_3.2704.1431.ge7ddb8a_windows32）的相关代码，如果你认为不需要继续支持 XP，可以自行使用新代码编译
 
 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程 + Makefile文件），CEF3 工作需要的 DLL，可以自行前往相应发布站点下载或通过源代码编译。也可以用我们提供的“开发包获取”中的地址获取。
 
