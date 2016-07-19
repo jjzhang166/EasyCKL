@@ -9,7 +9,7 @@
 
 #include "simple_app.h"
 
-extern CefString localinf;
+extern CefString szLocalInf;
 
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
@@ -234,9 +234,9 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	std::pair<CefString, CefString> pair;
 	request->GetHeaderMap(map);
 
-	if (!localinf.empty()) {
+	if (!szLocalInf.empty()) {
 		pair.first = L"Accept-Language";
-		pair.second = localinf;// L"zh-CN";
+		pair.second = szLocalInf;// L"zh-CN";
 		map.insert(pair);
 	}
 

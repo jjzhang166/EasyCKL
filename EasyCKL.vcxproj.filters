@@ -58,6 +58,9 @@
     <ClInclude Include="SDK\C and C++\EasyCKL.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CKLMain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Export.def">
