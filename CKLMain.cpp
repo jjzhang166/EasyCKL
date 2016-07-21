@@ -156,8 +156,10 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	else if (isSetUA)
 		CefString(&settings.user_agent) = ua;
 
-	if (local)
+	if (local) {
+		CefString(&settings.locale) = local;
 		szLocalInf = local;
+	}
 
 	CefInitialize(main_args, settings, app.get(), nullptr);
 	WaitForSingleObject(hEvent, INFINITE);
@@ -461,23 +463,28 @@ CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore() {
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor) {
 	CefRefPtr<CefCookieManager> lpCookieManager = CefCookieManager::GetGlobalManager(NULL);
 	CefCookie Cookie;
-	CefString(&Cookie.name).FromWString(lpCookieDescriptor->szCookieName); //.FromASCII("Venus_UserInfo");
-	CefString(&Cookie.value).FromWString(lpCookieDescriptor->szCookieValue);//FromASCII("aaaaaaa00000000000000000000000000000000000000000000000");
-	CefString(&Cookie.domain).FromWString(lpCookieDescriptor->szCookieDomain);//FromASCII("venus.sogou-inc.com");
-	CefString(&Cookie.path).FromWString(lpCookieDescriptor->szCookiePath); //FromASCII("/");
-	Cookie.has_expires = lpCookieDescriptor->bHasExpires; //true
+	CefString(&Cookie.name).FromWString(lpCookieDescriptor->szCookieName);
+	CefString(&Cookie.value).FromWString(lpCookieDescriptor->szCookieValue);
+	CefString(&Cookie.domain).FromWString(lpCookieDescriptor->szCookieDomain);//"xxx.xxx.com"
+	CefString(&Cookie.path).FromWString(lpCookieDescriptor->szCookiePath); //"/"
+	Cookie.has_expires = lpCookieDescriptor->bHasExpires;
 	Cookie.secure = lpCookieDescriptor->bSecure;
 	Cookie.httponly = lpCookieDescriptor->bHttponly;
-	Cookie.expires.year = lpCookieDescriptor->iExpiresYear; //2200;
-	Cookie.expires.month = lpCookieDescriptor->iExpiresMonth;//4;
-	Cookie.expires.day_of_week = lpCookieDescriptor->iExpiresDayOfWeek;// 5;
-	Cookie.expires.day_of_month = lpCookieDescriptor->iExpiresDayOfMonth; //11;
+	Cookie.expires.year = lpCookieDescriptor->iExpiresYear;
+	Cookie.expires.month = lpCookieDescriptor->iExpiresMonth;
+	Cookie.expires.day_of_week = lpCookieDescriptor->iExpiresDayOfWeek;
+	Cookie.expires.day_of_month = lpCookieDescriptor->iExpiresDayOfMonth;
 	Cookie.expires.hour = lpCookieDescriptor->iExpiresHour;
 	Cookie.expires.minute = lpCookieDescriptor->iExpiresMinute;
 	Cookie.expires.second = lpCookieDescriptor->iExpiresSecond;
 	Cookie.expires.millisecond = lpCookieDescriptor->iExpiresMillisecond;
 	//CefPostTask(TID_IO, base::Bind(lpCookieManager.get(), &CefCookieManager::SetCookie, CefString(szUrl), Cookie));
 	return lpCookieManager->SetCookie(szUrl, Cookie, 0);
+}
+
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName) {
+	CefRefPtr<CefCookieManager> lpCookieManager = CefCookieManager::GetGlobalManager(NULL);
+	return lpCookieManager->DeleteCookies(szUrl, szCookieName, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {

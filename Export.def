@@ -48,6 +48,7 @@ Chrome_EnableCookieStorageEx
 Chrome_DisableCookieStorage
 Chrome_CookieManagerFlushStore
 Chrome_CookieManagerSetCookie
+Chrome_CookieManagerDeleteCookie
 
 Chrome_SetUserAgent
 Chrome_SetProxyServer

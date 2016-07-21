@@ -55,10 +55,10 @@
     <ClInclude Include="simple_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\C and C++\EasyCKL.h">
+    <ClInclude Include="CKLMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CKLMain.h">
+    <ClInclude Include="SDK\C and C++\EasyCKL.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

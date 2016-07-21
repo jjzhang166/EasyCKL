@@ -81,11 +81,19 @@ typedef struct tagBROWSER_CALLBACKS {
 #define INITFLAG_SINGLEPROCESS 0x4
 #define INITFLAG_USECOMPATIBILITY 0x8
 #define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
+#define INITFLAG_DISABLEGPU 0x20
+#define INITFLAG_EXTDATA 0x40
+#define INITFLAG_SETUSERAGENT 0x80
 #endif // __ECKL_SRC_DEV_
+
+typedef struct tagINIT_EXTDATA {
+	SIZE_T cbSzie;
+	const wchar_t* szUserAgent;
+} INIT_EXTDATA, *LPINIT_EXTDATA;
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
 CKLEXPORT int WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);
-CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL old_ver, wchar_t* local, wchar_t* cache_path);
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPINIT_EXTDATA lpExtData, wchar_t* szLocal, wchar_t* szCachePath);
 
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
@@ -150,6 +158,29 @@ CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
 CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore();
+
+typedef struct _tagCOOKIE_DESCRIPTOR {
+	SIZE_T cbSize;
+	DWORD dwRetention;
+	const wchar_t* szCookieName;
+	const wchar_t* szCookieValue;
+	const wchar_t* szCookieDomain;
+	const wchar_t* szCookiePath;
+	BOOL bHasExpires;
+	BOOL bSecure;
+	BOOL bHttponly;
+	int iExpiresYear;          // Four digit year "2007"
+	int iExpiresMonth;         // 1-based month (values 1 = January, etc.)
+	int iExpiresDayOfWeek;     // 0-based day of week (0 = Sunday, etc.)
+	int iExpiresDayOfMonth;    // 1-based day of month (1-31)
+	int iExpiresHour;          // Hour within the current day (0-23)
+	int iExpiresMinute;        // Minute within the current hour (0-59)
+	int iExpiresSecond;        // Second within the current minute (0-59 plus leap seconds which may take it up to 60).
+	int iExpiresMillisecond;   // Milliseconds within the current second (0-999)
+} COOKIE_DESCRIPTOR, *LPCOOKIE_DESCRIPTOR;
+
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor);
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName);
 CKLEXPORT void WINAPI Chrome_Close(void* browser);
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler);
 CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop);
