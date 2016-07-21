@@ -33,7 +33,7 @@ CEF的版本为 cef_binary_3.2623.1401.gb90a3be_windows32
 1. **方法1** 使用 Visual Studio 2015
 
 	用 Visual Studio 2015 打开sln工程文件，选择版本，然后依次选择“生成”->“生成解决方案”（如果有必要，可以手动迁移到低版本VS）
-
+ 
 2. **方法2** 用 MSVC NMake Makefile 编译
 
 	1. 打开 “开始菜单”->“所有程序（应用）”->“Visual Studio”->“Visual Studio 开发人员命令提示”
@@ -44,15 +44,15 @@ CEF的版本为 cef_binary_3.2623.1401.gb90a3be_windows32
 		> cd { EasyCKL源码目录 }
 		> nmake
 		```
-
+ 
 		> 第一次编译时会自动运行 cd cef & nmake & cd .. 来编译 libcef_dll_wrapper ，但 nmake clean 不会清理 libcef_dll_wrapper 的编译产生的目标文件，欲删除这些目标文件，使用以下命令
 
-		```
-		> cd cef
-		> nmake clean
-		```
-
-	4. 注意，如果更换了CEF版本或改动了源码文件，需要改动 Makefile 脚本，另外，我提供了 getobjs.sh 脚本帮助你直接生成需要的所有目标文件列表，用于编写 Makefile。这个脚本是一个 Shell 脚本，在 Windows 环境运行需要 MSYS 环境或 Cygwin 环境。
+		>```
+		>> cd cef
+		>> nmake clean
+		>```
+ 
+	4. 注意，如果更换了CEF版本或增加、删除了源码文件，需要改动 Makefile 脚本。另外，我提供了 getobjs.sh 脚本帮助你直接生成需要的所有目标文件列表，用于快速编写 Makefile。这个脚本是一个 Shell 脚本，在 Windows 环境运行需要 MSYS 环境或 Cygwin 环境。
 
 ### 鸣谢
 
