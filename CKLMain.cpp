@@ -9,7 +9,7 @@
 #pragma comment(lib, "libcef_dll_wrapper.lib")
 #pragma comment(lib, "user32.lib")
 
-#define _EPL_COMPATIBILITY
+//#define _EPL_COMPATIBILITY
 
 #ifdef _EPL_COMPATIBILITY
 #include<Shellapi.h>

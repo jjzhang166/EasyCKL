@@ -50,7 +50,7 @@ typedef struct tagERROR_INFOMATION {
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
+typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* lpBrowser);
 typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
 typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
@@ -187,27 +187,27 @@ typedef struct _tagCOOKIE_DESCRIPTOR {
 
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor);
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName);
-CKLEXPORT void WINAPI Chrome_Close(void* browser);
+CKLEXPORT void WINAPI Chrome_Close(void* lpBrowser);
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler);
 CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop);
-CKLEXPORT DWORD WINAPI Chrome_GetUrlLength(void* browser);
-CKLEXPORT void WINAPI Chrome_GetUrlString(void* browser, wchar_t* buffer, DWORD buffer_length);
+CKLEXPORT DWORD WINAPI Chrome_GetUrlLength(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_GetUrlString(void* lpBrowser, wchar_t* buffer, DWORD buffer_length);
 CKLEXPORT void WINAPI Chrome_DoMessageLoopWork();
-CKLEXPORT void WINAPI Chrome_LoadString(void* browser, const wchar_t* string, const wchar_t* url);
-CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(void* browser);
+CKLEXPORT void WINAPI Chrome_LoadString(void* lpBrowser, const wchar_t* string, const wchar_t* url);
+CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(void* lpBrowser);
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash();
 CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version);
-CKLEXPORT void WINAPI Chrome_ShowDevTools(void* browser);
-CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* browser, HWND hParent, RECT* rect);
-CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* browser, LONG_PTR data);
-CKLEXPORT void WINAPI Chrome_PrintToPDF(void* browser, wchar_t* pdf_path);
-CKLEXPORT double WINAPI Chrome_GetZoomLevel(void* browser);
-CKLEXPORT void WINAPI Chrome_SetZoomLevel(void* browser, double dbZoomLevel);
+CKLEXPORT void WINAPI Chrome_ShowDevTools(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(void* lpBrowser, HWND hParent, RECT* rect);
+CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(void* lpBrowser, LONG_PTR data);
+CKLEXPORT void WINAPI Chrome_PrintToPDF(void* lpBrowser, wchar_t* pdf_path);
+CKLEXPORT double WINAPI Chrome_GetZoomLevel(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_SetZoomLevel(void* lpBrowser, double dbZoomLevel);
 CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 
 typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
-CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(void* lpBrowser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
 
 enum BrowserInfomationType
 {
@@ -226,17 +226,17 @@ enum BrowserInfomationType
 #define BROWSER_LASTERROR_CERTERROR 0x8
 #endif // __ECKL_SRC_DEV_
 
-CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* browser, BrowserInfomationType type, void* buffer);
+CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* lpBrowser, BrowserInfomationType type, void* buffer);
 
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, void* recvd);
 CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath, bool persist_session_cookies);
 
 #ifndef __EC_PACK_API_CPP_
-CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* browser, wchar_t* url, wchar_t* referer);
-CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* browser, wchar_t* id, wchar_t* value);
-CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* browser, wchar_t* name, wchar_t* value);
-CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* browser, wchar_t* id);
-CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* browser, wchar_t* name);
+CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* lpBrowser, wchar_t* url, wchar_t* referer);
+CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* lpBrowser, wchar_t* id, wchar_t* value);
+CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* lpBrowser, wchar_t* name, wchar_t* value);
+CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* lpBrowser, wchar_t* id);
+CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* lpBrowser, wchar_t* name);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
 CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
 #endif // __EC_PACK_API_CPP_
@@ -256,8 +256,8 @@ CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
-CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* browser, wchar_t* name);
-CKLEXPORT void* WINAPI EcQBIGetMainFrame(void* browser);
+CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* lpBrowser, wchar_t* name);
+CKLEXPORT void* WINAPI EcQBIGetMainFrame(void* lpBrowser);
 CKLEXPORT void WINAPI Chrome_FrameDoCopy(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
