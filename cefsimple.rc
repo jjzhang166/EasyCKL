@@ -27,8 +27,8 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 //
 
 1 VERSIONINFO
- FILEVERSION 6,7,0,12
- PRODUCTVERSION 6,7,0,12
+ FILEVERSION 6,8,0,49
+ PRODUCTVERSION 6,8,0,49
  FILEFLAGSMASK 0x0L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -44,13 +44,13 @@ BEGIN
         BLOCK "000004b0"
         BEGIN
             VALUE "CompanyName", "deamon_process"
-            VALUE "FileDescription", "EasyCKL Shared Library - EasyCKL Core\r\nDynamic Link Library"
-            VALUE "FileVersion", "6.7.0.12"
+            VALUE "FileDescription", "EasyCKL Shared Library - EasyCKL Core Dynamic Link Library"
+            VALUE "FileVersion", "6.8.0.49"
             VALUE "InternalName", "EasyCKL Shared Library"
             VALUE "LegalCopyright", "Copyright (C) 2015 deamon_process"
             VALUE "OriginalFilename", "EasyCKL.dll"
             VALUE "ProductName", "EasyCKL Shared Library"
-            VALUE "ProductVersion", "6.7.0.12"
+            VALUE "ProductVersion", "6.8.0.49"
         END
     END
     BLOCK "VarFileInfo"

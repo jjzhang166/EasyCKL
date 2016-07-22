@@ -27,14 +27,15 @@ Chrome_Window
 Chrome_GoBack
 Chrome_GoForward
 Chrome_Refresh
+Chrome_RefreshIgnoreCache
 Chrome_Stop
-
+Chrome_SetFocus
 Chrome_GetUrlLength
 Chrome_GetUrlString
-
 Chrome_ExecJS
-Chrome_SetV8ContextCallback
+Chrome_GetHtmlSource
 
+Chrome_SetV8ContextCallback
 Chrome_AddJSFunction
 Chrome_GetV8ValueListSize
 Chrome_GetV8ValueInt
@@ -47,6 +48,8 @@ Chrome_EnableCookieStorage
 Chrome_EnableCookieStorageEx
 Chrome_DisableCookieStorage
 Chrome_CookieManagerFlushStore
+Chrome_CookieManagerSetCookie
+Chrome_CookieManagerDeleteCookie
 
 Chrome_SetUserAgent
 Chrome_SetProxyServer
@@ -94,3 +97,4 @@ EcPkJavaScriptSetValueByObjectId
 EcPkJavaScriptSetValueByObjectName
 EcPkJavaScriptSubmitByFormId
 EcPkJavaScriptSubmitByFormName
+EcPkDisableDragDrop

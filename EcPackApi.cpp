@@ -25,6 +25,24 @@ CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RE
 	return browser;
 }
 
+CKLEXPORT void WINAPI EcPkDisableDragDrop(SimpleHandler* handler) {
+	HWND hBrowserWindow = Chrome_GetWindowHandle(handler);
+	if (hBrowserWindow) {
+		HWND hWndHostChild = GetWindow(hBrowserWindow, GW_CHILD);
+
+		HMODULE hModule = LoadLibraryW(L"ole32.dll");
+		if (hModule) {
+			typedef int (WINAPI * RevokeDragDrop_t)(HWND hWnd);
+			RevokeDragDrop_t RevokeDragDrop = (RevokeDragDrop_t)GetProcAddress(hModule, "RevokeDragDrop");
+			if (RevokeDragDrop)
+				RevokeDragDrop(hWndHostChild);
+			//#include <Ole2.h>
+			//#pragma comment(lib, "ole32.lib")
+			//RevokeDragDrop(hWndHostChild);
+		}
+	}
+}
+
 CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(SimpleHandler* handler, wchar_t* id, wchar_t* value) {
 	std::wstring js = L"document.getElementById('" + std::wstring(id) + L"').value='" + value + L"'";
 	Chrome_ExecJS(handler, js.c_str());

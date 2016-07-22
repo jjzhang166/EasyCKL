@@ -1,11 +1,4 @@
-#include <Windows.h>
-
-#include "include/cef_client.h"
-#include "include/wrapper/cef_helpers.h"
-#include "include/cef_parser.h"
-
-#include "simple_app.h"
-#include "simple_handler.h"
+#include "CKLMain.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "libcef_d.lib")
@@ -24,44 +17,18 @@
 NOTIFYICONDATA nid = { 0 };
 #endif // _EPL_COMPATIBILITY
 
-#define CKLEXPORT extern "C" __declspec(dllexport)
-
-typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
-typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
-
-class MyV8Handler : public CefV8Handler {
-public:
-	MyV8Handler(V8Handler_CallBack handler) {
-		handler_callback = handler;
-	}
-	~MyV8Handler() {}
-	V8Handler_CallBack handler_callback = 0;
-	virtual bool Execute(const CefString& name,
-		CefRefPtr<CefV8Value> object,
-		const CefV8ValueList& arguments,
-		CefRefPtr<CefV8Value>& retval,
-		CefString& exception) OVERRIDE {
-
-		if (handler_callback) {
-			return handler_callback(name.c_str(), &arguments, &retval) != FALSE;
-		}
-		return false;
-	}
-
-	// Provide the reference counting implementation for this class.
-	IMPLEMENT_REFCOUNTING(MyV8Handler);
-};
-
 extern HANDLE hEvent = 0;
 void* v8contextcreate = 0;
+
 BOOL isSetUA = FALSE;
 CefString ua;
+extern CefString szLocalInf("");
 
-extern BOOL isSetProxy = FALSE;
-extern CefString proxyserver("");
-extern BOOL flash = FALSE;
-extern CefString flash_path("");
-extern CefString localinf("");
+extern BOOL bSetProxy = FALSE;
+extern CefString szProxyServer("");
+extern BOOL bEnableFlash = FALSE;
+extern CefString szFlashPath("");
+extern BOOL bDisableGpu = FALSE;
 
 CefRefPtr<CefV8Handler> myV8handle;
 
@@ -104,16 +71,6 @@ CKLEXPORT BOOL WINAPI Chrome_IsUIThread() {
 	return Chrome_CurrentlyOn(TID_UI);
 }
 
-enum BrowserInfomationType
-{
-	BrowserInfomationUserDataLoogPtr = 0,
-	BrowserInfomationCanGoBack = 1,
-	BrowserInfomationCanGoForward = 2,
-	BrowserInfomationMainFrame = 3,
-	BrowserInfomationIsLoading = 4,
-	BrowserInfomationLastError = 5
-};
-
 CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, BrowserInfomationType type, void* buffer) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
@@ -147,18 +104,15 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, Brow
 	}
 }
 
-#define INITFLAG_NOSSL 0x1
-#define INITFLAG_CACHESTORAGE 0x2
-#define INITFLAG_SINGLEPROCESS 0x4
-#define INITFLAG_USECOMPATIBILITY 0x8
-#define INITFLAG_ENABLEHIGHDPISUPPORT 0x10
-
-CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, void* recvd) {
+CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData) {
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
 	if (flag & INITFLAG_ENABLEHIGHDPISUPPORT)
 		CefEnableHighDPISupport();
+
+	if (flag & INITFLAG_DISABLEGPU)
+		bDisableGpu = TRUE;
 
 	CefMainArgs main_args(hInstance);
 	CefRefPtr<SimpleApp> app(new SimpleApp);
@@ -171,9 +125,6 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	CefSettings settings;
 	settings.command_line_args_disabled = true;
 	settings.no_sandbox = true;
-
-	if (isSetUA)
-		CefString(&settings.user_agent) = ua;
 
 #ifdef _DEBUG
 	settings.log_severity = LOGSEVERITY_INFO;
@@ -197,8 +148,18 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	else
 		settings.ignore_certificate_errors = false;
 
-	if (local)
-		localinf = local;
+	if (flag & INITFLAG_EXTDATA) {
+		if (flag & INITFLAG_SETUSERAGENT) {
+			CefString(&settings.user_agent) = extData->szUserAgent;
+		}
+	}
+	else if (isSetUA)
+		CefString(&settings.user_agent) = ua;
+
+	if (local) {
+		CefString(&settings.locale) = local;
+		szLocalInf = local;
+	}
 
 	CefInitialize(main_args, settings, app.get(), nullptr);
 	WaitForSingleObject(hEvent, INFINITE);
@@ -209,16 +170,16 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	return -1;
 }
 
-CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL old_ver, wchar_t* local, wchar_t* cache_path) {
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPINIT_EXTDATA lpExtData, wchar_t* szLocal, wchar_t* szCachePath) {
 	DWORD _flag = 0;
 	int ret = 0;
 
 	/* ¼æÈÝ¾É°æ±¾µÄ Chrome_InitializeEx */
-	if (old_ver) {
+	if (!(dwFlags & INITFLAG_EXTDATA) && lpExtData) {
 		_flag |= INITFLAG_CACHESTORAGE;
-		if (flag) _flag |= INITFLAG_NOSSL;
+		if (dwFlags) _flag |= INITFLAG_NOSSL;
 	}
-	else _flag = flag &~INITFLAG_USECOMPATIBILITY;
+	else _flag = dwFlags &~INITFLAG_USECOMPATIBILITY;
 
 #ifdef _EPL_COMPATIBILITY
 	if (!IsDebuggerPresent()) {
@@ -227,7 +188,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD flag, BOOL o
 	_flag |= INITFLAG_USECOMPATIBILITY;
 #endif // _EPL_COMPATIBILITY
 
-	ret = EcKeInitialize(hInstance, _flag, local, cache_path, 0);
+	ret = EcKeInitialize(hInstance, _flag, szLocal, szCachePath, lpExtData);
 
 #ifdef _EPL_COMPATIBILITY
 	if (Chrome_IsUIThread() && GetFileAttributes(L".\\disable-epl-debug-compatibility-warning") == INVALID_FILE_ATTRIBUTES) {
@@ -375,12 +336,12 @@ CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop) {
 }
 
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash() {
-	flash = TRUE;
+	bEnableFlash = TRUE;
 }
 
 CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version) {
-	flash = TRUE;
-	flash_path = ppapi_flash_path;
+	bEnableFlash = TRUE;
+	szFlashPath = ppapi_flash_path;
 }
 
 CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* _ua) {
@@ -389,8 +350,8 @@ CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* _ua) {
 }
 
 CKLEXPORT void WINAPI Chrome_SetProxyServer(wchar_t* proxy) {
-	isSetProxy = TRUE;
-	proxyserver = proxy;
+	bSetProxy = TRUE;
+	szProxyServer = proxy;
 }
 
 CKLEXPORT void WINAPI Chrome_LoadUrl(SimpleHandler* handler, wchar_t* url) {
@@ -463,11 +424,29 @@ CKLEXPORT void WINAPI Chrome_Refresh(SimpleHandler* handler) {
 	}
 }
 
+CKLEXPORT void WINAPI Chrome_RefreshIgnoreCache(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->ReloadIgnoreCache();
+		}
+	}
+}
+
 CKLEXPORT void WINAPI Chrome_Stop(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
 			browser->StopLoad();
+		}
+	}
+}
+
+CKLEXPORT void WINAPI Chrome_SetFocus(SimpleHandler* handler, bool bFocus) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->GetHost()->SetFocus(bFocus);
 		}
 	}
 }
@@ -497,6 +476,33 @@ CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath,
 
 CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore() {
 	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
+}
+
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor) {
+	CefRefPtr<CefCookieManager> lpCookieManager = CefCookieManager::GetGlobalManager(NULL);
+	CefCookie Cookie;
+	CefString(&Cookie.name).FromWString(lpCookieDescriptor->szCookieName);
+	CefString(&Cookie.value).FromWString(lpCookieDescriptor->szCookieValue);
+	CefString(&Cookie.domain).FromWString(lpCookieDescriptor->szCookieDomain);//"xxx.xxx.com"
+	CefString(&Cookie.path).FromWString(lpCookieDescriptor->szCookiePath); //"/"
+	Cookie.has_expires = lpCookieDescriptor->bHasExpires;
+	Cookie.secure = lpCookieDescriptor->bSecure;
+	Cookie.httponly = lpCookieDescriptor->bHttponly;
+	Cookie.expires.year = lpCookieDescriptor->iExpiresYear;
+	Cookie.expires.month = lpCookieDescriptor->iExpiresMonth;
+	Cookie.expires.day_of_week = lpCookieDescriptor->iExpiresDayOfWeek;
+	Cookie.expires.day_of_month = lpCookieDescriptor->iExpiresDayOfMonth;
+	Cookie.expires.hour = lpCookieDescriptor->iExpiresHour;
+	Cookie.expires.minute = lpCookieDescriptor->iExpiresMinute;
+	Cookie.expires.second = lpCookieDescriptor->iExpiresSecond;
+	Cookie.expires.millisecond = lpCookieDescriptor->iExpiresMillisecond;
+	//CefPostTask(TID_IO, base::Bind(lpCookieManager.get(), &CefCookieManager::SetCookie, CefString(szUrl), Cookie));
+	return lpCookieManager->SetCookie(szUrl, Cookie, 0);
+}
+
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName) {
+	CefRefPtr<CefCookieManager> lpCookieManager = CefCookieManager::GetGlobalManager(NULL);
+	return lpCookieManager->DeleteCookies(szUrl, szCookieName, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {
@@ -622,4 +628,31 @@ CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize,
 
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer) {
 	free(lpBuffer);
+}
+
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+
+			class Visitor : public CefStringVisitor {
+			public:
+				explicit Visitor(CefRefPtr<CefBrowser> browser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction) : browser_(browser),
+					context(lpContext), callback(lpCallbackFunction) {}
+				virtual void Visit(const CefString& string) OVERRIDE {
+					if (callback)
+						callback(context, string.c_str());
+				}
+			private:
+				CefRefPtr<CefBrowser> browser_;
+				Ec_GetSource_CallBack callback;
+				PVOID context;
+				IMPLEMENT_REFCOUNTING(Visitor);
+			};
+
+
+			CefRefPtr<Visitor> a = new Visitor(browser, lpContext, lpCallbackFunction);
+			browser->GetMainFrame()->GetSource(a);
+		}
+	}
 }
