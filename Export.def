@@ -27,14 +27,15 @@ Chrome_Window
 Chrome_GoBack
 Chrome_GoForward
 Chrome_Refresh
+Chrome_RefreshIgnoreCache
 Chrome_Stop
-
+Chrome_SetFocus
 Chrome_GetUrlLength
 Chrome_GetUrlString
-
 Chrome_ExecJS
-Chrome_SetV8ContextCallback
+Chrome_GetHtmlSource
 
+Chrome_SetV8ContextCallback
 Chrome_AddJSFunction
 Chrome_GetV8ValueListSize
 Chrome_GetV8ValueInt

@@ -255,12 +255,8 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
-	CEF_REQUIRE_UI_THREAD();
+void inline CreateBrowserPrepare(DWORD flags, CefWindowInfo& window_info, CefBrowserSettings& browser_settings, LPCREATE_BROWSER_EXTDATA extdata) {
 
-	CefWindowInfo window_info;
-	window_info.SetAsChild(hParent, rect);
-	CefBrowserSettings browser_settings;
 	browser_settings.javascript_close_windows = STATE_DISABLED;
 	if (flags & BROWSERFLAG_DISABLE_JAVASCRIPT)
 		browser_settings.javascript = STATE_DISABLED;
@@ -273,29 +269,36 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, L
 			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
 		if (flags & BROWSERFLAG_BACK_COLOR)
 			browser_settings.background_color = extdata->dwBackColor;
+		if (flags & BROWSERFLAG_DEF_FONT) {
+			CefString(&browser_settings.standard_font_family) = extdata->szDefaultFont;
+			CefString(&browser_settings.fixed_font_family) = extdata->szDefaultFont;
+			CefString(&browser_settings.serif_font_family) = extdata->szDefaultFont;
+			CefString(&browser_settings.sans_serif_font_family) = extdata->szDefaultFont;
+			CefString(&browser_settings.cursive_font_family) = extdata->szDefaultFont;
+			CefString(&browser_settings.fantasy_font_family) = extdata->szDefaultFont;
+		}
+		if (flags & BROWSERFLAG_DEF_FONT_SIZE) {
+			browser_settings.default_font_size = extdata->dwDefaultFontSize;
+			browser_settings.default_fixed_font_size = extdata->dwDefaultFontSize;
+		}
 	}
+}
+
+void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
+	CEF_REQUIRE_UI_THREAD();
+	CefWindowInfo window_info;
+	window_info.SetAsChild(hParent, rect);
+	CefBrowserSettings browser_settings;
+	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
 }
 
 void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
-
 	CefWindowInfo window_info;
 	window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
-	browser_settings.javascript_close_windows = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_JAVASCRIPT)
-		browser_settings.javascript = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_LOAD_IMAGE)
-		browser_settings.image_loading = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
-		browser_settings.web_security = STATE_DISABLED;
-	if (flags & BROWSERFLAG_EXTDATA) {
-		if (flags & BROWSERFLAG_DEF_ENCODING)
-			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
-		if (flags & BROWSERFLAG_BACK_COLOR)
-			browser_settings.background_color = extdata->dwBackColor;
-	}
+	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
 	return this;
 }

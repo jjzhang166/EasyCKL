@@ -13,6 +13,8 @@
 #define BROWSERFLAG_EXTDATA 0x20
 #define BROWSERFLAG_DEF_ENCODING 0x40
 #define BROWSERFLAG_BACK_COLOR 0x80
+#define BROWSERFLAG_DEF_FONT 0x100
+#define BROWSERFLAG_DEF_FONT_SIZE 0x200
 
 #define BROWSER_LASTERROR_LOADING 0x1
 #define BROWSER_LASTERROR_LOADERROR 0x2
@@ -23,6 +25,8 @@ typedef struct tagCREATE_BROWSER_EXTDATA {
 	SIZE_T cbSzie;
 	wchar_t* szDefaultEncoding;
 	DWORD dwBackColor;
+	wchar_t* szDefaultFont;
+	DWORD dwDefaultFontSize;
 }CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 
 /* 回调函数中使用的结构 */

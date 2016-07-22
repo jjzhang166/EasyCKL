@@ -82,4 +82,6 @@ typedef struct _tagCOOKIE_DESCRIPTOR {
 	int iExpiresMillisecond;   // Milliseconds within the current second (0-999)
 } COOKIE_DESCRIPTOR, *LPCOOKIE_DESCRIPTOR;
 
+typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
+
 #endif // _CKLMAIN_H_

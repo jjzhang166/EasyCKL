@@ -103,12 +103,16 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPI
 #define BROWSERFLAG_EXTDATA 0x20
 #define BROWSERFLAG_DEF_ENCODING 0x40
 #define BROWSERFLAG_BACK_COLOR 0x80
+#define BROWSERFLAG_DEF_FONT 0x100
+#define BROWSERFLAG_DEF_FONT_SIZE 0x200
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagCREATE_BROWSER_EXTDATA {
 	SIZE_T cbSzie;
 	wchar_t* szDefaultEncoding;
 	DWORD dwBackColor;
+	wchar_t* szDefaultFont;
+	DWORD dwDefaultFontSize;
 }CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 #endif // __ECKL_SRC_DEV_
 
@@ -147,13 +151,15 @@ CKLEXPORT void WINAPI Chrome_MessageLoop();
 CKLEXPORT void WINAPI Chrome_Shutdown();
 CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* ua);
 CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy);
-CKLEXPORT void WINAPI Chrome_LoadUrl(void* browser, const wchar_t* url);
-CKLEXPORT HWND WINAPI Chrome_Window(void* browser);
-CKLEXPORT void WINAPI Chrome_GoBack(void* browser);
-CKLEXPORT void WINAPI Chrome_GoForward(void* browser);
-CKLEXPORT void WINAPI Chrome_Refresh(void* browser);
-CKLEXPORT void WINAPI Chrome_Stop(void* browser);
-CKLEXPORT void WINAPI Chrome_ExecJS(void* browser, const wchar_t* js);
+CKLEXPORT void WINAPI Chrome_LoadUrl(void* lpBrowser, const wchar_t* url);
+CKLEXPORT HWND WINAPI Chrome_Window(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_GoBack(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_GoForward(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_Refresh(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_RefreshIgnoreCache(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_Stop(void* lpBrowser);
+CKLEXPORT void WINAPI Chrome_SetFocus(void* lpBrowser, bool bFocus);
+CKLEXPORT void WINAPI Chrome_ExecJS(void* lpBrowser, const wchar_t* szJavaScript);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
@@ -200,6 +206,9 @@ CKLEXPORT void WINAPI Chrome_SetZoomLevel(void* browser, double dbZoomLevel);
 CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 
+typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
+
 enum BrowserInfomationType
 {
 	BrowserInfomationUserDataLoogPtr = 0,
@@ -229,6 +238,7 @@ CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* browser, wchar_t*
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* browser, wchar_t* id);
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* browser, wchar_t* name);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
+CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
 #endif // __EC_PACK_API_CPP_
 
 #ifndef  __EC_CUSTOMIZE_JS_CPP_

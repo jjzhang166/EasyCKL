@@ -424,11 +424,29 @@ CKLEXPORT void WINAPI Chrome_Refresh(SimpleHandler* handler) {
 	}
 }
 
+CKLEXPORT void WINAPI Chrome_RefreshIgnoreCache(SimpleHandler* handler) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->ReloadIgnoreCache();
+		}
+	}
+}
+
 CKLEXPORT void WINAPI Chrome_Stop(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
 			browser->StopLoad();
+		}
+	}
+}
+
+CKLEXPORT void WINAPI Chrome_SetFocus(SimpleHandler* handler, bool bFocus) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			browser->GetHost()->SetFocus(bFocus);
 		}
 	}
 }
@@ -610,4 +628,31 @@ CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize,
 
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer) {
 	free(lpBuffer);
+}
+
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+
+			class Visitor : public CefStringVisitor {
+			public:
+				explicit Visitor(CefRefPtr<CefBrowser> browser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction) : browser_(browser),
+					context(lpContext), callback(lpCallbackFunction) {}
+				virtual void Visit(const CefString& string) OVERRIDE {
+					if (callback)
+						callback(context, string.c_str());
+				}
+			private:
+				CefRefPtr<CefBrowser> browser_;
+				Ec_GetSource_CallBack callback;
+				PVOID context;
+				IMPLEMENT_REFCOUNTING(Visitor);
+			};
+
+
+			CefRefPtr<Visitor> a = new Visitor(browser, lpContext, lpCallbackFunction);
+			browser->GetMainFrame()->GetSource(a);
+		}
+	}
 }
