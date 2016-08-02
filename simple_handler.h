@@ -5,6 +5,10 @@
 
 #include <list>
 
+#ifdef __linux__
+#include "ec_linux.h"
+#endif
+
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4

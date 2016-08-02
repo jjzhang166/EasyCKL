@@ -1,8 +1,12 @@
 #include "simple_handler.h"
 
 #include <string>
-#include <windows.h>
-#include<Shellapi.h>
+#ifdef _WIN32
+#include <Windows.h>
+#include <Shellapi.h>
+#elif __linux__
+#include "ec_linux.h"
+#endif
 
 #include "include/cef_browser.h"
 #include "include/wrapper/cef_helpers.h"
@@ -18,7 +22,7 @@ void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	if (!browser->IsSame(g_browser)) return;
 
 	if (callbacks.chtitle_callback) {
-		callbacks.chtitle_callback(g_id, title.c_str());
+		callbacks.chtitle_callback(g_id, title.ToWString().c_str());
 	}
 }
 
@@ -38,6 +42,8 @@ void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool canGoBack,
 	bool canGoForward) {
 	CEF_REQUIRE_UI_THREAD();
+
+printf("OnLoadingStateChange\n");
 
 	if (!browser->IsSame(g_browser)) return;
 
@@ -67,9 +73,9 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 		NEW_WINDOW_INFOMATION info;
 		info.cbSzie = sizeof(NEW_WINDOW_INFOMATION);
 		info.lpFrame = frame;
-		info.szNewWindowUrl = target_url.c_str();
-		info.szCurrentWindowUrl = CurrentWindowUrl.c_str();
-		info.szTargetFrameName = target_frame_name.c_str();
+		info.szNewWindowUrl = target_url.ToWString().c_str();
+		info.szCurrentWindowUrl = CurrentWindowUrl.ToWString().c_str();
+		info.szTargetFrameName = target_frame_name.ToWString().c_str();
 		info.bUserGesture = user_gesture;
 		info.dwOpenDisposition = target_disposition;
 
@@ -135,13 +141,14 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		auto LinkUrl = params->GetLinkUrl();
 		auto SourceUrl = params->GetSourceUrl();
 
-		info.szSelectionText = SelectionText.c_str();
-		info.szLinkUrl = LinkUrl.c_str();
-		info.szSourceUrl = SourceUrl.c_str();
+		info.szSelectionText = SelectionText.ToWString().c_str();
+		info.szLinkUrl = LinkUrl.ToWString().c_str();
+		info.szSourceUrl = SourceUrl.ToWString().c_str();
 
 		callbacks.rbuttondown_callback(g_id, 0, &info, 0);
 		return;
 	}
+#ifdef _WIN32
 	if (flag & CM_TYPEFLAG_PAGE) {
 		//model->SetLabel(MENU_ID_BACK, L"后退");
 		//model->SetLabel(MENU_ID_FORWARD, L"前进");
@@ -171,7 +178,7 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	model->AddItem(MENU_ID_RELOAD, L"刷新");
 	model->SetLabel(MENU_ID_COPY, L"复制");
 	model->AddItem(MENU_ID_SELECT_ALL, L"全选");
-
+#endif
 }
 
 bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
@@ -185,7 +192,7 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	CEF_REQUIRE_UI_THREAD();
 
 	if (callbacks.jsdialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
-		callbacks.jsdialog_callback(g_id, message_text.c_str());
+		callbacks.jsdialog_callback(g_id, message_text.ToWString().c_str());
 		callback->Continue(1, "");
 		return true;
 	}
@@ -212,7 +219,7 @@ bool SimpleHandler::OnCertificateError(
 	if (callbacks.error_callback) {
 		ERROR_INFOMATION info;
 		info.cbSzie = sizeof(ERROR_INFOMATION);
-		info.szFailedUrl = request_url.c_str();
+		info.szFailedUrl = request_url.ToWString().c_str();
 		info.bCertError = TRUE;
 		info.iErrorCode = cert_error;
 		info.lpFrame = 0;
@@ -296,9 +303,11 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, L
 void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 	CefWindowInfo window_info;
-	window_info.SetAsChild(hParent, rect);
+	//window_info.SetAsChild(hParent, rect);
 	CefBrowserSettings browser_settings;
 	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
+printf("1\n");
 	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
+printf("end\n");
 	return this;
 }

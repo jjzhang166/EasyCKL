@@ -2,6 +2,10 @@
 #define _EASYCKL
 #define CKLEXPORT extern "C" 
 
+#ifdef __EC_LINUX_API
+#include "ec_linux.h"
+#endif
+
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagNEW_WINDOW_INFOMATION {
 	SIZE_T cbSzie;
@@ -63,7 +67,7 @@ typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* ur
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	Chrome_CallBack_BrowserCreated created_callback;
 	Chrome_CallBack_ChUrl churl_callback;
 	Chrome_CallBack_NewWindow newwindow_callback;

@@ -124,7 +124,7 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	if (callbacks.error_callback) {
 		ERROR_INFOMATION info;
 		info.cbSzie = sizeof(ERROR_INFOMATION);
-		info.szFailedUrl = failedUrl.c_str();
+		info.szFailedUrl = failedUrl.ToWString().c_str();
 		info.bCertError = FALSE;
 		info.iErrorCode = errorCode;
 		info.lpFrame = frame;

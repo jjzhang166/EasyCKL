@@ -1,4 +1,8 @@
+#ifdef _WIN32
 #include <Windows.h>
+#elif defined __linux__
+#include "ec_linux.h"
+#endif
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"
@@ -9,10 +13,14 @@
 
 #define __EC_CUSTOMIZE_SCHEME_CPP_
 #define __ECKL_SRC_DEV_
-#include "SDK\C and C++\EasyCKL.h"
+#include "SDK/C and C++/EasyCKL.h"
 
 #undef CKLEXPORT
+#ifdef _WIN32
 #define CKLEXPORT extern "C" __declspec(dllexport)
+#elif defined __linux__
+#define CKLEXPORT extern "C"
+#endif
 
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
