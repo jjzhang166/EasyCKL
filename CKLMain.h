@@ -1,7 +1,16 @@
 #ifndef _CKLMAIN_H_
 #define _CKLMAIN_H_
 
+#ifdef _WIN32
 #include <Windows.h>
+
+#define CKLEXPORT extern "C" __declspec(dllexport)
+#elif defined __linux__
+#include "ec_linux.h"
+#include <X11/Xlib.h>
+
+#define CKLEXPORT extern "C"
+#endif
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"
@@ -9,8 +18,6 @@
 
 #include "simple_app.h"
 #include "simple_handler.h"
-
-#define CKLEXPORT extern "C" __declspec(dllexport)
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
@@ -29,7 +36,7 @@ public:
 		CefString& exception) OVERRIDE {
 
 		if (handler_callback) {
-			return handler_callback(name.c_str(), &arguments, &retval) != FALSE;
+			return handler_callback(name.ToWString().c_str(), &arguments, &retval) != FALSE;
 		}
 		return false;
 	}

@@ -10,9 +10,10 @@
 
 typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
 
+#ifdef _WIN32
 extern HANDLE hEvent;
+#endif
 extern void* v8contextcreate;
-
 
 
 extern BOOL bSetProxy;
@@ -26,7 +27,9 @@ SimpleApp::SimpleApp() {
 
 void SimpleApp::OnContextInitialized() {
 	CEF_REQUIRE_UI_THREAD();
+#ifdef _WIN32
 	SetEvent(hEvent);
+#endif
 }
 
 

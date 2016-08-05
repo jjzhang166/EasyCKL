@@ -2,6 +2,10 @@
 #define _EASYCKL
 #define CKLEXPORT extern "C" 
 
+#ifdef __EC_LINUX_API
+#include "ec_linux.h"
+#endif
+
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagNEW_WINDOW_INFOMATION {
 	SIZE_T cbSzie;
@@ -63,7 +67,7 @@ typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* ur
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	Chrome_CallBack_BrowserCreated created_callback;
 	Chrome_CallBack_ChUrl churl_callback;
 	Chrome_CallBack_NewWindow newwindow_callback;
@@ -147,7 +151,9 @@ CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, wchar_t* url, HWND hParent,
 	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
 	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown);
 
+CKLEXPORT void WINAPI Chrome_DoMessageLoopWork();
 CKLEXPORT void WINAPI Chrome_MessageLoop();
+CKLEXPORT void WINAPI Chrome_QuitMessageLoop();
 CKLEXPORT void WINAPI Chrome_Shutdown();
 CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* ua);
 CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy);
@@ -192,7 +198,6 @@ CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcrea
 CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop);
 CKLEXPORT DWORD WINAPI Chrome_GetUrlLength(void* lpBrowser);
 CKLEXPORT void WINAPI Chrome_GetUrlString(void* lpBrowser, wchar_t* buffer, DWORD buffer_length);
-CKLEXPORT void WINAPI Chrome_DoMessageLoopWork();
 CKLEXPORT void WINAPI Chrome_LoadString(void* lpBrowser, const wchar_t* string, const wchar_t* url);
 CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(void* lpBrowser);
 CKLEXPORT void WINAPI Chrome_EnableSystemFlash();
@@ -284,5 +289,10 @@ CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
 #ifdef  __ECKL_SRC_DEV_
 void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length);
 #endif // __ECKL_SRC_DEV_
+
+#ifdef __EC_LINUX_API
+#undef TRUE
+#undef FALSE
+#endif
 
 #endif
