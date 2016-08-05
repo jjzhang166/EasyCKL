@@ -36,7 +36,7 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 
 	: callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
 
-	//ÉèÖÃ CallBack º¯ÊýÖ¸Õë
+	//è®¾ç½® CallBack å‡½æ•°æŒ‡é’ˆ
 	callbacks.created_callback = callback;
 	callbacks.churl_callback = churl;
 	callbacks.newwindow_callback = nwin;

@@ -4,19 +4,14 @@
 
 > **这是 EasyCKL For Linux 开发分支**
 
-> 目前 EasyCKL For Linux 不能投入使用，因为他还没有开发完全
+> 目前 EasyCKL For Linux 基本已经开发完全（参考 demo/1.cpp）
 
 > 当 EasyCKL For Linux 发布第一个 Beta 版本时，此分支会合并到 develop 分支
 
-目前已经实现
-
-1. 源代码级兼容，可以使用当前的代码直接编译 linux 和 win32 的版本
-
-2. 实现在 Linux 上执行初始化、设置 Cookie 存储、消息循环等功能
 
 如很编译、使用
 
-1. 安装依赖包 libx11-dev libgtk2.0-dev libgtkglext1-dev
+1. 安装依赖包 libx11-dev libgtk2.0-dev libgtk-3-dev libgtkglext1-dev
 
 2. 安装 GNU 编译器套件、cmake 等必要软件
 
@@ -29,10 +24,12 @@
 6. 使用以下命令编译使用 EasyCKL 的应用程序(如 demo/1.cpp)
 
 	```
-	g++ -o [目标] [源文件名] -lEasyCKL -lcef `pkg-config --cflags --libs gtk+-2.0` -L. -Wl,-rpath=.
+	g++ -o [目标] [源文件名] -std=c++11 -lEasyCKL -lcef -lX11 `pkg-config --cflags --libs gtk+-3.0` -L. -Wl,-rpath=.
 	```
 
-7. 运行之前需要设置 LD_PRELOAD 环境变量为 libcef.so
+	> 注意：支持 GTK+3.0 不支持 2.0
+
+7. （如果无法正常运行，则）在运行之前设置 LD_PRELOAD 环境变量为 libcef.so
 
 ### API 文档
 

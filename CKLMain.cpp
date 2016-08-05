@@ -1,4 +1,4 @@
-#include "CKLMain.h"
+ï»¿#include "CKLMain.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "libcef_d.lib")
@@ -36,12 +36,12 @@ CefRefPtr<CefV8Handler> myV8handle;
 
 void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length) {
 	const wchar_t* a = source.ToWString().c_str();
-	DWORD leng = (wcslen(a) + 1) * sizeof(wchar_t);//»ñÈ¡×Ö½ÚÊı
+	DWORD leng = (wcslen(a) + 1) * sizeof(wchar_t);//è·å–å­—èŠ‚æ•°
 	if (leng <= buffer_length)
 		memcpy(buffer, a, leng);
 	else {
 		memcpy(buffer, a, buffer_length - 2);
-		memset(((char*)buffer) + buffer_length - 2, 0, 2);//×îºóÁ½¸ö×Ö½ÚÖÃ0
+		memset(((char*)buffer) + buffer_length - 2, 0, 2);//æœ€åä¸¤ä¸ªå­—èŠ‚ç½®0
 	}
 }
 
@@ -214,7 +214,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPI
 	DWORD _flag = 0;
 	int ret = 0;
 
-	/* ¼æÈİ¾É°æ±¾µÄ Chrome_InitializeEx */
+	/* å…¼å®¹æ—§ç‰ˆæœ¬çš„ Chrome_InitializeEx */
 	if (!(dwFlags & INITFLAG_EXTDATA) && lpExtData) {
 		_flag |= INITFLAG_CACHESTORAGE;
 		if (dwFlags) _flag |= INITFLAG_NOSSL;
@@ -254,11 +254,11 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPI
 		nid.hWnd = CreateWindow(L"EasyCKL_Tools", L"", 0, 0, 0, 0, 0, 0, 0, hInstance, 0);
 		nid.uID = 1;
 		nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
-		nid.uCallbackMessage = WM_USER + 1;//×Ô¶¨ÒåÏûÏ¢
+		nid.uCallbackMessage = WM_USER + 1;//è‡ªå®šä¹‰æ¶ˆæ¯
 		nid.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
-		wcscpy_s(nid.szTip, TEXT("EasyCKL EPL µ÷ÊÔ¼æÈİÄ£Ê½"));
-		wcscpy_s(nid.szInfo, TEXT("EasyCKL EPL¿ª·¢ÈËÔ±¹¤¾ß"));
-		wcscpy_s(nid.szInfoTitle, TEXT("EasyCKL ÕıÔÚ EPL µ÷ÊÔ¼æÈİÄ£Ê½ÏÂ¹¤×÷¡£·¢²¼ÄãµÄÓ¦ÓÃÊ±ÇëÊ¹ÓÃ±ê×¼ EasyCKL ¿â"));
+		wcscpy_s(nid.szTip, TEXT("EasyCKL EPL è°ƒè¯•å…¼å®¹æ¨¡å¼"));
+		wcscpy_s(nid.szInfo, TEXT("EasyCKL EPLå¼€å‘äººå‘˜å·¥å…·"));
+		wcscpy_s(nid.szInfoTitle, TEXT("EasyCKL æ­£åœ¨ EPL è°ƒè¯•å…¼å®¹æ¨¡å¼ä¸‹å·¥ä½œã€‚å‘å¸ƒä½ çš„åº”ç”¨æ—¶è¯·ä½¿ç”¨æ ‡å‡† EasyCKL åº“"));
 		nid.dwInfoFlags = NIIF_WARNING | NIIF_LARGE_ICON;
 		nid.uTimeout = 10000;
 		Shell_NotifyIcon(NIM_ADD, &nid);
@@ -360,6 +360,10 @@ CKLEXPORT void WINAPI Chrome_DoMessageLoopWork() {
 
 CKLEXPORT void WINAPI Chrome_MessageLoop() {
 	CefRunMessageLoop();
+}
+
+CKLEXPORT void WINAPI Chrome_QuitMessageLoop() {
+	CefQuitMessageLoop();
 }
 
 CKLEXPORT void WINAPI Chrome_Shutdown() {

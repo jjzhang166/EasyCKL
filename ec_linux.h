@@ -23,14 +23,14 @@ typedef unsigned long ULONG;
 #ifdef __EC_LINUX_API
 #define HWND void*
 typedef struct tagRECT {
-	int left;
-	int top;
-	int right;
-	int bottom;
+	int x;
+	int y;
+	int width;
+	int height;
 }RECT,*LPRECT;
 #else
 #define HWND CefWindowHandle
-#define RECT CefRect
+#define RECT _cef_rect_t
 #endif // __EC_LINUX_API
 
 typedef struct tagECMAINARGS {
@@ -39,5 +39,8 @@ typedef struct tagECMAINARGS {
 }ECMAINARGS,*LPECMAINARGS;
 
 #define HINSTANCE LPECMAINARGS
+
+//#define wchar_t char
+//#define std::wstring std::string
 
 #endif // __EC_LINUX_H_

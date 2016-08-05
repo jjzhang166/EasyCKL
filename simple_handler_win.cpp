@@ -1,4 +1,4 @@
-#include "simple_handler.h"
+ï»¿#include "simple_handler.h"
 
 #include <string>
 #ifdef _WIN32
@@ -18,7 +18,6 @@ extern CefString szLocalInf;
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,
 	const CefString& title) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (!browser->IsSame(g_browser)) return;
 
 	if (callbacks.chtitle_callback) {
@@ -42,9 +41,6 @@ void SimpleHandler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
 	bool canGoBack,
 	bool canGoForward) {
 	CEF_REQUIRE_UI_THREAD();
-
-printf("OnLoadingStateChange\n");
-
 	if (!browser->IsSame(g_browser)) return;
 
 	if (isLoading) lasterror = BROWSER_LASTERROR_LOADING;
@@ -66,7 +62,6 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefClient>& client,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
-
 	if (callbacks.newwindow_callback) {
 		CefString CurrentWindowUrl = browser->GetMainFrame()->GetURL();
 
@@ -92,7 +87,6 @@ void SimpleHandler::OnAddressChange(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefFrame> frame,
 	const CefString& url) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (!browser->IsSame(g_browser)) return;
 	if (callbacks.churl_callback) {
 		callbacks.churl_callback(g_id, url.ToWString().c_str());
@@ -105,7 +99,6 @@ void SimpleHandler::OnBeforeDownload(
 	const CefString& suggested_name,
 	CefRefPtr<CefBeforeDownloadCallback> callback) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (callbacks.download_callback) {
 		callbacks.download_callback(g_id, download_item->GetURL().ToWString().c_str());
 	}
@@ -125,7 +118,6 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefContextMenuParams> params,
 	CefRefPtr<CefMenuModel> model) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (!browser->IsSame(g_browser)) return;
 
 	auto flag = params->GetTypeFlags();
@@ -150,23 +142,23 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	}
 #ifdef _WIN32
 	if (flag & CM_TYPEFLAG_PAGE) {
-		//model->SetLabel(MENU_ID_BACK, L"ºóÍË");
-		//model->SetLabel(MENU_ID_FORWARD, L"Ç°½ø");
-		//model->SetLabel(MENU_ID_VIEW_SOURCE, L"²é¿´Ô´´úÂë");
-		//model->SetLabel(MENU_ID_PRINT, L"´òÓ¡");
-		//model->SetLabel(MENU_ID_RELOAD, L"Ë¢ÐÂ");
-		model->SetLabel(MENU_ID_RELOAD_NOCACHE, L"Ç¿ÖÆË¢ÐÂ");
-		model->SetLabel(MENU_ID_STOPLOAD, L"Í£Ö¹¼ÓÔØ");
-		model->SetLabel(MENU_ID_REDO, L"ÖØ¸´");
+		//model->SetLabel(MENU_ID_BACK, L"åŽé€€");
+		//model->SetLabel(MENU_ID_FORWARD, L"å‰è¿›");
+		//model->SetLabel(MENU_ID_VIEW_SOURCE, L"æŸ¥çœ‹æºä»£ç ");
+		//model->SetLabel(MENU_ID_PRINT, L"æ‰“å°");
+		//model->SetLabel(MENU_ID_RELOAD, L"åˆ·æ–°");
+		model->SetLabel(MENU_ID_RELOAD_NOCACHE, L"å¼ºåˆ¶åˆ·æ–°");
+		model->SetLabel(MENU_ID_STOPLOAD, L"åœæ­¢åŠ è½½");
+		model->SetLabel(MENU_ID_REDO, L"é‡å¤");
 	}
 	if ((flag & CM_TYPEFLAG_EDITABLE) || (flag & CM_TYPEFLAG_SELECTION)) {
-		model->SetLabel(MENU_ID_UNDO, L"³·Ïú");
-		model->SetLabel(MENU_ID_REDO, L"ÖØ×ö");
-		model->SetLabel(MENU_ID_CUT, L"¼ôÇÐ");
-		model->SetLabel(MENU_ID_COPY, L"¸´ÖÆ");
-		model->SetLabel(MENU_ID_PASTE, L"Õ³Ìù");
-		model->SetLabel(MENU_ID_DELETE, L"É¾³ý");
-		model->SetLabel(MENU_ID_SELECT_ALL, L"È«Ñ¡");
+		model->SetLabel(MENU_ID_UNDO, L"æ’¤é”€");
+		model->SetLabel(MENU_ID_REDO, L"é‡åš");
+		model->SetLabel(MENU_ID_CUT, L"å‰ªåˆ‡");
+		model->SetLabel(MENU_ID_COPY, L"å¤åˆ¶");
+		model->SetLabel(MENU_ID_PASTE, L"ç²˜è´´");
+		model->SetLabel(MENU_ID_DELETE, L"åˆ é™¤");
+		model->SetLabel(MENU_ID_SELECT_ALL, L"å…¨é€‰");
 	}
 	model->Remove(MENU_ID_PRINT);
 	model->Remove(MENU_ID_VIEW_SOURCE);
@@ -175,9 +167,9 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 	//model->Remove(MENU_ID_REDO);
 	if (MENUITEMTYPE_SEPARATOR == model->GetTypeAt(0))
 		model->RemoveAt(0);
-	model->AddItem(MENU_ID_RELOAD, L"Ë¢ÐÂ");
-	model->SetLabel(MENU_ID_COPY, L"¸´ÖÆ");
-	model->AddItem(MENU_ID_SELECT_ALL, L"È«Ñ¡");
+	model->AddItem(MENU_ID_RELOAD, L"åˆ·æ–°");
+	model->SetLabel(MENU_ID_COPY, L"å¤åˆ¶");
+	model->AddItem(MENU_ID_SELECT_ALL, L"å…¨é€‰");
 #endif
 }
 
@@ -190,7 +182,6 @@ bool SimpleHandler::OnJSDialog(CefRefPtr<CefBrowser> browser,
 	CefRefPtr<CefJSDialogCallback> callback,
 	bool& suppress_message) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (callbacks.jsdialog_callback && dialog_type == JSDIALOGTYPE_ALERT) {
 		callbacks.jsdialog_callback(g_id, message_text.ToWString().c_str());
 		callback->Continue(1, "");
@@ -211,7 +202,6 @@ bool SimpleHandler::OnCertificateError(
 	CefRefPtr<CefSSLInfo> ssl_info,
 	CefRefPtr<CefRequestCallback> callback) {
 	CEF_REQUIRE_UI_THREAD();
-
 	if (!browser->IsSame(g_browser)) return false;
 
 	lasterror |= BROWSER_LASTERROR_CERTERROR;
@@ -234,7 +224,6 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	CefRefPtr<CefFrame> frame,
 	CefRefPtr<CefRequest> request,
 	CefRefPtr<CefRequestCallback> callback) {
-
 	if (!browser->IsSame(g_browser)) return RV_CONTINUE;
 
 	std::multimap<CefString, CefString> map;
@@ -294,7 +283,11 @@ void inline CreateBrowserPrepare(DWORD flags, CefWindowInfo& window_info, CefBro
 void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 	CefWindowInfo window_info;
+#ifdef __linux__
+	window_info.SetAsChild(hParent, CefRect(rect));
+#elif defined _WIN32
 	window_info.SetAsChild(hParent, rect);
+#endif
 	CefBrowserSettings browser_settings;
 	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
 	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
@@ -303,11 +296,13 @@ void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, L
 void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
 	CEF_REQUIRE_UI_THREAD();
 	CefWindowInfo window_info;
-	//window_info.SetAsChild(hParent, rect);
+#ifdef __linux__
+	window_info.SetAsChild(hParent, CefRect(rect));
+#elif defined _WIN32
+	window_info.SetAsChild(hParent, rect);
+#endif
 	CefBrowserSettings browser_settings;
 	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
-printf("1\n");
-	CefBrowserHost::CreateBrowserSync(window_info, this, url, browser_settings, NULL);
-printf("end\n");
+	CefBrowserHost::CreateBrowserSync(window_info, this, CefString(url), browser_settings, NULL);
 	return this;
 }
