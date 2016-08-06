@@ -63,14 +63,17 @@ bool SimpleHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 	CefBrowserSettings& settings,
 	bool* no_javascript_access) {
 	if (callbacks.newwindow_callback) {
-		CefString CurrentWindowUrl = browser->GetMainFrame()->GetURL();
+
+		auto NewWindowUrl = target_url.ToWString();
+		auto CurrentWindowUrl = browser->GetMainFrame()->GetURL().ToWString();
+		auto TargetFrameName = target_frame_name.ToWString();
 
 		NEW_WINDOW_INFOMATION info;
 		info.cbSzie = sizeof(NEW_WINDOW_INFOMATION);
+		info.szNewWindowUrl = NewWindowUrl.c_str();
+		info.szCurrentWindowUrl = CurrentWindowUrl.c_str();
+		info.szTargetFrameName = TargetFrameName.c_str();
 		info.lpFrame = frame;
-		info.szNewWindowUrl = target_url.ToWString().c_str();
-		info.szCurrentWindowUrl = CurrentWindowUrl.ToWString().c_str();
-		info.szTargetFrameName = target_frame_name.ToWString().c_str();
 		info.bUserGesture = user_gesture;
 		info.dwOpenDisposition = target_disposition;
 
@@ -102,7 +105,6 @@ void SimpleHandler::OnBeforeDownload(
 	if (callbacks.download_callback) {
 		callbacks.download_callback(g_id, download_item->GetURL().ToWString().c_str());
 	}
-
 }
 
 void SimpleHandler::OnDownloadUpdated(
@@ -129,13 +131,13 @@ void SimpleHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
 		info.lpFrame = frame;
 		info.Retention = 0;
 
-		auto SelectionText = params->GetSelectionText();
-		auto LinkUrl = params->GetLinkUrl();
-		auto SourceUrl = params->GetSourceUrl();
+		auto SelectionText = params->GetSelectionText().ToWString();
+		auto LinkUrl = params->GetLinkUrl().ToWString();
+		auto SourceUrl = params->GetSourceUrl().ToWString();
 
-		info.szSelectionText = SelectionText.ToWString().c_str();
-		info.szLinkUrl = LinkUrl.ToWString().c_str();
-		info.szSourceUrl = SourceUrl.ToWString().c_str();
+		info.szSelectionText = SelectionText.c_str();
+		info.szLinkUrl = LinkUrl.c_str();
+		info.szSourceUrl = SourceUrl.c_str();
 
 		callbacks.rbuttondown_callback(g_id, 0, &info, 0);
 		return;
@@ -236,8 +238,7 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 		map.insert(pair);
 	}
 
-	if (request->GetReferrerURL().empty() && !referer_string.empty())
-	{
+	if (request->GetReferrerURL().empty() && !referer_string.empty()) {
 		/*pair.first = L"Referer";
 		pair.second = CefString(referer_string);
 		map.insert(pair);*/
@@ -251,21 +252,31 @@ cef_return_value_t SimpleHandler::OnBeforeResourceLoad(
 	return RV_CONTINUE;
 }
 
-void inline CreateBrowserPrepare(DWORD flags, CefWindowInfo& window_info, CefBrowserSettings& browser_settings, LPCREATE_BROWSER_EXTDATA extdata) {
+void* SimpleHandler::_CreateBrowser(DWORD dwFlags, std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
+	CEF_REQUIRE_UI_THREAD();
+
+	CefWindowInfo window_info;
+#ifdef __linux__
+	window_info.SetAsChild(hParent, CefRect(rect));
+#elif defined _WIN32
+	window_info.SetAsChild(hParent, rect);
+#endif
+
+	CefBrowserSettings browser_settings;
 
 	browser_settings.javascript_close_windows = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_JAVASCRIPT)
+	if (dwFlags & BROWSERFLAG_DISABLE_JAVASCRIPT)
 		browser_settings.javascript = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_LOAD_IMAGE)
+	if (dwFlags & BROWSERFLAG_DISABLE_LOAD_IMAGE)
 		browser_settings.image_loading = STATE_DISABLED;
-	if (flags & BROWSERFLAG_DISABLE_WEB_SECURITY)
+	if (dwFlags & BROWSERFLAG_DISABLE_WEB_SECURITY)
 		browser_settings.web_security = STATE_DISABLED;
-	if (flags & BROWSERFLAG_EXTDATA) {
-		if (flags & BROWSERFLAG_DEF_ENCODING)
+	if (dwFlags & BROWSERFLAG_EXTDATA) {
+		if (dwFlags & BROWSERFLAG_DEF_ENCODING)
 			CefString(&browser_settings.default_encoding) = extdata->szDefaultEncoding;
-		if (flags & BROWSERFLAG_BACK_COLOR)
+		if (dwFlags & BROWSERFLAG_BACK_COLOR)
 			browser_settings.background_color = extdata->dwBackColor;
-		if (flags & BROWSERFLAG_DEF_FONT) {
+		if (dwFlags & BROWSERFLAG_DEF_FONT) {
 			CefString(&browser_settings.standard_font_family) = extdata->szDefaultFont;
 			CefString(&browser_settings.fixed_font_family) = extdata->szDefaultFont;
 			CefString(&browser_settings.serif_font_family) = extdata->szDefaultFont;
@@ -273,36 +284,16 @@ void inline CreateBrowserPrepare(DWORD flags, CefWindowInfo& window_info, CefBro
 			CefString(&browser_settings.cursive_font_family) = extdata->szDefaultFont;
 			CefString(&browser_settings.fantasy_font_family) = extdata->szDefaultFont;
 		}
-		if (flags & BROWSERFLAG_DEF_FONT_SIZE) {
+		if (dwFlags & BROWSERFLAG_DEF_FONT_SIZE) {
 			browser_settings.default_font_size = extdata->dwDefaultFontSize;
 			browser_settings.default_fixed_font_size = extdata->dwDefaultFontSize;
 		}
 	}
-}
 
-void SimpleHandler::_CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
-	CEF_REQUIRE_UI_THREAD();
-	CefWindowInfo window_info;
-#ifdef __linux__
-	window_info.SetAsChild(hParent, CefRect(rect));
-#elif defined _WIN32
-	window_info.SetAsChild(hParent, rect);
-#endif
-	CefBrowserSettings browser_settings;
-	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
-	CefBrowserHost::CreateBrowser(window_info, this, url, browser_settings, NULL);
-}
-
-void* SimpleHandler::_CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata) {
-	CEF_REQUIRE_UI_THREAD();
-	CefWindowInfo window_info;
-#ifdef __linux__
-	window_info.SetAsChild(hParent, CefRect(rect));
-#elif defined _WIN32
-	window_info.SetAsChild(hParent, rect);
-#endif
-	CefBrowserSettings browser_settings;
-	CreateBrowserPrepare(flags, window_info, browser_settings, extdata);
-	CefBrowserHost::CreateBrowserSync(window_info, this, CefString(url), browser_settings, NULL);
+	if (!(dwFlags & BROWSERFLAG_SYNC)) {
+		CefBrowserHost::CreateBrowser(window_info, this, CefString(url), browser_settings, NULL);
+		return 0;
+	}
+	else CefBrowserHost::CreateBrowserSync(window_info, this, CefString(url), browser_settings, NULL);
 	return this;
 }

@@ -27,8 +27,11 @@ CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(SimpleHandler* handler, wcha
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks) {
 	void* browser = Chrome_CreateChildBrowser(BROWSERFLAG_SYNC, callbacks, id, NULL, L":", hParent, rect, 0);
 	if (browser) {
-		std::wstring html = L"<html><head><meta http-equiv=\"refresh\" content=\"0;url=" + std::wstring(url) + L"\"></head><body bgcolor=\"white\"></body></html>";
-		Chrome_LoadString(browser, (wchar_t*)html.c_str(), referer);
+		if (referer) {
+			std::wstring html = L"<html><head><meta http-equiv=\"refresh\" content=\"0;url=" + std::wstring(url) + L"\"></head><body bgcolor=\"white\"></body></html>";
+			Chrome_LoadString(browser, (wchar_t*)html.c_str(), referer);
+		}
+		else Chrome_LoadUrl(browser, url);
 	}
 	return browser;
 }
@@ -72,5 +75,25 @@ CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(SimpleHandler* handler, wchar
 
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(SimpleHandler* handler, wchar_t* name) {
 	std::wstring js = L"document." + std::wstring(name) + L".submit()";
+	Chrome_ExecJS(handler, js.c_str());
+}
+
+CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectId(SimpleHandler* handler, wchar_t* id, bool checked) {
+	std::wstring js = L"document.getElementById('" + std::wstring(id) + L"').checked=" + (checked ? L"true" : L"false");
+	Chrome_ExecJS(handler, js.c_str());
+}
+
+CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectName(SimpleHandler* handler, wchar_t* name, bool checked) {
+	std::wstring js = L"document." + std::wstring(name) + L".checked=" + (checked ? L"true" : L"false");
+	Chrome_ExecJS(handler, js.c_str());
+}
+
+CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectId(SimpleHandler* handler, wchar_t* id) {
+	std::wstring js = L"document.getElementById('" + std::wstring(id) + L"').click()";
+	Chrome_ExecJS(handler, js.c_str());
+}
+
+CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(SimpleHandler* handler, wchar_t* name) {
+	std::wstring js = L"document." + std::wstring(name) + L".click()";
 	Chrome_ExecJS(handler, js.c_str());
 }

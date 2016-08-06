@@ -22,7 +22,7 @@ CefString GetDataURI(const std::string& data,
 		CefURIEncode(CefBase64Encode(data.data(), data.size()), false).ToWString());
 }
 
-SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
+SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0) {
 	SIZE_T length = _callbacks->cbSzie;
 	if (length > sizeof(BROWSER_CALLBACKS))
 		length = sizeof(BROWSER_CALLBACKS);
@@ -34,7 +34,7 @@ SimpleHandler::SimpleHandler(DWORD id, Chrome_CallBack_BrowserCreated callback, 
 	Chrome_CallBack_JSDialog jsdialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
 	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl)
 
-	: callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0), flags(0) {
+	: callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0) {
 
 	//设置 CallBack 函数指针
 	callbacks.created_callback = callback;
@@ -72,6 +72,9 @@ bool SimpleHandler::DoClose(CefRefPtr<CefBrowser> browser) {
 
 	CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
 
+	if (callbacks.canclose_callback)
+		return callbacks.canclose_callback(g_id, 0, 0, 0);
+
 	// Closing the main window requires special handling. See the DoClose()
 	// documentation in the CEF header for a detailed destription of this
 	// process.
@@ -79,6 +82,11 @@ bool SimpleHandler::DoClose(CefRefPtr<CefBrowser> browser) {
 		// Set a flag to indicate that the window close should be allowed.
 		is_closing_ = true;
 	}
+
+#ifdef _WIN32
+	ShowWindow(browser->GetHost()->GetWindowHandle(), 0);
+	SetParent(browser->GetHost()->GetWindowHandle(), 0);
+#endif
 
 	// Allow the close. For windowed browsers this will result in the OS close
 	// event being sent.
@@ -122,9 +130,12 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {
+
+		auto FailedUrl = failedUrl.ToWString();
+
 		ERROR_INFOMATION info;
 		info.cbSzie = sizeof(ERROR_INFOMATION);
-		info.szFailedUrl = failedUrl.ToWString().c_str();
+		info.szFailedUrl = FailedUrl.c_str();
 		info.bCertError = FALSE;
 		info.iErrorCode = errorCode;
 		info.lpFrame = frame;

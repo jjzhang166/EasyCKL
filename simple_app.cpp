@@ -15,7 +15,6 @@ extern HANDLE hEvent;
 #endif
 extern void* v8contextcreate;
 
-
 extern BOOL bSetProxy;
 extern CefString szProxyServer;
 extern BOOL bEnableFlash;
@@ -45,8 +44,6 @@ void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, Cef
 			command_line->AppendSwitchWithValue(L"ppapi-flash-path", szFlashPath);
 		else command_line->AppendSwitch(L"enable-system-flash");
 	}
-	//if (isSetUA)
-	//	command_line->AppendSwitchWithValue(L"user-agent", useragen);
 	if (bSetProxy)
 		command_line->AppendSwitchWithValue(L"proxy-server", szProxyServer);
 	if(bDisableGpu)

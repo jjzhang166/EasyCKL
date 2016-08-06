@@ -41,6 +41,16 @@ CKLEXPORT void WINAPI Chrome_ReleaseFrame(CefFrame* frame) {
 		frame->Release();
 }
 
+CKLEXPORT wchar_t* WINAPI Chrome_FrameGetUrl(CefFrame* lpFrame) {
+	if (lpFrame) {
+		std::wstring strFrameUrl = lpFrame->GetURL().ToWString();
+		wchar_t* lpBuffer = new wchar_t[strFrameUrl.length() + 1];
+		_ECKL_CopyWString(strFrameUrl, lpBuffer, (strFrameUrl.length() + 1) * sizeof(wchar_t));
+		return lpBuffer;
+	}
+	return 0;
+}
+
 CKLEXPORT CefFrame* WINAPI Chrome_GetNameFrame(SimpleHandler* handler, wchar_t* name) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;

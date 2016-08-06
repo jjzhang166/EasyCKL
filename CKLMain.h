@@ -19,6 +19,14 @@
 #include "simple_app.h"
 #include "simple_handler.h"
 
+#ifdef _WIN32
+#define DEF_CACHE_PATH L".\\cache\\"
+#define DEF_COOKIE_PATH L".\\cookies\\"
+#elif defined __linux__
+#define DEF_CACHE_PATH L"./cache/"
+#define DEF_COOKIE_PATH L"./cookies/"
+#endif
+
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
 
@@ -52,7 +60,8 @@ enum BrowserInfomationType
 	BrowserInfomationCanGoForward = 2,
 	BrowserInfomationMainFrame = 3,
 	BrowserInfomationIsLoading = 4,
-	BrowserInfomationLastError = 5
+	BrowserInfomationLastError = 5,
+	BrowserInfomationBrowserId = 6
 };
 
 #define INITFLAG_NOSSL 0x1
@@ -63,10 +72,12 @@ enum BrowserInfomationType
 #define INITFLAG_DISABLEGPU 0x20
 #define INITFLAG_EXTDATA 0x40
 #define INITFLAG_SETUSERAGENT 0x80
+#define INITFLAG_SETSUBPROCESS 0x100
 
 typedef struct tagINIT_EXTDATA {
 	SIZE_T cbSzie;
 	const wchar_t* szUserAgent;
+	const wchar_t* szSubProcess;
 } INIT_EXTDATA, *LPINIT_EXTDATA;
 
 typedef struct _tagCOOKIE_DESCRIPTOR {

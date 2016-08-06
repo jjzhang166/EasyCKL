@@ -64,6 +64,7 @@ typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg)
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
+typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagBROWSER_CALLBACKS {
@@ -88,6 +89,8 @@ typedef struct tagBROWSER_CALLBACKS {
 #define INITFLAG_DISABLEGPU 0x20
 #define INITFLAG_EXTDATA 0x40
 #define INITFLAG_SETUSERAGENT 0x80
+#define INITFLAG_SETUSERAGENT 0x80
+#define INITFLAG_SETSUBPROCESS 0x100
 #endif // __ECKL_SRC_DEV_
 
 typedef struct tagINIT_EXTDATA {
@@ -238,12 +241,16 @@ CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath,
 
 #ifndef __EC_PACK_API_CPP_
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* lpBrowser, wchar_t* url, wchar_t* referer);
+CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
+CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
 CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectId(void* lpBrowser, wchar_t* id, wchar_t* value);
 CKLEXPORT void WINAPI EcPkJavaScriptSetValueByObjectName(void* lpBrowser, wchar_t* name, wchar_t* value);
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormId(void* lpBrowser, wchar_t* id);
 CKLEXPORT void WINAPI EcPkJavaScriptSubmitByFormName(void* lpBrowser, wchar_t* name);
-CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
-CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
+CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectId(void* lpBrowser, wchar_t* id, bool checked);
+CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectName(void* lpBrowser, wchar_t* name, bool checked);
+CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectId(void* lpBrowser, wchar_t* id);
+CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wchar_t* name);
 #endif // __EC_PACK_API_CPP_
 
 #ifndef  __EC_CUSTOMIZE_JS_CPP_
@@ -287,7 +294,7 @@ CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
 #endif // __EC_CUSTOMIZE_SCHEME_CPP_
 
 #ifdef  __ECKL_SRC_DEV_
-void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length);
+void _ECKL_CopyWString(std::wstring source, wchar_t* buffer, size_t buffer_length);
 #endif // __ECKL_SRC_DEV_
 
 #ifdef __EC_LINUX_API

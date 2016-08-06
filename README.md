@@ -26,11 +26,11 @@ EasyCKL 致力于封装复杂的 CEF Class，呈现出 Win32API 格式的C语言
 
 > 关于 Linux 版本: Linux 版本目前还处于实验性阶段，不建议在生产环境中使用
 
-CEF版本 
+**CEF版本**
 
-> Windows (Win32, ix86): cef_binary_3.2623.1401.gb90a3be_windows32（默认） cef_binary_3.2704.1431.ge7ddb8a_windows32（可选）
+Windows (Win32, ix86): cef_binary_3.2623.1401.gb90a3be_windows32（默认） cef_binary_3.2704.1431.ge7ddb8a_windows32（可选）
 
-> Linux (i686): cef_binary_3.2623.1399.g64e2fe1_linux32
+Linux (i686): cef_binary_3.2623.1399.g64e2fe1_linux32
 
 > Windows 提示：cef_binary_3.2623.1401.gb90a3be_windows32 版本是支持 Windows XP 的最后一个版本，但是我同样携带了新版（cef_binary_3.2704.1431.ge7ddb8a_windows32）的相关代码，如果你认为不需要继续支持 XP，可以自行使用新代码编译
 
@@ -38,7 +38,7 @@ Windows: 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自
 
 Linux: 本项目**没有**自带了编译此库所需的 CEF3 共享库(libcef.so)，自带 libcef_dll_wrapper 的源代码（**暂时没有** Makefile文件，但以后会有），CEF3 工作需要的文件，可以自行前往相应发布站点下载或通过源代码编译。
 
-### 如何编译？(Win32)
+### 如何在 Windows 平台编译？
 
 1. **方法1** 使用 Visual Studio 2015
 
@@ -64,7 +64,7 @@ Linux: 本项目**没有**自带了编译此库所需的 CEF3 共享库(libcef.s
  
 	4. 注意，如果更换了CEF版本或增加、删除了源码文件，需要改动 Makefile 脚本。另外，我提供了 getobjs.sh 脚本帮助你直接生成需要的所有目标文件列表，用于快速编写 Makefile。这个脚本是一个 Shell 脚本，在 Windows 环境运行需要 MSYS 环境或 Cygwin 环境。
 
-### 如何编译、使用？(Linux **实验性**)
+### 如何在 Linux 平台编译、使用？(**实验性**)
 
 
 1. 安装依赖包 libx11-dev libgtk2.0-dev libgtk-3-dev libgtkglext1-dev

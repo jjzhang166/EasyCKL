@@ -154,7 +154,8 @@ CKLEXPORT SIZE_T WINAPI EcCSGetRequestUrlLength(CefRequest* lpRequest) {
 
 CKLEXPORT void WINAPI EcCSGetRequestUrl(CefRequest* lpRequest, wchar_t* lpUrlBuffer, ULONG ulLength) {
 	if (lpUrlBuffer && lpRequest) {
-		_ECKL_CopyWString(lpRequest->GetURL(), lpUrlBuffer, ulLength * sizeof(wchar_t));
+		auto Url = lpRequest->GetURL().ToWString();
+		_ECKL_CopyWString(Url, lpUrlBuffer, ulLength * sizeof(wchar_t));
 	}
 }
 
