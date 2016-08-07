@@ -73,6 +73,7 @@ Chrome_FrameLoadString
 Chrome_FrameIsMain
 Chrome_ReleaseFrame
 Chrome_GetNameFrame
+Chrome_FrameGetUrl
 EcQBIGetMainFrame
 Chrome_FrameDoCopy
 Chrome_FrameDoCut

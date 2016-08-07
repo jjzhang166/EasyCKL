@@ -8,7 +8,7 @@
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagNEW_WINDOW_INFOMATION {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	void* lpFrame;
 	const wchar_t* szNewWindowUrl;
 	const wchar_t* szCurrentWindowUrl;
@@ -33,7 +33,7 @@ typedef struct tagNEW_WINDOW_INFOMATION {
 #define MENU_TYPEFLAG_EDITABLE 1 << 5
 
 typedef struct tagRBUTTON_DOWN_INFOMATION {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	DWORD dwFlag;
 	void* lpFrame;
 	const wchar_t* szSelectionText;
@@ -43,7 +43,7 @@ typedef struct tagRBUTTON_DOWN_INFOMATION {
 }RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
 
 typedef struct tagERROR_INFOMATION {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	void* lpFrame;
 	BOOL bCertError;
 	int iErrorCode;
@@ -94,8 +94,9 @@ typedef struct tagBROWSER_CALLBACKS {
 #endif // __ECKL_SRC_DEV_
 
 typedef struct tagINIT_EXTDATA {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	const wchar_t* szUserAgent;
+	const wchar_t* szSubProcess;
 } INIT_EXTDATA, *LPINIT_EXTDATA;
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
@@ -224,7 +225,8 @@ enum BrowserInfomationType
 	BrowserInfomationCanGoForward = 2,
 	BrowserInfomationMainFrame = 3,
 	BrowserInfomationIsLoading = 4,
-	BrowserInfomationLastError = 5
+	BrowserInfomationLastError = 5,
+	BrowserInfomationBrowserId = 6
 };
 
 #ifndef  __ECKL_SRC_DEV_
@@ -270,6 +272,7 @@ CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
 CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* lpBrowser, wchar_t* name);
 CKLEXPORT void* WINAPI EcQBIGetMainFrame(void* lpBrowser);
+CKLEXPORT wchar_t* WINAPI Chrome_FrameGetUrl(void* lpFrame);
 CKLEXPORT void WINAPI Chrome_FrameDoCopy(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);

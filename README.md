@@ -8,8 +8,6 @@
 
 如果上面的连接无法打开，请使用：http://easyckl.esy.es/docs/
 
->要是 Git@OSC 的 Pages 支持绑定域名，我就直接用 Pages 了，唉...
-
 ### 入门
 
 请访问我们的 [Wiki页面](http://git.oschina.net/daemon_process/EasyCKL/wikis/%E3%80%90%E5%85%A5%E9%97%A8%E3%80%91%E4%BD%BF%E7%94%A8-EasyCKL-%E7%BB%99%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B5%8C%E5%85%A5-%2Ahromium-%E5%86%85%E6%A0%B8web%E6%8E%A7%E4%BB%B6)
@@ -34,9 +32,9 @@ Linux (i686): cef_binary_3.2623.1399.g64e2fe1_linux32
 
 > Windows 提示：cef_binary_3.2623.1401.gb90a3be_windows32 版本是支持 Windows XP 的最后一个版本，但是我同样携带了新版（cef_binary_3.2704.1431.ge7ddb8a_windows32）的相关代码，如果你认为不需要继续支持 XP，可以自行使用新代码编译
 
-Windows: 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程 + Makefile文件），CEF3 工作需要的 DLL，可以自行前往相应发布站点下载或通过源代码编译。也可以用我们提供的“开发包获取”中的地址获取。
+Windows: 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程 + Makefile文件），CEF3 工作需要的运行时环境，可以使用我们提供的“开发包获取”（见上文）中的地址获取，也可以自行前往相应发布站点下载或通过源代码编译。
 
-Linux: 本项目**没有**自带了编译此库所需的 CEF3 共享库(libcef.so)，自带 libcef_dll_wrapper 的源代码（**暂时没有** Makefile文件，但以后会有），CEF3 工作需要的文件，可以自行前往相应发布站点下载或通过源代码编译。
+Linux: 本项目**没有**自带了编译此库所需的 CEF3 共享库(libcef.so)，自带 libcef_dll_wrapper 的源代码（**暂时没有** Makefile文件，但以后会有），CEF3 工作需要的文件，可以自行前往相应发布站点下载或通过源代码编译。，CEF3 工作需要的运行时环境（包含编译此库所需的 CEF3 共享库(libcef.so)），可以使用我们提供的“开发包获取”（见上文）中的地址获取，也可以自行前往相应发布站点下载或通过源代码编译。
 
 ### 如何在 Windows 平台编译？
 
