@@ -5,6 +5,10 @@
 
 #include <list>
 
+#ifdef __linux__
+#include "ec_linux.h"
+#endif
+
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
 #define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
@@ -71,6 +75,7 @@ typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg)
 typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
 typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
+typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
 
 typedef struct tagBROWSER_CALLBACKS {
 	SIZE_T cbSzie;
@@ -84,6 +89,7 @@ typedef struct tagBROWSER_CALLBACKS {
 	Chrome_CallBack_RButtonDown rbuttondown_callback;
 	Chrome_CallBack_ChTitle chtitle_callback;
 	Chrome_CallBack_CanLoadUrl canloadurl_callback;
+	Chrome_CallBack_CanClose canclose_callback;
 }BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
 
 class SimpleHandler : public CefClient,
@@ -101,7 +107,7 @@ public:
 	LONG_PTR g_id;
 	LONG_PTR userData;
 	DWORD lasterror;
-	DWORD flags;
+	//DWORD flags;
 	CefBrowser* g_browser = nullptr;
 	std::wstring referer_string;
 
@@ -112,8 +118,8 @@ public:
 		Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl);
 	~SimpleHandler();
 
-	virtual void _CreateBrowser(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
-	virtual void* _CreateBrowserSync(std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
+	virtual void* _CreateBrowser(DWORD dwFlags, std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
+	//virtual void* _CreateBrowserSync(DWORD dwFlags, std::wstring url, HWND hParent, RECT &rect, LPCREATE_BROWSER_EXTDATA extdata);
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {

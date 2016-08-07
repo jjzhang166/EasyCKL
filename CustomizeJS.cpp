@@ -1,14 +1,22 @@
+#ifdef _WIN32
 #include <Windows.h>
+#elif defined __linux__
+#include "ec_linux.h"
+#endif
 
 #include "simple_app.h"
 #include "simple_handler.h"
 
 #define __EC_CUSTOMIZE_JS_CPP_
 #define __ECKL_SRC_DEV_
-#include "SDK\C and C++\EasyCKL.h"
+#include "SDK/C and C++/EasyCKL.h"
 
 #undef CKLEXPORT
+#ifdef _WIN32
 #define CKLEXPORT extern "C" __declspec(dllexport)
+#elif defined __linux__
+#define CKLEXPORT extern "C"
+#endif
 
 extern CefRefPtr<CefV8Handler> myV8handle;
 
@@ -41,7 +49,8 @@ CKLEXPORT DWORD WINAPI Chrome_GetV8ValueStringLength(const CefV8ValueList* argum
 CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, size_t pos, wchar_t* buffer, size_t buffer_length) {
 	auto value = arguments->at(pos);
 	if (value->IsValid()) {
-		_ECKL_CopyWString(value->GetStringValue(), buffer, buffer_length * sizeof(wchar_t));
+		auto Value = value->GetStringValue().ToWString();
+		_ECKL_CopyWString(Value, buffer, buffer_length * sizeof(wchar_t));
 		//std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
 		//memset(buffer + buffer_length - 2, 0, 2);//最后两个字节置0
 	}

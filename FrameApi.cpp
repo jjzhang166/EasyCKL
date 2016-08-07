@@ -1,14 +1,22 @@
+#ifdef _WIN32
 #include <Windows.h>
+#elif defined __linux__
+#include "ec_linux.h"
+#endif
 
 #include "simple_app.h"
 #include "simple_handler.h"
 
 #define __EC_FRAME_API_CPP_
 #define __ECKL_SRC_DEV_
-#include "SDK\C and C++\EasyCKL.h"
+#include "SDK/C and C++/EasyCKL.h"
 
 #undef CKLEXPORT
+#ifdef _WIN32
 #define CKLEXPORT extern "C" __declspec(dllexport)
+#elif defined __linux__
+#define CKLEXPORT extern "C"
+#endif
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(CefFrame* frame, wchar_t* url) {
 	if (frame)
@@ -31,6 +39,16 @@ CKLEXPORT bool WINAPI Chrome_FrameIsMain(CefFrame* frame) {
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(CefFrame* frame) {
 	if (frame)
 		frame->Release();
+}
+
+CKLEXPORT wchar_t* WINAPI Chrome_FrameGetUrl(CefFrame* lpFrame) {
+	if (lpFrame) {
+		std::wstring strFrameUrl = lpFrame->GetURL().ToWString();
+		wchar_t* lpBuffer = new wchar_t[strFrameUrl.length() + 1];
+		_ECKL_CopyWString(strFrameUrl, lpBuffer, (strFrameUrl.length() + 1) * sizeof(wchar_t));
+		return lpBuffer;
+	}
+	return 0;
 }
 
 CKLEXPORT CefFrame* WINAPI Chrome_GetNameFrame(SimpleHandler* handler, wchar_t* name) {

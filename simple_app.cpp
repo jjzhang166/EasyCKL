@@ -10,10 +10,10 @@
 
 typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
 
+#ifdef _WIN32
 extern HANDLE hEvent;
+#endif
 extern void* v8contextcreate;
-
-
 
 extern BOOL bSetProxy;
 extern CefString szProxyServer;
@@ -26,7 +26,9 @@ SimpleApp::SimpleApp() {
 
 void SimpleApp::OnContextInitialized() {
 	CEF_REQUIRE_UI_THREAD();
+#ifdef _WIN32
 	SetEvent(hEvent);
+#endif
 }
 
 
@@ -42,8 +44,6 @@ void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, Cef
 			command_line->AppendSwitchWithValue(L"ppapi-flash-path", szFlashPath);
 		else command_line->AppendSwitch(L"enable-system-flash");
 	}
-	//if (isSetUA)
-	//	command_line->AppendSwitchWithValue(L"user-agent", useragen);
 	if (bSetProxy)
 		command_line->AppendSwitchWithValue(L"proxy-server", szProxyServer);
 	if(bDisableGpu)

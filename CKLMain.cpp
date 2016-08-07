@@ -1,4 +1,4 @@
-#include "CKLMain.h"
+Ôªø#include "CKLMain.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "libcef_d.lib")
@@ -17,7 +17,9 @@
 NOTIFYICONDATA nid = { 0 };
 #endif // _EPL_COMPATIBILITY
 
+#ifdef _WIN32
 extern HANDLE hEvent = 0;
+#endif
 void* v8contextcreate = 0;
 
 BOOL isSetUA = FALSE;
@@ -32,16 +34,18 @@ extern BOOL bDisableGpu = FALSE;
 
 CefRefPtr<CefV8Handler> myV8handle;
 
-void _ECKL_CopyWString(CefString source, wchar_t* buffer, size_t buffer_length) {
+void _ECKL_CopyWString(std::wstring source, wchar_t* buffer, size_t buffer_length) {
 	const wchar_t* a = source.c_str();
-	DWORD leng = (wcslen(a) + 1) * sizeof(wchar_t);//ªÒ»°◊÷Ω⁄ ˝
+	DWORD leng = (wcslen(a) + 1) * sizeof(wchar_t);//Ëé∑ÂèñÂ≠óËäÇÊï∞
 	if (leng <= buffer_length)
 		memcpy(buffer, a, leng);
 	else {
 		memcpy(buffer, a, buffer_length - 2);
-		memset(((char*)buffer) + buffer_length - 2, 0, 2);//◊Ó∫Û¡Ω∏ˆ◊÷Ω⁄÷√0
+		memset(((char*)buffer) + buffer_length - 2, 0, 2);//ÊúÄÂêé‰∏§‰∏™Â≠óËäÇÁΩÆ0
 	}
 }
+
+#ifdef _WIN32
 
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -63,6 +67,23 @@ LONG WINAPI excpcallback(_EXCEPTION_POINTERS* excp)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
+#elif defined __linux__
+int XErrorHandlerImpl(Display *display, XErrorEvent *event) {
+	/*LOG(WARNING)
+	 << "X error received: "
+	 << "type " << event->type << ", "
+	 << "serial " << event->serial << ", "
+		 << "error_code " << static_cast<int>(event->error_code) << ", "
+		 << "request_code " << static_cast<int>(event->request_code) << ", "
+		 << "minor_code " << static_cast<int>(event->minor_code);*/
+	return 0;
+}
+
+int XIOErrorHandlerImpl(Display *display) {
+	return 0;
+}
+#endif
+
 CKLEXPORT BOOL WINAPI Chrome_CurrentlyOn(CefThreadId threadId) {
 	return CefCurrentlyOn(threadId);
 }
@@ -71,42 +92,11 @@ CKLEXPORT BOOL WINAPI Chrome_IsUIThread() {
 	return Chrome_CurrentlyOn(TID_UI);
 }
 
-CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, BrowserInfomationType type, void* buffer) {
-	if (handler) {
-		CefRefPtr<CefBrowser> browser = handler->g_browser;
-		if (browser && browser.get()) {
-			switch (type)
-			{
-			case BrowserInfomationUserDataLoogPtr:
-				*(LONG*)buffer = handler->userData;
-				break;
-			case BrowserInfomationCanGoBack:
-				*(BOOL*)buffer = browser->CanGoBack();
-				break;
-			case BrowserInfomationCanGoForward:
-				*(BOOL*)buffer = browser->CanGoForward();
-				break;
-			case BrowserInfomationMainFrame:
-				CefFrame* main; main = browser->GetMainFrame().get();
-				main->AddRef();
-				*(CefFrame**)buffer = main;
-				break;
-			case BrowserInfomationIsLoading:
-				*(BOOL*)buffer = browser->IsLoading();
-				break;
-			case BrowserInfomationLastError:
-				*(DWORD*)buffer = handler->lasterror;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
-
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData) {
+#ifdef _WIN32
 	SetUnhandledExceptionFilter(excpcallback);
 	hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+#endif
 
 	if (flag & INITFLAG_ENABLEHIGHDPISUPPORT)
 		CefEnableHighDPISupport();
@@ -114,7 +104,11 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	if (flag & INITFLAG_DISABLEGPU)
 		bDisableGpu = TRUE;
 
+#ifdef _WIN32
 	CefMainArgs main_args(hInstance);
+#elif defined __linux__
+	CefMainArgs main_args(hInstance->iArgc, hInstance->pszArgv);
+#endif
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 
 	int exit_code = CefExecuteProcess(main_args, app.get(), nullptr);
@@ -122,9 +116,18 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 		return exit_code;
 	}
 
+#ifdef __linux__
+	// Install xlib error handlers so that the application won't be terminated
+	// on non-fatal errors.
+	XSetErrorHandler(XErrorHandlerImpl);
+	XSetIOErrorHandler(XIOErrorHandlerImpl);
+#endif // __linux__
+
 	CefSettings settings;
 	settings.command_line_args_disabled = true;
-	settings.no_sandbox = true;
+#ifndef __linux__
+		settings.no_sandbox = true;
+#endif // __linux__
 
 #ifdef _DEBUG
 	settings.log_severity = LOGSEVERITY_INFO;
@@ -134,11 +137,13 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 
 	if (flag & INITFLAG_CACHESTORAGE) {
 		if (cache_path) CefString(&settings.cache_path) = CefString(&settings.user_data_path) = cache_path;
-		else CefString(&settings.cache_path) = CefString(&settings.user_data_path) = L".\\cache\\";
+		else CefString(&settings.cache_path) = CefString(&settings.user_data_path) = CefString(DEF_CACHE_PATH);
 	}
 
-	if (flag & INITFLAG_USECOMPATIBILITY)
-		CefString(&settings.browser_subprocess_path) = L"eckl_epl_compatibility.exe";
+	if (flag & INITFLAG_SETSUBPROCESS)
+		CefString(&settings.browser_subprocess_path) = CefString(extData->szSubProcess);
+	else if (flag & INITFLAG_USECOMPATIBILITY)
+		CefString(&settings.browser_subprocess_path) = CefString(L"eckl_epl_compatibility.exe");
 
 	if (flag & INITFLAG_SINGLEPROCESS)
 		settings.single_process = true;
@@ -162,11 +167,13 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	}
 
 	CefInitialize(main_args, settings, app.get(), nullptr);
+#ifdef _WIN32
 	WaitForSingleObject(hEvent, INFINITE);
 
 	if (Chrome_IsUIThread()) {
 		SetUnhandledExceptionFilter(0);
 	}
+#endif
 	return -1;
 }
 
@@ -174,7 +181,7 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPI
 	DWORD _flag = 0;
 	int ret = 0;
 
-	/* ºÊ»›æ…∞Ê±æµƒ Chrome_InitializeEx */
+	/* ÂÖºÂÆπÊóßÁâàÊú¨ÁöÑ Chrome_InitializeEx */
 	if (!(dwFlags & INITFLAG_EXTDATA) && lpExtData) {
 		_flag |= INITFLAG_CACHESTORAGE;
 		if (dwFlags) _flag |= INITFLAG_NOSSL;
@@ -214,11 +221,11 @@ CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPI
 		nid.hWnd = CreateWindow(L"EasyCKL_Tools", L"", 0, 0, 0, 0, 0, 0, 0, hInstance, 0);
 		nid.uID = 1;
 		nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
-		nid.uCallbackMessage = WM_USER + 1;//◊‘∂®“Âœ˚œ¢
+		nid.uCallbackMessage = WM_USER + 1;//Ëá™ÂÆö‰πâÊ∂àÊÅØ
 		nid.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
-		wcscpy_s(nid.szTip, TEXT("EasyCKL EPL µ˜ ‘ºÊ»›ƒ£ Ω"));
-		wcscpy_s(nid.szInfo, TEXT("EasyCKL EPLø™∑¢»À‘±π§æﬂ"));
-		wcscpy_s(nid.szInfoTitle, TEXT("EasyCKL ’˝‘⁄ EPL µ˜ ‘ºÊ»›ƒ£ Ωœ¬π§◊˜°£∑¢≤ºƒ„µƒ”¶”√ ±«Î π”√±Í◊º EasyCKL ø‚"));
+		wcscpy_s(nid.szTip, TEXT("EasyCKL EPL Ë∞ÉËØïÂÖºÂÆπÊ®°Âºè"));
+		wcscpy_s(nid.szInfo, TEXT("EasyCKL EPLÂºÄÂèë‰∫∫ÂëòÂ∑•ÂÖ∑"));
+		wcscpy_s(nid.szInfoTitle, TEXT("EasyCKL Ê≠£Âú® EPL Ë∞ÉËØïÂÖºÂÆπÊ®°Âºè‰∏ãÂ∑•‰Ωú„ÄÇÂèëÂ∏É‰Ω†ÁöÑÂ∫îÁî®Êó∂ËØ∑‰ΩøÁî®Ê†áÂáÜ EasyCKL Â∫ì"));
 		nid.dwInfoFlags = NIIF_WARNING | NIIF_LARGE_ICON;
 		nid.uTimeout = 10000;
 		Shell_NotifyIcon(NIM_ADD, &nid);
@@ -234,17 +241,49 @@ CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL ca
 	Chrome_InitializeEx(hInstance, flag, 0, 0, 0);
 }
 
+CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, BrowserInfomationType type, void* buffer) {
+	if (handler) {
+		CefRefPtr<CefBrowser> browser = handler->g_browser;
+		if (browser && browser.get()) {
+			switch (type)
+			{
+			case BrowserInfomationUserDataLoogPtr:
+				*(LONG*)buffer = handler->userData;
+				break;
+			case BrowserInfomationCanGoBack:
+				*(BOOL*)buffer = browser->CanGoBack();
+				break;
+			case BrowserInfomationCanGoForward:
+				*(BOOL*)buffer = browser->CanGoForward();
+				break;
+			case BrowserInfomationMainFrame:
+				CefFrame* main; main = browser->GetMainFrame().get();
+				main->AddRef();
+				*(CefFrame**)buffer = main;
+				break;
+			case BrowserInfomationIsLoading:
+				*(BOOL*)buffer = browser->IsLoading();
+				break;
+			case BrowserInfomationLastError:
+				*(DWORD*)buffer = handler->lasterror;
+				break;
+			case BrowserInfomationBrowserId:
+				*(DWORD*)buffer = handler->g_id;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData) {
 
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, lpCallbacks));
-	handler->flags = dwFlags;
 
 	if ((dwFlags & BROWSERFLAG_HEADER_REFERER) && szHeaderReferer)
 		handler->referer_string = std::wstring(szHeaderReferer);
-	if (dwFlags & BROWSERFLAG_SYNC)
-		return handler->_CreateBrowserSync(std::wstring(szUrl), hParent, *rcBrowserRect, lpExtData);
-	else handler->_CreateBrowser(std::wstring(szUrl), hParent, *rcBrowserRect, lpExtData);
-	return 0;
+	return handler->_CreateBrowser(dwFlags, std::wstring(szUrl), hParent, *rcBrowserRect, lpExtData);
 }
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -260,7 +299,7 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWO
 
 	if (referer)
 		handler->referer_string = std::wstring(referer);
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect, 0);
+	return handler->_CreateBrowser(BROWSERFLAG_SYNC, std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -276,7 +315,7 @@ CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD 
 
 	if (referer)
 		handler->referer_string = std::wstring(referer);
-	handler->_CreateBrowser(std::wstring(url), hParent, *rect, 0);
+	handler->_CreateBrowser(0, std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -290,7 +329,7 @@ CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hPa
 	CefRefPtr<SimpleHandler> handler(new SimpleHandler(id, created_callback, churl_callback, newwindow,
 		download, chstate, JSDialog, error, rbuttondown, chtitle, canloadurl));
 
-	return handler->_CreateBrowserSync(std::wstring(url), hParent, *rect, 0);
+	return handler->_CreateBrowser(BROWSERFLAG_SYNC, std::wstring(url), hParent, *rect, 0);
 }
 
 CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
@@ -320,6 +359,10 @@ CKLEXPORT void WINAPI Chrome_DoMessageLoopWork() {
 
 CKLEXPORT void WINAPI Chrome_MessageLoop() {
 	CefRunMessageLoop();
+}
+
+CKLEXPORT void WINAPI Chrome_QuitMessageLoop() {
+	CefQuitMessageLoop();
 }
 
 CKLEXPORT void WINAPI Chrome_Shutdown() {
@@ -378,7 +421,8 @@ CKLEXPORT void WINAPI Chrome_GetUrlString(SimpleHandler* handler, wchar_t* buffe
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
-			_ECKL_CopyWString(browser->GetMainFrame()->GetURL().ToWString(), buffer, buffer_length * sizeof(wchar_t));
+			auto Url = browser->GetMainFrame()->GetURL().ToWString();
+			_ECKL_CopyWString(Url, buffer, buffer_length * sizeof(wchar_t));
 		}
 	}
 }
@@ -390,7 +434,7 @@ CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(SimpleHandler* handler) {
 			return browser->GetHost()->GetWindowHandle();
 		}
 	}
-	return nullptr;
+	return NULL;
 }
 
 CKLEXPORT HWND WINAPI Chrome_Window(SimpleHandler* handler) {
@@ -464,7 +508,7 @@ CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath,
 	if (enable) {
 		CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager(NULL);
 		if (!CookiePath)
-			cookiemgr->SetStoragePath(".\\cookies\\", persist_session_cookies, NULL);
+			cookiemgr->SetStoragePath(CefString(DEF_COOKIE_PATH), persist_session_cookies, NULL);
 		else cookiemgr->SetStoragePath(CookiePath, persist_session_cookies, NULL);
 	}
 	else {
@@ -522,8 +566,10 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
+/*#ifdef _WIN32
 			ShowWindow(Chrome_Window(handler), 0);
 			SetParent(Chrome_Window(handler), 0);
+#endif*/
 			browser->GetHost()->CloseBrowser(true);
 		}
 	}
@@ -543,7 +589,7 @@ CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, wchar_t* string,
 
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler) {
 	myV8handle = new MyV8Handler(handler);
-	v8contextcreate = contextcreate;
+	v8contextcreate = (void*)contextcreate;
 }
 
 CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
@@ -551,7 +597,9 @@ CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
 			CefWindowInfo dt_wininfo;
+#ifdef _WIN32
 			dt_wininfo.SetAsPopup(0, L"Developer Tools");
+#endif
 			CefBrowserSettings browser_settings;
 			CefPoint point;
 			browser->GetHost()->ShowDevTools(dt_wininfo, handler, browser_settings, point);
@@ -641,7 +689,7 @@ CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpCont
 					context(lpContext), callback(lpCallbackFunction) {}
 				virtual void Visit(const CefString& string) OVERRIDE {
 					if (callback)
-						callback(context, string.c_str());
+						callback(context, string.ToWString().c_str());
 				}
 			private:
 				CefRefPtr<CefBrowser> browser_;

@@ -3,6 +3,10 @@
 
 #include "include/cef_app.h"
 
+#ifdef __linux__
+#include "ec_linux.h"
+#endif
+
 class SimpleApp : public CefApp,
 	public CefBrowserProcessHandler,
 	public CefRenderProcessHandler

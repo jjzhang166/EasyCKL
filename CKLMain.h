@@ -1,7 +1,16 @@
 #ifndef _CKLMAIN_H_
 #define _CKLMAIN_H_
 
+#ifdef _WIN32
 #include <Windows.h>
+
+#define CKLEXPORT extern "C" __declspec(dllexport)
+#elif defined __linux__
+#include "ec_linux.h"
+#include <X11/Xlib.h>
+
+#define CKLEXPORT extern "C"
+#endif
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"
@@ -10,7 +19,13 @@
 #include "simple_app.h"
 #include "simple_handler.h"
 
-#define CKLEXPORT extern "C" __declspec(dllexport)
+#ifdef _WIN32
+#define DEF_CACHE_PATH L".\\cache\\"
+#define DEF_COOKIE_PATH L".\\cookies\\"
+#elif defined __linux__
+#define DEF_CACHE_PATH L"./cache/"
+#define DEF_COOKIE_PATH L"./cookies/"
+#endif
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
@@ -29,7 +44,7 @@ public:
 		CefString& exception) OVERRIDE {
 
 		if (handler_callback) {
-			return handler_callback(name.c_str(), &arguments, &retval) != FALSE;
+			return handler_callback(name.ToWString().c_str(), &arguments, &retval) != FALSE;
 		}
 		return false;
 	}
@@ -45,7 +60,8 @@ enum BrowserInfomationType
 	BrowserInfomationCanGoForward = 2,
 	BrowserInfomationMainFrame = 3,
 	BrowserInfomationIsLoading = 4,
-	BrowserInfomationLastError = 5
+	BrowserInfomationLastError = 5,
+	BrowserInfomationBrowserId = 6
 };
 
 #define INITFLAG_NOSSL 0x1
@@ -56,10 +72,12 @@ enum BrowserInfomationType
 #define INITFLAG_DISABLEGPU 0x20
 #define INITFLAG_EXTDATA 0x40
 #define INITFLAG_SETUSERAGENT 0x80
+#define INITFLAG_SETSUBPROCESS 0x100
 
 typedef struct tagINIT_EXTDATA {
 	SIZE_T cbSzie;
 	const wchar_t* szUserAgent;
+	const wchar_t* szSubProcess;
 } INIT_EXTDATA, *LPINIT_EXTDATA;
 
 typedef struct _tagCOOKIE_DESCRIPTOR {

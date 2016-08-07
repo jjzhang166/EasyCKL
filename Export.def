@@ -7,6 +7,7 @@ Chrome_Initialize
 Chrome_InitializeEx
 Chrome_DoMessageLoopWork
 Chrome_MessageLoop
+Chrome_QuitMessageLoop
 Chrome_Shutdown
 
 Chrome_CreateChildBrowser
@@ -72,6 +73,7 @@ Chrome_FrameLoadString
 Chrome_FrameIsMain
 Chrome_ReleaseFrame
 Chrome_GetNameFrame
+Chrome_FrameGetUrl
 EcQBIGetMainFrame
 Chrome_FrameDoCopy
 Chrome_FrameDoCut
@@ -97,4 +99,8 @@ EcPkJavaScriptSetValueByObjectId
 EcPkJavaScriptSetValueByObjectName
 EcPkJavaScriptSubmitByFormId
 EcPkJavaScriptSubmitByFormName
+EcPkJavaScriptSetCheckedByObjectId
+EcPkJavaScriptSetCheckedByObjectName
+EcPkJavaScriptClickButtonByObjectId
+EcPkJavaScriptClickButtonByObjectName
 EcPkDisableDragDrop
