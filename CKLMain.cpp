@@ -126,7 +126,7 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 	CefSettings settings;
 	settings.command_line_args_disabled = true;
 #ifndef __linux__
-		settings.no_sandbox = true;
+	settings.no_sandbox = true;
 #endif // __linux__
 
 #ifdef _DEBUG
@@ -256,11 +256,16 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, Brow
 			case BrowserInfomationCanGoForward:
 				*(BOOL*)buffer = browser->CanGoForward();
 				break;
-			case BrowserInfomationMainFrame:
-				CefFrame* main; main = browser->GetMainFrame().get();
-				main->AddRef();
-				*(CefFrame**)buffer = main;
+			case BrowserInfomationMainFrame: {
+				CefRefPtr<CefFrame> frame = browser->GetMainFrame();
+				if (frame) {
+					CefFrame* lpMainFrame = frame.get();
+					lpMainFrame->AddRef();
+					*(CefFrame**)buffer = lpMainFrame;
+				}
+				else *(long**)buffer = 0;
 				break;
+			}
 			case BrowserInfomationIsLoading:
 				*(BOOL*)buffer = browser->IsLoading();
 				break;
@@ -566,10 +571,10 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
-/*#ifdef _WIN32
-			ShowWindow(Chrome_Window(handler), 0);
-			SetParent(Chrome_Window(handler), 0);
-#endif*/
+			/*#ifdef _WIN32
+						ShowWindow(Chrome_Window(handler), 0);
+						SetParent(Chrome_Window(handler), 0);
+			#endif*/
 			browser->GetHost()->CloseBrowser(true);
 		}
 	}
