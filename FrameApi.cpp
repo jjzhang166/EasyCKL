@@ -55,9 +55,12 @@ CKLEXPORT CefFrame* WINAPI Chrome_GetNameFrame(SimpleHandler* handler, wchar_t* 
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
-			CefFrame* frame = browser->GetFrame(name).get();
-			frame->AddRef();
-			return frame;
+			CefRefPtr<CefFrame> frame = browser->GetFrame(CefString(std::wstring(name)));
+			if (frame) {
+				CefFrame* lpFrame = frame.get();
+				lpFrame->AddRef();
+				return lpFrame;
+			}
 		}
 	}
 	return 0;
