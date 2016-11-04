@@ -20,7 +20,7 @@ EasyCKL 开发的起因的意义请参考 [Wiki 页面](https://git.oschina.net/
 
 **利用 EasyCKL，你可以**
 
-- 给你的应用程序嵌入一个高性能、就爱内容主流最新标准的 Web 控件
+- 给你的应用程序嵌入一个高性能、兼容主流最新标准的 Web 控件
 
 - 开发 Chromium 内核的浏览器，例如 [ECKBrowser](http://easyckl.tk/eckbrowser/)
 
