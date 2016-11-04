@@ -2,13 +2,13 @@
 
 EasyCKL 是一个基于 CEF3（嵌入式 Chromium 框架）二次开发的库，支持 Windows 和 Linux 平台。
 
-[API 文档](http://easyckl.tk/docs/) | [从源代码构建 EasyCKL](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BB%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9E%84%E5%BB%BA-EasyCKL) | [入门教程（MSVC）](http://git.oschina.net/daemon_process/EasyCKL/wikis/%E3%80%90%E5%85%A5%E9%97%A8%E3%80%91%E4%BD%BF%E7%94%A8-EasyCKL-%E7%BB%99%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B5%8C%E5%85%A5-%2Ahromium-%E5%86%85%E6%A0%B8web%E6%8E%A7%E4%BB%B6) | [入门教程（MinGW）](http://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BD%BF%E7%94%A8-MinGW-%E5%BC%80%E5%8F%91-EasyCKL-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
+[API 文档](http://easyckl.tk/docs/) | [从源代码构建 EasyCKL](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BB%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9E%84%E5%BB%BA-EasyCKL) | [入门教程（MSVC）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E3%80%90%E5%85%A5%E9%97%A8%E3%80%91%E4%BD%BF%E7%94%A8-EasyCKL-%E7%BB%99%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B5%8C%E5%85%A5-%2Ahromium-%E5%86%85%E6%A0%B8web%E6%8E%A7%E4%BB%B6) | [入门教程（MinGW）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BD%BF%E7%94%A8-MinGW-%E5%BC%80%E5%8F%91-EasyCKL-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
 
 如果上面的 API 文档无法打开，请使用 [这个连接](http://easyckl.esy.es/docs/)
 
 EasyCKL 开发的起因的意义请参考 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
-简而言之，EasyCKL 具有很多优秀的特点：
+**简而言之，EasyCKL 具有很多优秀的特点：**
 
 - 完全适用 C 风格的 API 接口，具体请参考我们的 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
@@ -18,7 +18,7 @@ EasyCKL 开发的起因的意义请参考 [Wiki 页面](https://git.oschina.net/
 
 - 他尽可能的保证向后兼容，不论是源代码级还是二进制级。
 
-利用 EasyCKL，你可以
+**利用 EasyCKL，你可以**
 
 - 给你的应用程序嵌入一个高性能、就爱内容主流最新标准的 Web 控件
 
@@ -26,7 +26,7 @@ EasyCKL 开发的起因的意义请参考 [Wiki 页面](https://git.oschina.net/
 
 - 托管主要以 Web 技术开发的应用程序（WebUI）
 
-如何开始？
+**如何开始？**
 
 我希望基于 EasyCKL 开发我的应用程序——请回到顶部查看入门教程和 API 文档
 
