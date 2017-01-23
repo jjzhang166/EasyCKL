@@ -3,9 +3,7 @@
 
 #include "include/cef_app.h"
 
-#ifdef __linux__
-#include "ec_linux.h"
-#endif
+#include "ec_portable.h"
 
 class SimpleApp : public CefApp,
 	public CefBrowserProcessHandler,

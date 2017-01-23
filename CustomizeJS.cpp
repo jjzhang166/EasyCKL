@@ -1,8 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
+#include "ec_portable.h"
 
 #include "simple_app.h"
 #include "simple_handler.h"

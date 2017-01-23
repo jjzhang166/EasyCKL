@@ -1,10 +1,14 @@
 #ifndef _EASYCKL
 #define _EASYCKL
-#define CKLEXPORT extern "C" 
 
 #ifdef __EC_LINUX_API
-#include "ec_linux.h"
+#include "ec_portable.h"
 #endif
+
+#ifdef CKLEXPORT
+#undef CKLEXPORT
+#endif
+#define CKLEXPORT extern "C" 
 
 #ifndef  __ECKL_SRC_DEV_
 typedef struct tagNEW_WINDOW_INFOMATION {

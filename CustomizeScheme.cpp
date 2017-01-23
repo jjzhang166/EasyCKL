@@ -1,8 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
+#include "ec_portable.h"
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"

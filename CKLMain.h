@@ -1,16 +1,7 @@
 #ifndef _CKLMAIN_H_
 #define _CKLMAIN_H_
 
-#ifdef _WIN32
-#include <Windows.h>
-
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#include "ec_linux.h"
-#include <X11/Xlib.h>
-
-#define CKLEXPORT extern "C"
-#endif
+#include "ec_portable.h"
 
 #include "include/cef_client.h"
 #include "include/wrapper/cef_helpers.h"

@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CKLMain.h" />
+    <ClInclude Include="ec_portable.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDK\C and C++\EasyCKL.h" />
     <ClInclude Include="simple_app.h" />

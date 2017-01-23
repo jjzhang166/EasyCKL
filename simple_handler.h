@@ -5,9 +5,7 @@
 
 #include <list>
 
-#ifdef __linux__
-#include "ec_linux.h"
-#endif
+#include "ec_portable.h"
 
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
