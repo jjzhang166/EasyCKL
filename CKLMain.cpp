@@ -392,12 +392,12 @@ CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t*
 	szFlashPath = ppapi_flash_path;
 }
 
-CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* _ua) {
+CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* _ua) {
 	isSetUA = TRUE;
 	ua = _ua;
 }
 
-CKLEXPORT void WINAPI Chrome_SetProxyServer(wchar_t* proxy) {
+CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy) {
 	bSetProxy = TRUE;
 	szProxyServer = proxy;
 }
@@ -500,7 +500,7 @@ CKLEXPORT void WINAPI Chrome_SetFocus(SimpleHandler* handler, bool bFocus) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, wchar_t* js) {
+CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, const wchar_t* js) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
@@ -509,7 +509,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, wchar_t* js) {
 	}
 }
 
-CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath, bool persist_session_cookies) {
+CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies) {
 	if (enable) {
 		CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager(NULL);
 		if (!CookiePath)
@@ -554,7 +554,7 @@ CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, con
 	return lpCookieManager->DeleteCookies(szUrl, szCookieName, 0);
 }
 
-CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {
+CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath) {
 	EcKeCookieStorageControl(TRUE, CookiePath, false);
 }
 
@@ -580,7 +580,7 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, wchar_t* string, wchar_t* url) {
+CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, const wchar_t* string, const wchar_t* url) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {

@@ -2,10 +2,23 @@
 #define __EASYCKL_SIMPLE_HANDLER_H_
 
 #include "include/cef_client.h"
-
-#include <list>
+#include "include/cef_app.h"
+#include "include/cef_parser.h"
+#include "include/cef_browser.h"
+#include "include/base/cef_bind.h"
+#include "include/wrapper/cef_closure_task.h"
+#include "include/wrapper/cef_helpers.h"
 
 #include "ec_portable.h"
+#include "simple_app.h"
+
+#include <sstream>
+#include <string>
+#include <list>
+
+#ifdef _WIN32
+#include <Shellapi.h>
+#endif
 
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2

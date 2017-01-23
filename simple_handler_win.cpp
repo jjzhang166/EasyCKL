@@ -1,15 +1,4 @@
 ﻿#include "simple_handler.h"
-#include "simple_app.h"
-
-#include <string>
-
-#include "ec_portable.h"
-#ifdef _WIN32
-#include <Shellapi.h>
-#endif
-
-#include "include/cef_browser.h"
-#include "include/wrapper/cef_helpers.h"
 
 extern CefString szLocalInf;
 

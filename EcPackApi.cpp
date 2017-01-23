@@ -5,6 +5,7 @@
 
 #define __EC_PACK_API_CPP_
 #define __ECKL_SRC_DEV_
+#include "CKLMain.h"
 #include "SDK/C and C++/EasyCKL.h"
 
 #undef CKLEXPORT
@@ -25,9 +26,9 @@ CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RE
 	if (browser) {
 		if (referer) {
 			std::wstring html = L"<html><head><meta http-equiv=\"refresh\" content=\"0;url=" + std::wstring(url) + L"\"></head><body bgcolor=\"white\"></body></html>";
-			Chrome_LoadString(browser, (wchar_t*)html.c_str(), referer);
+			Chrome_LoadString((SimpleHandler *)browser, (wchar_t*)html.c_str(), referer);
 		}
-		else Chrome_LoadUrl(browser, url);
+		else Chrome_LoadUrl((SimpleHandler *)browser, url);
 	}
 	return browser;
 }

@@ -91,6 +91,103 @@ typedef struct _tagCOOKIE_DESCRIPTOR {
 	int iExpiresMillisecond;   // Milliseconds within the current second (0-999)
 } COOKIE_DESCRIPTOR, *LPCOOKIE_DESCRIPTOR;
 
+CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
+CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);
+CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPINIT_EXTDATA lpExtData, wchar_t* szLocal, wchar_t* szCachePath);
+
+#define BROWSERFLAG_SYNC 0x1
+#define BROWSERFLAG_HEADER_REFERER 0x2
+#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
+#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
+#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
+#define BROWSERFLAG_DEF_FONT 0x100
+#define BROWSERFLAG_DEF_FONT_SIZE 0x200
+
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData);
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
+
+CKLEXPORT void WINAPI Chrome_CreateBrowserExWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
+
+CKLEXPORT void* WINAPI Chrome_CreateBrowserSync(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
+
+CKLEXPORT void WINAPI Chrome_CreateBrowserEx(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown,
+	Chrome_CallBack_ChTitle chtitle, Chrome_CallBack_CanLoadUrl canloadurl, void* rev);
+
+CKLEXPORT void WINAPI Chrome_CreateBrowser(DWORD id, wchar_t* url, HWND hParent, RECT* rect,
+	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
+	Chrome_CallBack_NewWindow newwindow, Chrome_CallBack_Download download, Chrome_CallBack_ChState chstate,
+	Chrome_CallBack_JSDialog JSDialog, Chrome_CallBack_Error error, Chrome_CallBack_RButtonDown rbuttondown);
+
+CKLEXPORT void WINAPI Chrome_DoMessageLoopWork();
+CKLEXPORT void WINAPI Chrome_MessageLoop();
+CKLEXPORT void WINAPI Chrome_QuitMessageLoop();
+CKLEXPORT void WINAPI Chrome_Shutdown();
+CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* ua);
+CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy);
+CKLEXPORT void WINAPI Chrome_LoadUrl(SimpleHandler* handler, wchar_t* url);
+CKLEXPORT HWND WINAPI Chrome_Window(SimpleHandler* handler);
+CKLEXPORT void WINAPI Chrome_GoBack(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_GoForward(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_Refresh(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_RefreshIgnoreCache(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_Stop(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_SetFocus(SimpleHandler* lpBrowser, bool bFocus);
+CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* lpBrowser, const wchar_t* szJavaScript);
+CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
+CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
+CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
+CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore();
+
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor);
+CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName);
+CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler);
+CKLEXPORT void WINAPI Chrome_SetOSModalLoop(bool osModalLoop);
+CKLEXPORT DWORD WINAPI Chrome_GetUrlLength(SimpleHandler* handler);
+CKLEXPORT void WINAPI Chrome_GetUrlString(SimpleHandler* handler, wchar_t* buffer, DWORD buffer_length);
+CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* lpBrowser, const wchar_t* string, const wchar_t* url);
+CKLEXPORT HWND WINAPI Chrome_GetWindowHandle(SimpleHandler* handler);
+CKLEXPORT void WINAPI Chrome_EnableSystemFlash();
+CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t* ppapi_flash_version);
+CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_ShowDevToolsChild(SimpleHandler* handler, HWND hParent, RECT* rect, HWND* devtools_hwnd);
+CKLEXPORT void WINAPI Chrome_SetUserDataLongPtr(SimpleHandler* lpBrowser, LONG_PTR data);
+CKLEXPORT void WINAPI Chrome_PrintToPDF(SimpleHandler* lpBrowser, wchar_t* pdf_path);
+CKLEXPORT double WINAPI Chrome_GetZoomLevel(SimpleHandler* lpBrowser);
+CKLEXPORT void WINAPI Chrome_SetZoomLevel(SimpleHandler* lpBrowser, double dbZoomLevel);
+CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
+CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
+
 typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
+CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* lpBrowser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
+
+#define BROWSER_LASTERROR_LOADING 0x1
+#define BROWSER_LASTERROR_LOADERROR 0x2
+#define BROWSER_LASTERROR_LOADRESERROR 0x4
+#define BROWSER_LASTERROR_CERTERROR 0x8
+
+CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, BrowserInfomationType type, void* buffer);
+
+CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData);
+CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies);
 
 #endif // _CKLMAIN_H_

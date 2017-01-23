@@ -5,6 +5,7 @@
 
 #define __EC_FRAME_API_CPP_
 #define __ECKL_SRC_DEV_
+#include "CKLMain.h"
 #include "SDK/C and C++/EasyCKL.h"
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(CefFrame* frame, wchar_t* url) {

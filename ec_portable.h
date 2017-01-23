@@ -5,11 +5,12 @@
 #undef CKLEXPORT
 #endif
 
-#ifdef _WIN32
+#define CKLEXPORT extern "C"
+/*#ifdef _WIN32
 #define CKLEXPORT extern "C" __declspec(dllexport)
 #elif defined __linux__
 #define CKLEXPORT extern "C"
-#endif
+#endif*/
 
 #ifdef _WIN32
 #include <Windows.h>
