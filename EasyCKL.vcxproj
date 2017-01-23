@@ -101,8 +101,13 @@
     <ClCompile Include="simple_handler_win.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="browser.h" />
     <ClInclude Include="CKLMain.h" />
+    <ClInclude Include="CustomizeJS.h" />
+    <ClInclude Include="CustomizeScheme.h" />
+    <ClInclude Include="EcPackApi.h" />
     <ClInclude Include="ec_portable.h" />
+    <ClInclude Include="FrameApi.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SDK\C and C++\EasyCKL.h" />
     <ClInclude Include="simple_app.h" />

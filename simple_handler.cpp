@@ -111,16 +111,15 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 	CEF_REQUIRE_UI_THREAD();
 
 	// Don't display an error for downloaded files.
-	if (errorCode == ERR_ABORTED)
-		return;
+	if (errorCode == ERR_ABORTED) return;
 
+	// Don't display an error for developer window.
 	if (!browser->IsSame(g_browser)) return;
 
 	if (frame->IsMain()) lasterror |= BROWSER_LASTERROR_LOADERROR;
 	else lasterror |= BROWSER_LASTERROR_LOADRESERROR;
 
 	if (callbacks.error_callback) {
-
 		auto FailedUrl = failedUrl.ToWString();
 
 		ERROR_INFOMATION info;
@@ -130,6 +129,7 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 		info.iErrorCode = errorCode;
 		info.lpFrame = frame;
 		info.lpSslInfo = 0;
+
 		callbacks.error_callback(g_id, 0, &info, 0);
 		return;
 	}

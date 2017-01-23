@@ -1,18 +1,4 @@
-#include "ec_portable.h"
-
-#include "simple_app.h"
-#include "simple_handler.h"
-
-#define __EC_CUSTOMIZE_JS_CPP_
-#define __ECKL_SRC_DEV_
-#include "SDK/C and C++/EasyCKL.h"
-
-#undef CKLEXPORT
-#ifdef _WIN32
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#define CKLEXPORT extern "C"
-#endif
+#include "CustomizeJS.h"
 
 extern CefRefPtr<CefV8Handler> myV8handle;
 

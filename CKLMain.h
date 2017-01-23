@@ -10,39 +10,8 @@
 #include "simple_app.h"
 #include "simple_handler.h"
 
-#ifdef _WIN32
-#define DEF_CACHE_PATH L".\\cache\\"
-#define DEF_COOKIE_PATH L".\\cookies\\"
-#elif defined __linux__
-#define DEF_CACHE_PATH L"./cache/"
-#define DEF_COOKIE_PATH L"./cookies/"
-#endif
-
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
-
-class MyV8Handler : public CefV8Handler {
-public:
-	MyV8Handler(V8Handler_CallBack handler) {
-		handler_callback = handler;
-	}
-	~MyV8Handler() {}
-	V8Handler_CallBack handler_callback = 0;
-	virtual bool Execute(const CefString& name,
-		CefRefPtr<CefV8Value> object,
-		const CefV8ValueList& arguments,
-		CefRefPtr<CefV8Value>& retval,
-		CefString& exception) OVERRIDE {
-
-		if (handler_callback) {
-			return handler_callback(name.ToWString().c_str(), &arguments, &retval) != FALSE;
-		}
-		return false;
-	}
-
-	// Provide the reference counting implementation for this class.
-	IMPLEMENT_REFCOUNTING(MyV8Handler);
-};
 
 enum BrowserInfomationType
 {
@@ -91,22 +60,16 @@ typedef struct _tagCOOKIE_DESCRIPTOR {
 	int iExpiresMillisecond;   // Milliseconds within the current second (0-999)
 } COOKIE_DESCRIPTOR, *LPCOOKIE_DESCRIPTOR;
 
+typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
+
+void _ECKL_CopyWString(std::wstring source, wchar_t* buffer, size_t buffer_length);
+
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
 CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);
 CKLEXPORT int WINAPI Chrome_InitializeEx(HINSTANCE hInstance, DWORD dwFlags, LPINIT_EXTDATA lpExtData, wchar_t* szLocal, wchar_t* szCachePath);
 
-#define BROWSERFLAG_SYNC 0x1
-#define BROWSERFLAG_HEADER_REFERER 0x2
-#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
-#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
-#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
-#define BROWSERFLAG_EXTDATA 0x20
-#define BROWSERFLAG_DEF_ENCODING 0x40
-#define BROWSERFLAG_BACK_COLOR 0x80
-#define BROWSERFLAG_DEF_FONT 0x100
-#define BROWSERFLAG_DEF_FONT_SIZE 0x200
-
-CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData);
+CKLEXPORT void* WINAPI Chrome_CreateChildBrowser(DWORD dwFlags, LPBROWSER_CALLBACKS lpCallbacks, DWORD id, wchar_t* szHeaderReferer, 
+	wchar_t* szUrl, HWND hParent, RECT* rcBrowserRect, LPCREATE_BROWSER_EXTDATA lpExtData);
 
 CKLEXPORT void* WINAPI Chrome_CreateBrowserSyncWithReferer(wchar_t* referer, DWORD id, wchar_t* url, HWND hParent, RECT* rect,
 	Chrome_CallBack_BrowserCreated created_callback, Chrome_CallBack_ChUrl churl_callback,
@@ -156,7 +119,6 @@ CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
 CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore();
-
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor);
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName);
 CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* lpBrowser);
@@ -176,15 +138,7 @@ CKLEXPORT double WINAPI Chrome_GetZoomLevel(SimpleHandler* lpBrowser);
 CKLEXPORT void WINAPI Chrome_SetZoomLevel(SimpleHandler* lpBrowser, double dbZoomLevel);
 CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize, const wchar_t* szMimeType, const wchar_t* szCharset);
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
-
-typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
 CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* lpBrowser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
-
-#define BROWSER_LASTERROR_LOADING 0x1
-#define BROWSER_LASTERROR_LOADERROR 0x2
-#define BROWSER_LASTERROR_LOADRESERROR 0x4
-#define BROWSER_LASTERROR_CERTERROR 0x8
-
 CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(SimpleHandler* handler, BrowserInfomationType type, void* buffer);
 
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData);

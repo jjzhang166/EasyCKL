@@ -18,6 +18,14 @@ NOTIFYICONDATA nid = { 0 };
 #endif // _EPL_COMPATIBILITY
 
 #ifdef _WIN32
+#define DEF_CACHE_PATH L".\\cache\\"
+#define DEF_COOKIE_PATH L".\\cookies\\"
+#elif defined __linux__
+#define DEF_CACHE_PATH L"./cache/"
+#define DEF_COOKIE_PATH L"./cookies/"
+#endif
+
+#ifdef _WIN32
 extern HANDLE hEvent = 0;
 #endif
 void* v8contextcreate = 0;
@@ -31,6 +39,29 @@ extern CefString szProxyServer("");
 extern BOOL bEnableFlash = FALSE;
 extern CefString szFlashPath("");
 extern BOOL bDisableGpu = FALSE;
+
+class MyV8Handler : public CefV8Handler {
+public:
+	MyV8Handler(V8Handler_CallBack handler) {
+		handler_callback = handler;
+	}
+	~MyV8Handler() {}
+	V8Handler_CallBack handler_callback = 0;
+	virtual bool Execute(const CefString& name,
+		CefRefPtr<CefV8Value> object,
+		const CefV8ValueList& arguments,
+		CefRefPtr<CefV8Value>& retval,
+		CefString& exception) OVERRIDE {
+
+		if (handler_callback) {
+			return handler_callback(name.ToWString().c_str(), &arguments, &retval) != FALSE;
+		}
+		return false;
+	}
+
+	// Provide the reference counting implementation for this class.
+	IMPLEMENT_REFCOUNTING(MyV8Handler);
+};
 
 CefRefPtr<CefV8Handler> myV8handle;
 
