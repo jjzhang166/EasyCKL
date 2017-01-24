@@ -1,4 +1,4 @@
-#include "simple_handler.h"
+﻿#include "simple_handler.h"
 
 CefString GetDataURI(const std::string& data,
 	const std::wstring& mime_type) {

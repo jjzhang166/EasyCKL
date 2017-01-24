@@ -1,20 +1,21 @@
-/*
+ï»¿/*
 	EasyCKL Interface Header
 
 	BUILD Version: 7.1.?.?
 	Copyright (c) daemon_process. All rights reserved.
 
-	!!!WARNING!!! - ½Ó¿ÚÍ·ÎÄ¼ş´Ó 7.1 °æ±¾ÓÉ EasyCKL ±àÒë¹¹½¨»·¾³×Ô¶¯÷·ÖÆºÏ³É£¬ÇëÎğĞŞ¸Ä
-	Report bug: https://git.oschina.net/daemon_process/EasyCKL/issues £¨Èç¹ûÊÇ´ËÍ·ÎÄ¼şÓĞÎÊÌâÇë×¢Ã÷Îª Í·ÎÄ¼şÉú³ÉBug£©
+	!!!WARNING!!! - æ¥å£å¤´æ–‡ä»¶ä» 7.1 ç‰ˆæœ¬ç”± EasyCKL ç¼–è¯‘æ„å»ºç¯å¢ƒè‡ªåŠ¨é£åˆ¶åˆæˆï¼Œè¯·å‹¿ä¿®æ”¹
+	Report bug: https://git.oschina.net/daemon_process/EasyCKL/issues ï¼ˆå¦‚æœæ˜¯æ­¤å¤´æ–‡ä»¶æœ‰é—®é¢˜è¯·æ³¨æ˜ä¸º å¤´æ–‡ä»¶ç”ŸæˆBugï¼‰
 */
 
 #ifndef __EASY_CKL_H_
 #define __EASY_CKL_H_
 
+ï»¿#ifndef __EC_PORTABLE_H_
 
 /*
-Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
-      the "REMOVE IT" in a end of a line means that force the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
+      the "REMOVE IT" in a end of a line means that force the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
 */
 
 #define CKLEXPORT extern "C"
@@ -64,8 +65,8 @@ typedef struct tagECMAINARGS {
 
 #endif							/* DO NOT AUTO REMOVE */
 /*
-Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
-the "REMOVE IT" in a end of a line means that force the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
+the "REMOVE IT" in a end of a line means that force the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
 */
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
@@ -200,6 +201,8 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* handler, BrowserInfoma
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData);
 CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies);
 
+ï»¿#ifndef _CUSTOMIZE_JS_H_
+
 CKLEXPORT void WINAPI Chrome_AddJSFunction(void* context, wchar_t* name);
 CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(const void* arguments);
 CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(const void* arguments, size_t pos);
@@ -208,9 +211,10 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(const void* arguments, size_t pos,
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueInt(void* lpretval, int value);
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueString(void* lpretval, wchar_t* value);
 
+ï»¿#ifndef _EC_PACK_API_H_
 /*
-Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
-the "REMOVE IT" in a end of a line means that force the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
+the "REMOVE IT" in a end of a line means that force the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
 */
 
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
@@ -228,6 +232,8 @@ CKLEXPORT void WINAPI EcCSSetData(void* lpData, unsigned char* lpDataBuffer, SIZ
 CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* szMimeType);
 CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
 
+ï»¿#ifndef _EC_PACK_API_H_
+
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* lpBrowser, wchar_t* url, wchar_t* referer);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
 CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
@@ -239,6 +245,8 @@ CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectId(void* lpBrowser, wchar_
 CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectName(void* lpBrowser, wchar_t* name, bool checked);
 CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectId(void* lpBrowser, wchar_t* id);
 CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wchar_t* name);
+
+ï»¿#ifndef _FRAME_API_H_
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
@@ -252,6 +260,8 @@ CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoPaste(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoSelectAll(void* frame);
+
+ï»¿#ifndef __BROWSER_H_
 
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
@@ -277,7 +287,7 @@ typedef struct tagCREATE_BROWSER_EXTDATA {
 	DWORD dwDefaultFontSize;
 }CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 
-/* »Øµ÷º¯ÊıÖĞÊ¹ÓÃµÄ½á¹¹ */
+/* å›è°ƒå‡½æ•°ä¸­ä½¿ç”¨çš„ç»“æ„ */
 typedef struct tagNEW_WINDOW_INFOMATION {
 	SIZE_T cbSzie;
 	void* lpFrame;
@@ -322,7 +332,7 @@ typedef struct tagERROR_INFOMATION {
 	void* lpSslInfo;
 }ERROR_INFOMATION, *LPERROR_INFOMATION;
 
-/* »Øµ÷º¯ÊıµÄ¶¨Òå */
+/* å›è°ƒå‡½æ•°çš„å®šä¹‰ */
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
 typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);

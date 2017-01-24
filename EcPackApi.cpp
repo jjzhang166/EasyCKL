@@ -1,4 +1,4 @@
-#include "EcPackApi.h"
+﻿#include "EcPackApi.h"
 
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(SimpleHandler* handler, wchar_t* url, wchar_t* referer) {
 	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return;

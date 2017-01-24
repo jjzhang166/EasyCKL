@@ -1,4 +1,4 @@
-#ifndef _EC_PACK_API_H_
+﻿#ifndef _EC_PACK_API_H_
 #define _EC_PACK_API_H_
 #include "ec_portable.h"
 #include "CKLMain.h"

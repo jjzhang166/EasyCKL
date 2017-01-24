@@ -1,4 +1,4 @@
-#ifndef _CUSTOMIZE_JS_H_
+﻿#ifndef _CUSTOMIZE_JS_H_
 #define _CUSTOMIZE_JS_H_
 #include "ec_portable.h"
 #include "CKLMain.h"

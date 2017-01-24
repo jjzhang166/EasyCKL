@@ -1,4 +1,4 @@
-#include "CustomizeJS.h"
+ï»¿#include "CustomizeJS.h"
 
 extern CefRefPtr<CefV8Handler> myV8handle;
 
@@ -34,7 +34,7 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, s
 		auto Value = value->GetStringValue().ToWString();
 		_ECKL_CopyWString(Value, buffer, buffer_length * sizeof(wchar_t));
 		//std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
-		//memset(buffer + buffer_length - 2, 0, 2);//×îºóÁ½¸ö×Ö½ÚÖÃ0
+		//memset(buffer + buffer_length - 2, 0, 2);//æœ€åä¸¤ä¸ªå­—èŠ‚ç½®0
 	}
 }
 

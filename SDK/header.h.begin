@@ -1,11 +1,11 @@
-/*
+ï»¿/*
 	EasyCKL Interface Header
 
 	BUILD Version: 7.1.?.?
 	Copyright (c) daemon_process. All rights reserved.
 
-	!!!WARNING!!! - ½Ó¿ÚÍ·ÎÄ¼ş´Ó 7.1 °æ±¾ÓÉ EasyCKL ±àÒë¹¹½¨»·¾³×Ô¶¯÷·ÖÆºÏ³É£¬ÇëÎğĞŞ¸Ä
-	Report bug: https://git.oschina.net/daemon_process/EasyCKL/issues £¨Èç¹ûÊÇ´ËÍ·ÎÄ¼şÓĞÎÊÌâÇë×¢Ã÷Îª Í·ÎÄ¼şÉú³ÉBug£©
+	!!!WARNING!!! - æ¥å£å¤´æ–‡ä»¶ä» 7.1 ç‰ˆæœ¬ç”± EasyCKL ç¼–è¯‘æ„å»ºç¯å¢ƒè‡ªåŠ¨é£åˆ¶åˆæˆï¼Œè¯·å‹¿ä¿®æ”¹
+	Report bug: https://git.oschina.net/daemon_process/EasyCKL/issues ï¼ˆå¦‚æœæ˜¯æ­¤å¤´æ–‡ä»¶æœ‰é—®é¢˜è¯·æ³¨æ˜ä¸º å¤´æ–‡ä»¶ç”ŸæˆBugï¼‰
 */
 
 #ifndef __EASY_CKL_H_

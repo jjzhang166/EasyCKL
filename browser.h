@@ -1,4 +1,4 @@
-#ifndef __BROWSER_H_
+ï»¿#ifndef __BROWSER_H_
 #define __BROWSER_H_
 #include "ec_portable.h"
 #include "include/cef_client.h"
@@ -27,7 +27,7 @@ typedef struct tagCREATE_BROWSER_EXTDATA {
 	DWORD dwDefaultFontSize;
 }CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
 
-/* »Øµ÷º¯ÊýÖÐÊ¹ÓÃµÄ½á¹¹ */
+/* å›žè°ƒå‡½æ•°ä¸­ä½¿ç”¨çš„ç»“æž„ */
 typedef struct tagNEW_WINDOW_INFOMATION {
 	SIZE_T cbSzie;
 	CefFrame* lpFrame;
@@ -72,7 +72,7 @@ typedef struct tagERROR_INFOMATION {
 	void* lpSslInfo;
 }ERROR_INFOMATION, *LPERROR_INFOMATION;
 
-/* »Øµ÷º¯ÊýµÄ¶¨Òå */
+/* å›žè°ƒå‡½æ•°çš„å®šä¹‰ */
 typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
 typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
 typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);

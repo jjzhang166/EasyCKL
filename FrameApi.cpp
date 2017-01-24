@@ -1,4 +1,4 @@
-#include "FrameApi.h"
+﻿#include "FrameApi.h"
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(CefFrame* frame, wchar_t* url) {
 	if (frame)

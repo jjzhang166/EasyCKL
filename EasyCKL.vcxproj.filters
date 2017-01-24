@@ -58,9 +58,6 @@
     <ClInclude Include="CKLMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\C and C++\EasyCKL.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ec_portable.h">
       <Filter>头文件</Filter>
     </ClInclude>

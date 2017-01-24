@@ -40,6 +40,10 @@ sed -i '/^$/N;/^\n$/D' ${header_file_swp}
 
 cat SDK/header.h.end >> ${header_file_swp}
 
+# 删除 UTF-8 的 BOM(除了 SDK/header.h.begin 中的)
+bom=`echo -ne "\0357\0273\0277"`
+sed -i "s/hhhhhhhh/${bom}/g" ${header_file_swp}
+
 cat SDK/header.h.begin > ${header_file}
 cat ${header_file_swp} >> ${header_file}
 rm -rf ${header_file_swp}

@@ -1,4 +1,4 @@
-#ifndef _FRAME_API_H_
+﻿#ifndef _FRAME_API_H_
 #define _FRAME_API_H_
 #include "ec_portable.h"
 #include "CKLMain.h"

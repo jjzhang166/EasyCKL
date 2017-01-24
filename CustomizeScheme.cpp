@@ -1,4 +1,4 @@
-#include "CustomizeScheme.h"
+﻿#include "CustomizeScheme.h"
 
 class EcSchemeHandler;
 class EcSchemeHandlerFactory;

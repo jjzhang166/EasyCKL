@@ -1,4 +1,4 @@
-#ifndef __EASYCKL_SIMPLE_HANDLER_H_
+ï»¿#ifndef __EASYCKL_SIMPLE_HANDLER_H_
 #define __EASYCKL_SIMPLE_HANDLER_H_
 
 #include "include/cef_client.h"
@@ -146,7 +146,7 @@ public:
 
 	/*
 
-	* ´ËÉùÃ÷ÎªÐÂ°æ±¾ CEF ×¼±¸
+	* æ­¤å£°æ˜Žä¸ºæ–°ç‰ˆæœ¬ CEF å‡†å¤‡
 
 	//CefJSDialogHandler methods:
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,

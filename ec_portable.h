@@ -1,9 +1,9 @@
-#ifndef __EC_PORTABLE_H_
+ï»¿#ifndef __EC_PORTABLE_H_
 #define __EC_PORTABLE_H_
 
 /*
-Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
-      the "REMOVE IT" in a end of a line means that force the SDKÍ·ÎÄ¼ş×Ô¶¯Éú³É½Å±¾ remove the line.
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
+      the "REMOVE IT" in a end of a line means that force the SDKå¤´æ–‡ä»¶è‡ªåŠ¨ç”Ÿæˆè„šæœ¬ remove the line.
 */
 
 #ifdef CKLEXPORT
