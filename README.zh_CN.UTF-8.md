@@ -1,4 +1,4 @@
-﻿## EasyCKL
+## EasyCKL
 
 EasyCKL 是一个基于 CEF3（嵌入式 Chromium 框架）二次开发的库，支持 Windows 和 Linux 平台。
 

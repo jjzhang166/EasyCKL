@@ -1,4 +1,4 @@
-﻿## EasyCKL
+## EasyCKL
 
 [简体中文](README.md.zh_CN.UTF-8)
 
