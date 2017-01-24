@@ -1,10 +1,10 @@
 > Note: Starting with version 7.1, EasyCKL.h for EasyCKL applications is no longer cluttered with the EasyCKL source code, and is automatically generated with a script, called mkheader.sh, which can be called directly. In other words, this script automatically generates a "sanitized" header file for use by applications that call EasyCKL. (The EasyCKL internal header file contains the internal interfaces, macros, etc. of the EasyCKL library and is not intended for direct use by the application.) Therefore, even compilation in Windows environment must rely on MinGW or Cygwin (unless you do not use EasyCKL.h, or use our synthesis, but that means that if the change EasyCKL interface can not automatically generate the header file).
 
-Windows: 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程 + Makefile文件），CEF3 工作需要的运行时环境，可以使用我们提供的“开发包获取”地址获取，也可以自行前往相应发布站点下载或通过源代码编译。
+In the Windows platform: This project comes with the need to compile this library CEF3 symbol library (libcef.lib), comes with libcef_dll_wrapper source code (VS2015 project + Makefile file), CEF3 work required runtime environment, you can use our offer Of the "Development Kit Get" address to obtain, you can also go to the corresponding release site to download or compile the source code.
 
-Linux: 本项目暂时**没有**自带编译此库所需的 CEF3 共享库(libcef.so)，自带 libcef_dll_wrapper 的源代码（**暂时没有** Makefile文件，但以后会有），CEF3 工作需要的文件，可以自行前往相应发布站点下载或通过源代码编译。，CEF3 工作需要的运行时环境（包含编译此库所需的 CEF3 共享库(libcef.so)），可以使用我们提供的“开发包获取”（见上文）中的地址获取，也可以自行前往相应发布站点下载或通过源代码编译。
+In the Linux platform: This project is **not** have CEF3 shared library required to compile this library (libcef.so), comes with libcef_dll_wrapper source code (**not** Makefile file, but there will be) , CEF3 work needs of the file, you can go to the corresponding release site to download or compile the source code. The runtime environment required for CEF3 work (including the CEF3 shared library (libcef.so) required to compile this library) can be obtained using the address provided in the "Development Kit Get" (see above), or by yourself The corresponding release site to download or compile through the source code.
 
-## Compile EasyCKL.dll/EasyCKL.so 
+## Compile EasyCKL Shared Library (EasyCKL.dll or libEasyCKL.so) 
 
 ### On Windows platform
 
