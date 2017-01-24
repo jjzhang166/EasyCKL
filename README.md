@@ -10,7 +10,7 @@ If the above API documentation can not be opened, use the [This Connect](http://
 
 For the meaning of the cause of EasyCKL development please refer to [Wiki page](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
-** In short, EasyCKL has many excellent features: **
+**In short, EasyCKL has many excellent features**
 
 - Completely with C-style API interface, please refer to our specific [Wiki page](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
@@ -20,7 +20,7 @@ For the meaning of the cause of EasyCKL development please refer to [Wiki page](
 
 - He ensures backwards compatibility as much as possible, either at the source or binary level.
 
-** With EasyCKL, you can **
+**With EasyCKL, you can**
 
 - To your application embedded in a high-performance, compatible with the latest standards of mainstream Web controls
 
@@ -28,13 +28,13 @@ For the meaning of the cause of EasyCKL development please refer to [Wiki page](
 
 - Hosting applications primarily developed with Web technologies (WebUI)
 
-**如何开始？**
+**How to get started?**
 
-我希望基于 EasyCKL 开发我的应用程序——请回到顶部查看入门教程和 API 文档
+I would like to develop my application based on EasyCKL - Go back to the top Getting Started Tutorials and API Documentation
 
-我希望直接在 EasyCKL 源码上开发——请转至关于编译 EasyCKL 的 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BB%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E6%9E%84%E5%BB%BA-EasyCKL)
+I would like to develop directly on the EasyCKL source - go to the Wiki page about compiling EasyCKL. [Wiki page](INSTALL.md)
 
-**注意** 如果你在 Linux 平台开发，建议你通过源代码构建 EasyCKL，这是由于不同的编译器版本、不同的 glibc 版本和不同的发行版环境会对二进制的兼容性带来麻烦。另外，在 Linux 上直接发布源代码也是最能受用户接受的形式。
+**Note** If you are developing on the Linux platform, it is recommended that you build EasyCKL via source code, because different compiler versions, different glibc versions, and different Linux distributions environments can cause binary compatibility problems. In addition, the direct release of the source code on Linux is also the most acceptable form of user acceptance.
 
 [Chromium Embedded Framework](https://bitbucket.org/chromiumembedded/cef)
 
@@ -44,6 +44,6 @@ Windows (Win32, ix86): cef_binary_3.2623.1401.gb90a3be_windows32（默认） cef
 
 Linux (i686): cef_binary_3.2623.1399.g64e2fe1_linux32
 
-> Windows 提示：cef_binary_3.2623.1401.gb90a3be_windows32 版本是支持 Windows XP 的最后一个版本，但是我同样携带了新版（cef_binary_3.2704.1431.ge7ddb8a_windows32）的相关代码，如果你认为不需要继续支持 XP，可以自行使用新代码编译
+>Windows Tip: cef_binary_3.2623.1401.gb90a3be_windows32 version is to support the last version of Windows XP, but I also carry a new version (cef_binary_3.2704.1431.ge7ddb8a_windows32) code, if you do not need to continue to support XP, you can use the new code to compile
 
-注：本项目在 BSD LICENSE 下发布源代码、README、Wiki 和 API 文档
+Note: This project publishes the source code, README, Wiki, and API documentation under BSD LICENSE
