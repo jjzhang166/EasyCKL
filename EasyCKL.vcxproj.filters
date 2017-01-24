@@ -58,7 +58,22 @@
     <ClInclude Include="CKLMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\C and C++\EasyCKL.h">
+    <ClInclude Include="ec_portable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomizeJS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EcPackApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomizeScheme.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="browser.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

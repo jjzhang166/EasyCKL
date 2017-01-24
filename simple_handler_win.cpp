@@ -1,18 +1,5 @@
 ﻿#include "simple_handler.h"
 
-#include <string>
-#ifdef _WIN32
-#include <Windows.h>
-#include <Shellapi.h>
-#elif __linux__
-#include "ec_linux.h"
-#endif
-
-#include "include/cef_browser.h"
-#include "include/wrapper/cef_helpers.h"
-
-#include "simple_app.h"
-
 extern CefString szLocalInf;
 
 void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser,

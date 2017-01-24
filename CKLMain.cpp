@@ -18,6 +18,14 @@ NOTIFYICONDATA nid = { 0 };
 #endif // _EPL_COMPATIBILITY
 
 #ifdef _WIN32
+#define DEF_CACHE_PATH L".\\cache\\"
+#define DEF_COOKIE_PATH L".\\cookies\\"
+#elif defined __linux__
+#define DEF_CACHE_PATH L"./cache/"
+#define DEF_COOKIE_PATH L"./cookies/"
+#endif
+
+#ifdef _WIN32
 extern HANDLE hEvent = 0;
 #endif
 void* v8contextcreate = 0;
@@ -31,6 +39,29 @@ extern CefString szProxyServer("");
 extern BOOL bEnableFlash = FALSE;
 extern CefString szFlashPath("");
 extern BOOL bDisableGpu = FALSE;
+
+class MyV8Handler : public CefV8Handler {
+public:
+	MyV8Handler(V8Handler_CallBack handler) {
+		handler_callback = handler;
+	}
+	~MyV8Handler() {}
+	V8Handler_CallBack handler_callback = 0;
+	virtual bool Execute(const CefString& name,
+		CefRefPtr<CefV8Value> object,
+		const CefV8ValueList& arguments,
+		CefRefPtr<CefV8Value>& retval,
+		CefString& exception) OVERRIDE {
+
+		if (handler_callback) {
+			return handler_callback(name.ToWString().c_str(), &arguments, &retval) != FALSE;
+		}
+		return false;
+	}
+
+	// Provide the reference counting implementation for this class.
+	IMPLEMENT_REFCOUNTING(MyV8Handler);
+};
 
 CefRefPtr<CefV8Handler> myV8handle;
 
@@ -392,12 +423,12 @@ CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t*
 	szFlashPath = ppapi_flash_path;
 }
 
-CKLEXPORT void WINAPI Chrome_SetUserAgent(wchar_t* _ua) {
+CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* _ua) {
 	isSetUA = TRUE;
 	ua = _ua;
 }
 
-CKLEXPORT void WINAPI Chrome_SetProxyServer(wchar_t* proxy) {
+CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy) {
 	bSetProxy = TRUE;
 	szProxyServer = proxy;
 }
@@ -500,7 +531,7 @@ CKLEXPORT void WINAPI Chrome_SetFocus(SimpleHandler* handler, bool bFocus) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, wchar_t* js) {
+CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, const wchar_t* js) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {
@@ -509,7 +540,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, wchar_t* js) {
 	}
 }
 
-CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, wchar_t* CookiePath, bool persist_session_cookies) {
+CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies) {
 	if (enable) {
 		CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager(NULL);
 		if (!CookiePath)
@@ -554,7 +585,7 @@ CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, con
 	return lpCookieManager->DeleteCookies(szUrl, szCookieName, 0);
 }
 
-CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(wchar_t* CookiePath) {
+CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath) {
 	EcKeCookieStorageControl(TRUE, CookiePath, false);
 }
 
@@ -580,7 +611,7 @@ CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
 	}
 }
 
-CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, wchar_t* string, wchar_t* url) {
+CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, const wchar_t* string, const wchar_t* url) {
 	if (handler) {
 		CefRefPtr<CefBrowser> browser = handler->g_browser;
 		if (browser && browser.get()) {

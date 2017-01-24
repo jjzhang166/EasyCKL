@@ -1,22 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
-
-#include "simple_app.h"
-#include "simple_handler.h"
-
-#define __EC_PACK_API_CPP_
-#define __ECKL_SRC_DEV_
-#include "SDK/C and C++/EasyCKL.h"
-
-#undef CKLEXPORT
-#ifdef _WIN32
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#define CKLEXPORT extern "C"
-#endif
+﻿#include "EcPackApi.h"
 
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(SimpleHandler* handler, wchar_t* url, wchar_t* referer) {
 	if (!std::wstring(url).substr(0, 6).compare(L"chrome")) return;
@@ -29,9 +11,9 @@ CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RE
 	if (browser) {
 		if (referer) {
 			std::wstring html = L"<html><head><meta http-equiv=\"refresh\" content=\"0;url=" + std::wstring(url) + L"\"></head><body bgcolor=\"white\"></body></html>";
-			Chrome_LoadString(browser, (wchar_t*)html.c_str(), referer);
+			Chrome_LoadString((SimpleHandler *)browser, (wchar_t*)html.c_str(), referer);
 		}
-		else Chrome_LoadUrl(browser, url);
+		else Chrome_LoadUrl((SimpleHandler *)browser, url);
 	}
 	return browser;
 }

@@ -1,22 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
-
-#include "simple_app.h"
-#include "simple_handler.h"
-
-#define __EC_CUSTOMIZE_JS_CPP_
-#define __ECKL_SRC_DEV_
-#include "SDK/C and C++/EasyCKL.h"
-
-#undef CKLEXPORT
-#ifdef _WIN32
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#define CKLEXPORT extern "C"
-#endif
+ï»¿#include "CustomizeJS.h"
 
 extern CefRefPtr<CefV8Handler> myV8handle;
 
@@ -52,7 +34,7 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(const CefV8ValueList* arguments, s
 		auto Value = value->GetStringValue().ToWString();
 		_ECKL_CopyWString(Value, buffer, buffer_length * sizeof(wchar_t));
 		//std::wstring(value->GetStringValue()).copy(buffer, buffer_length);
-		//memset(buffer + buffer_length - 2, 0, 2);//×îºóÁ½¸ö×Ö½ÚÖÃ0
+		//memset(buffer + buffer_length - 2, 0, 2);//æœ€åä¸¤ä¸ªå­—èŠ‚ç½®0
 	}
 }
 

@@ -1,11 +1,16 @@
-#ifndef CEF_TESTS_CEFSIMPLE_SIMPLE_APP_H_
+﻿#ifndef CEF_TESTS_CEFSIMPLE_SIMPLE_APP_H_
 #define CEF_TESTS_CEFSIMPLE_SIMPLE_APP_H_
 
 #include "include/cef_app.h"
+#include "include/cef_browser.h"
+#include "include/cef_command_line.h"
+#include "include/cef_app.h"
+#include "include/wrapper/cef_helpers.h"
 
-#ifdef __linux__
-#include "ec_linux.h"
-#endif
+#include "ec_portable.h"
+#include "simple_handler.h"
+
+#include <string>
 
 class SimpleApp : public CefApp,
 	public CefBrowserProcessHandler,

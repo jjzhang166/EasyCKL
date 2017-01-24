@@ -1,33 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
-
-#include "include/cef_client.h"
-#include "include/wrapper/cef_helpers.h"
-#include "include/cef_request.h"
-
-#include "simple_app.h"
-#include "simple_handler.h"
-
-#define __EC_CUSTOMIZE_SCHEME_CPP_
-#define __ECKL_SRC_DEV_
-#include "SDK/C and C++/EasyCKL.h"
-
-#undef CKLEXPORT
-#ifdef _WIN32
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#define CKLEXPORT extern "C"
-#endif
-
-typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
-
-typedef std::vector<unsigned char> BytesVector;
-void inline __ECKL_InsertBytesVector(BytesVector& vector_, unsigned char* rawBuffer_, size_t size_) {
-	vector_.insert(vector_.end(), rawBuffer_, rawBuffer_ + size_);
-}
+﻿#include "CustomizeScheme.h"
 
 class EcSchemeHandler;
 class EcSchemeHandlerFactory;
@@ -35,6 +6,10 @@ class EcSchemeHandlerFactory;
 CefRefPtr<EcSchemeHandler> SchemeHandler;
 CefRefPtr<EcSchemeHandlerFactory> HandlerFactory;
 SchemeProcessRequest _callback;
+
+void inline __ECKL_InsertBytesVector(BytesVector& vector_, unsigned char* rawBuffer_, size_t size_) {
+	vector_.insert(vector_.end(), rawBuffer_, rawBuffer_ + size_);
+}
 
 class EcSchemeHandler : public CefResourceHandler {
 public:

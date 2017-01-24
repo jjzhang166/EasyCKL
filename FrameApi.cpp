@@ -1,22 +1,4 @@
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-#include "ec_linux.h"
-#endif
-
-#include "simple_app.h"
-#include "simple_handler.h"
-
-#define __EC_FRAME_API_CPP_
-#define __ECKL_SRC_DEV_
-#include "SDK/C and C++/EasyCKL.h"
-
-#undef CKLEXPORT
-#ifdef _WIN32
-#define CKLEXPORT extern "C" __declspec(dllexport)
-#elif defined __linux__
-#define CKLEXPORT extern "C"
-#endif
+﻿#include "FrameApi.h"
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(CefFrame* frame, wchar_t* url) {
 	if (frame)

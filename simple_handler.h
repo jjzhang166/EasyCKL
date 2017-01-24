@@ -1,96 +1,26 @@
-#ifndef __EASYCKL_SIMPLE_HANDLER_H_
+ï»¿#ifndef __EASYCKL_SIMPLE_HANDLER_H_
 #define __EASYCKL_SIMPLE_HANDLER_H_
 
 #include "include/cef_client.h"
+#include "include/cef_app.h"
+#include "include/cef_parser.h"
+#include "include/cef_browser.h"
+#include "include/base/cef_bind.h"
+#include "include/wrapper/cef_closure_task.h"
+#include "include/wrapper/cef_helpers.h"
 
+#include "ec_portable.h"
+#include "simple_app.h"
+
+#include <sstream>
+#include <string>
 #include <list>
 
-#ifdef __linux__
-#include "ec_linux.h"
+#ifdef _WIN32
+#include <Shellapi.h>
 #endif
 
-#define BROWSERFLAG_SYNC 0x1
-#define BROWSERFLAG_HEADER_REFERER 0x2
-#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
-#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
-#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
-#define BROWSERFLAG_EXTDATA 0x20
-#define BROWSERFLAG_DEF_ENCODING 0x40
-#define BROWSERFLAG_BACK_COLOR 0x80
-#define BROWSERFLAG_DEF_FONT 0x100
-#define BROWSERFLAG_DEF_FONT_SIZE 0x200
-
-#define BROWSER_LASTERROR_LOADING 0x1
-#define BROWSER_LASTERROR_LOADERROR 0x2
-#define BROWSER_LASTERROR_LOADRESERROR 0x4
-#define BROWSER_LASTERROR_CERTERROR 0x8
-
-typedef struct tagCREATE_BROWSER_EXTDATA {
-	SIZE_T cbSzie;
-	wchar_t* szDefaultEncoding;
-	DWORD dwBackColor;
-	wchar_t* szDefaultFont;
-	DWORD dwDefaultFontSize;
-}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
-
-/* »Øµ÷º¯ÊýÖÐÊ¹ÓÃµÄ½á¹¹ */
-typedef struct tagNEW_WINDOW_INFOMATION {
-	SIZE_T cbSzie;
-	CefFrame* lpFrame;
-	const wchar_t* szNewWindowUrl;
-	const wchar_t* szCurrentWindowUrl;
-	const wchar_t* szTargetFrameName;
-	BOOL bUserGesture;
-	DWORD dwOpenDisposition;
-}NEW_WINDOW_INFOMATION, *LPNEW_WINDOW_INFOMATION;
-
-typedef struct tagRBUTTON_DOWN_INFOMATION {
-	SIZE_T cbSzie;
-	DWORD dwFlag;
-	CefFrame* lpFrame;
-	const wchar_t* szSelectionText;
-	const wchar_t* szLinkUrl;
-	const wchar_t* szSourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
-
-typedef struct tagERROR_INFOMATION {
-	SIZE_T cbSzie;
-	CefFrame* lpFrame;
-	BOOL bCertError;
-	int iErrorCode;
-	const wchar_t* szFailedUrl;
-	void* lpSslInfo;
-}ERROR_INFOMATION, *LPERROR_INFOMATION;
-
-/* »Øµ÷º¯ÊýµÄ¶¨Òå */
-
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
-typedef BOOL(WINAPI * Chrome_CallBack_ChState)(LONG_PTR id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
-typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
-typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
-typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
-
-typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
-	Chrome_CallBack_BrowserCreated created_callback;
-	Chrome_CallBack_ChUrl churl_callback;
-	Chrome_CallBack_NewWindow newwindow_callback;
-	Chrome_CallBack_Download download_callback;
-	Chrome_CallBack_ChState chstate_callback;
-	Chrome_CallBack_JSDialog jsdialog_callback;
-	Chrome_CallBack_Error error_callback;
-	Chrome_CallBack_RButtonDown rbuttondown_callback;
-	Chrome_CallBack_ChTitle chtitle_callback;
-	Chrome_CallBack_CanLoadUrl canloadurl_callback;
-	Chrome_CallBack_CanClose canclose_callback;
-}BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+#include "browser.h"
 
 class SimpleHandler : public CefClient,
 	public CefDisplayHandler,
@@ -216,7 +146,7 @@ public:
 
 	/*
 
-	* ´ËÉùÃ÷ÎªÐÂ°æ±¾ CEF ×¼±¸
+	* æ­¤å£°æ˜Žä¸ºæ–°ç‰ˆæœ¬ CEF å‡†å¤‡
 
 	//CefJSDialogHandler methods:
 	virtual bool OnJSDialog(CefRefPtr<CefBrowser> browser,

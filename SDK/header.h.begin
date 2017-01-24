@@ -1,0 +1,13 @@
+﻿/*
+	EasyCKL Interface Header
+
+	BUILD Version: 7.1.?.?
+	Copyright (c) daemon_process. All rights reserved.
+
+	!!!WARNING!!! - 接口头文件从 7.1 版本由 EasyCKL 编译构建环境自动鞣制合成，请勿修改
+	Report bug: https://git.oschina.net/daemon_process/EasyCKL/issues （如果是此头文件有问题请注明为 头文件生成Bug）
+*/
+
+#ifndef __EASY_CKL_H_
+#define __EASY_CKL_H_
+
