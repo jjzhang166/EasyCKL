@@ -1,5 +1,10 @@
 #ifndef _EC_PACK_API_H_
 #define _EC_PACK_API_H_
+/*
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
+the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
+*/
+
 #include "ec_portable.h"
 #include "CKLMain.h"
 
@@ -11,7 +16,7 @@
 #include "simple_handler.h"
 
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
-typedef std::vector<unsigned char> BytesVector;
+typedef std::vector<unsigned char> BytesVector;			/* REMOVE IT */
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
 CKLEXPORT void WINAPI Chrome_RegisterSchemeInitialize(SchemeProcessRequest callback);

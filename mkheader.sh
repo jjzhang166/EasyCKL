@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ´Ë½Å±¾Éú³É¹©µ÷ÓÃ EasyCKL µÄÓ¦ÓÃ³ÌÐòÊ¹ÓÃµÄÍ·ÎÄ¼þ
+# æ­¤è„šæœ¬ç”Ÿæˆä¾›è°ƒç”¨ EasyCKL çš„åº”ç”¨ç¨‹åºä½¿ç”¨çš„å¤´æ–‡ä»¶
 # Copyright daemon_process
 
 # The name is kept EasyCKL.h for backwards compatibility
@@ -18,20 +18,24 @@ do
 	cat ${file} >> ${header_file_swp}
 done
 
+if [ "$1" = "-d" ] ; then
+	cp ${header_file_swp} ${header_file}.netive
+fi
+
 for tag in $tags
 do
 	sed -i "s/${tag}/void/g" ${header_file_swp}
 done
 
-# É¾³ý³ý #define Ö®ÍâµÄÔ¤´¦ÀíÖ¸Áî
-sed -i -e '/^#[^d]/d' ${header_file_swp}
+# åˆ é™¤é™¤ #define ä¹‹å¤–çš„é¢„å¤„ç†æŒ‡ä»¤
+sed -i -e '/^#[^d].*[^\/]$/d' ${header_file_swp}
 
-# É¾³ý #define __XXXX_H_ 
+# åˆ é™¤ #define __XXXX_H_ 
 sed -i -e '/^#define.*_H_$/d' ${header_file_swp}
 
-sed -i -e '/^void _ECKL_CopyWString.*;$/d' ${header_file_swp}
+sed -i -e '/\/\* REMOVE IT \*\/$/d' ${header_file_swp}
 
-# ºÏ²¢¿ÕÐÐ
+# åˆå¹¶ç©ºè¡Œ
 sed -i '/^$/N;/^\n$/D' ${header_file_swp}
 
 cat SDK/header.h.end >> ${header_file_swp}
@@ -39,3 +43,7 @@ cat SDK/header.h.end >> ${header_file_swp}
 cat SDK/header.h.begin > ${header_file}
 cat ${header_file_swp} >> ${header_file}
 rm -rf ${header_file_swp}
+
+if [ "$1" = "-d" ] ; then
+	diff -u ${header_file}.netive ${header_file} > ${header_file}.diff
+fi

@@ -1,6 +1,9 @@
 #ifndef _CKLMAIN_H_
 #define _CKLMAIN_H_
-
+/*
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
+the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
+*/
 #include "ec_portable.h"
 
 #include "include/cef_client.h"
@@ -62,7 +65,7 @@ typedef struct _tagCOOKIE_DESCRIPTOR {
 
 typedef void(WINAPI * Ec_GetSource_CallBack)(LPVOID lpContext, const wchar_t* szSource);
 
-void _ECKL_CopyWString(std::wstring source, wchar_t* buffer, size_t buffer_length);
+void _ECKL_CopyWString(std::wstring source, wchar_t* buffer, size_t buffer_length);			/* REMOVE IT */
 
 CKLEXPORT BOOL WINAPI Chrome_IsUIThread();
 CKLEXPORT void WINAPI Chrome_Initialize(HINSTANCE hInstance, BOOL nossl, BOOL cacheStorage);

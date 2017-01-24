@@ -12,12 +12,20 @@
 #define __EASY_CKL_H_
 
 
+/*
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
+      the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
+*/
+
 #define CKLEXPORT extern "C"
 //#ifdef _WIN32
 //#define CKLEXPORT extern "C" __declspec(dllexport)
 //#elif defined __linux__
 //#define CKLEXPORT extern "C"
 //#endif
+
+#ifdef _WIN32					/* DO NOT AUTO REMOVE */
+#elif defined __linux__			/* DO NOT AUTO REMOVE */
 
 typedef unsigned int DWORD;
 typedef bool BOOL;
@@ -43,8 +51,6 @@ typedef struct tagRECT {
 	int width;
 	int height;
 }RECT,*LPRECT;
-#define HWND CefWindowHandle
-#define RECT _cef_rect_t
 
 typedef struct tagECMAINARGS {
 	int iArgc;
@@ -55,6 +61,12 @@ typedef struct tagECMAINARGS {
 
 //#define wchar_t char
 //#define std::wstring std::string
+
+#endif							/* DO NOT AUTO REMOVE */
+/*
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
+the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
+*/
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
 typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
@@ -196,8 +208,12 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(const void* arguments, size_t pos,
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueInt(void* lpretval, int value);
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueString(void* lpretval, wchar_t* value);
 
+/*
+Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
+the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
+*/
+
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
-typedef std::vector<unsigned char> void;
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
 CKLEXPORT void WINAPI Chrome_RegisterSchemeInitialize(SchemeProcessRequest callback);

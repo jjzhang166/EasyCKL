@@ -8,6 +8,8 @@ CLFLAGS = /nologo /EHsc /MT /c /MP /GS /GL /analyze- /W3 /Gy /Zc:wchar_t /Gm- /O
 
 OUT_DIR = build\
 
+all: $(OUT_DIR)EasyCKL.dll SDK\EasyCKL.h
+
 $(OUT_DIR)EasyCKL.dll : default $(OBJS) cefsimple.res
 	link /nologo /DLL /LTCG /DEF:"..\Export.def" *.obj cefsimple.res /out:"EasyCKL.dll" /LIBPATH:"..\lib"
 	cd ..
@@ -26,3 +28,10 @@ default:
 
 clean:
 	del /f /q $(OUT_DIR)*.*
+
+SDK\EasyCKL.h : mkheader.sh SDK\header.h.begin SDK\header.h.end ec_portable.h CKLMain.h CustomizeJS.h CustomizeScheme.h EcPackApi.h FrameApi.h browser.h
+	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	@echo "!! Please use MinGW or Cygwin to run ./mkheader.sh script in !!"
+	@echo "!! this path to create the SDK header file EasyCKL.h which   !!"
+	@echo "!! will be used by Apps who based on EasyCKL                 !!"
+	@echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
