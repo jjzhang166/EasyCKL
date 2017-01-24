@@ -1,30 +1,32 @@
 ﻿## EasyCKL
 
-EasyCKL 是一个基于 CEF3（嵌入式 Chromium 框架）二次开发的库，支持 Windows 和 Linux 平台。
+[简体中文](README.md.zh_CN.UTF-8)
 
-[API 文档](http://easyckl.tk/docs/) | [从源代码构建 EasyCKL](INSTALL.md) | [入门教程（MSVC）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E3%80%90%E5%85%A5%E9%97%A8%E3%80%91%E4%BD%BF%E7%94%A8-EasyCKL-%E7%BB%99%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B5%8C%E5%85%A5-%2Ahromium-%E5%86%85%E6%A0%B8web%E6%8E%A7%E4%BB%B6) | [入门教程（MinGW）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BD%BF%E7%94%A8-MinGW-%E5%BC%80%E5%8F%91-EasyCKL-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F) | [项目新闻](NEWS)
+EasyCKL is a library based on CEF3 (embedded Chromium framework) secondary development, support for Windows and Linux platforms.
 
-如果上面的 API 文档无法打开，请使用 [这个连接](http://easyckl.esy.es/docs/)
+[API documentation](http://easyckl.tk/docs/) | [Build EasyCKL from source](INSTALL.md) | [Getting Started Tutorial（MSVC）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E3%80%90%E5%85%A5%E9%97%A8%E3%80%91%E4%BD%BF%E7%94%A8-EasyCKL-%E7%BB%99%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%B5%8C%E5%85%A5-%2Ahromium-%E5%86%85%E6%A0%B8web%E6%8E%A7%E4%BB%B6) | [Getting Started Tutorial（MinGW）](https://git.oschina.net/daemon_process/EasyCKL/wikis/%E4%BD%BF%E7%94%A8-MinGW-%E5%BC%80%E5%8F%91-EasyCKL-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F) | [Project News](NEWS)
 
-EasyCKL 开发的起因的意义请参考 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
+If the above API documentation can not be opened, use the [This Connect](http://easyckl.esy.es/docs/)
 
-**简而言之，EasyCKL 具有很多优秀的特点：**
+For the meaning of the cause of EasyCKL development please refer to [Wiki page](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
-- 完全适用 C 风格的 API 接口，具体请参考我们的 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
+** In short, EasyCKL has many excellent features: **
 
-- 尽可能遵循机制与策略相分离的原则，不强加任何策略，具体请参考我们的 [Wiki 页面](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
+- Completely with C-style API interface, please refer to our specific [Wiki page](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
-- 简洁易用，轻量，他把 CEF 冗杂的类、繁琐的继承和抽象隐藏起来，留给调用者的是像 Win32API、Linux系统调用、POSIX库函数一样简洁有力的接口。
+- As far as possible follow the principle of separation of mechanisms and strategies do not impose any strategy, please refer to our specific [Wiki page](https://git.oschina.net/daemon_process/EasyCKL/wikis/Home)
 
-- 他尽可能的保证向后兼容，不论是源代码级还是二进制级。
+- Simple and easy to use, lightweight, he put the CEF complex class, cumbersome inheritance and abstraction hidden, leaving the caller is like Win32API, Linux system calls, POSIX library functions as concise and powerful interface.
 
-**利用 EasyCKL，你可以**
+- He ensures backwards compatibility as much as possible, either at the source or binary level.
 
-- 给你的应用程序嵌入一个高性能、兼容主流最新标准的 Web 控件
+** With EasyCKL, you can **
 
-- 开发 Chromium 内核的浏览器，例如 [ECKBrowser](http://easyckl.tk/eckbrowser/)
+- To your application embedded in a high-performance, compatible with the latest standards of mainstream Web controls
 
-- 托管主要以 Web 技术开发的应用程序（WebUI）
+- Make browsers that based Chromium kernel, such as [ECKBrowser] (http://easyckl.tk/eckbrowser/)
+
+- Hosting applications primarily developed with Web technologies (WebUI)
 
 **如何开始？**
 
