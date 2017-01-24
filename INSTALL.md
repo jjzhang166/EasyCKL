@@ -1,8 +1,4 @@
-> 注意：从版本 7.1 开始，供调用 EasyCKL 的应用程序使用的 EasyCKL.h 不再杂乱的和 EasyCKL 源代码一起维护，改为用脚本自动生成，脚本为 mkheader.sh，直接调用即可。
-
-> 也就是说，这个脚本自动生成一个“经过消毒的”头文件，以供调用 EasyCKL 的应用程序使用（EasyCKL 内部头文件包含了 EasyCKL 库的内部接口、宏等，不适合应用程序直接使用）。
-
-> 因此，即使在 Windows 环境下编译也必须依赖于 MinGW 或 Cygwin（除非你不要 EasyCKL.h 了，或者使用我们合成好的，但那样就意味着如果改动 EasyCKL 的接口不能自动生成该头文件了）。
+> Note: Starting with version 7.1, EasyCKL.h for EasyCKL applications is no longer cluttered with the EasyCKL source code, and is automatically generated with a script, called mkheader.sh, which can be called directly. In other words, this script automatically generates a "sanitized" header file for use by applications that call EasyCKL. (The EasyCKL internal header file contains the internal interfaces, macros, etc. of the EasyCKL library and is not intended for direct use by the application.) Therefore, even compilation in Windows environment must rely on MinGW or Cygwin (unless you do not use EasyCKL.h, or use our synthesis, but that means that if the change EasyCKL interface can not automatically generate the header file).
 
 Windows: 本项目自带了编译此库所需的CEF3 符号库(libcef.lib)，自带 libcef_dll_wrapper 的源代码（VS2015工程 + Makefile文件），CEF3 工作需要的运行时环境，可以使用我们提供的“开发包获取”地址获取，也可以自行前往相应发布站点下载或通过源代码编译。
 
@@ -22,12 +18,12 @@ Linux: 本项目暂时**没有**自带编译此库所需的 CEF3 共享库(libce
 
 	2. Enter the directory where the source code live, type `nmake` to compile EasyCKL
  
-		> In the first compile time, it will automatically run `cd cef & nmake & cd ..` to compile libcef_dll_wrapper, but `nmake clean` will not clean up target files of libcef_dll_wrapper. To delete these files, use the following command
+		> In the first compile time, it will automatically run `cd cef & nmake & cd ..` to compile libcef_dll_wrapper, but `nmake clean` will not clean up target files of libcef_dll_wrapper. If you want to delete these files, use the following command
 
-		```
-		 cd cef
-		 nmake clean
-		```
+		>```
+		> cd cef
+		> nmake clean
+		>```
  
 	3. Note: If you replace the CEF version or add, delete the source file, you need to change the Makefile script. In addition, I provide a getobjs.sh script to help you generate a direct need for all the target file list for the rapid preparation of Makefile. This script is a shell script that runs in a Windows environment that requires the MSYS environment or the Cygwin environment.
 
