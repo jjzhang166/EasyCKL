@@ -11,7 +11,6 @@
 #ifndef __EASY_CKL_H_
 #define __EASY_CKL_H_
 
-﻿#ifndef __EC_PORTABLE_H_
 
 /*
 Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
@@ -201,8 +200,6 @@ CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* handler, BrowserInfoma
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData);
 CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies);
 
-﻿#ifndef _CUSTOMIZE_JS_H_
-
 CKLEXPORT void WINAPI Chrome_AddJSFunction(void* context, wchar_t* name);
 CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(const void* arguments);
 CKLEXPORT DWORD WINAPI Chrome_GetV8ValueInt(const void* arguments, size_t pos);
@@ -211,7 +208,6 @@ CKLEXPORT void WINAPI Chrome_GetV8ValueString(const void* arguments, size_t pos,
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueInt(void* lpretval, int value);
 CKLEXPORT void WINAPI Chrome_SetV8ReturnValueString(void* lpretval, wchar_t* value);
 
-﻿#ifndef _EC_PACK_API_H_
 /*
 Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
 the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
@@ -232,8 +228,6 @@ CKLEXPORT void WINAPI EcCSSetData(void* lpData, unsigned char* lpDataBuffer, SIZ
 CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* szMimeType);
 CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
 
-﻿#ifndef _EC_PACK_API_H_
-
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* lpBrowser, wchar_t* url, wchar_t* referer);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
 CKLEXPORT void WINAPI EcPkDisableDragDrop(void* lpBrowser);
@@ -245,8 +239,6 @@ CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectId(void* lpBrowser, wchar_
 CKLEXPORT void WINAPI EcPkJavaScriptSetCheckedByObjectName(void* lpBrowser, wchar_t* name, bool checked);
 CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectId(void* lpBrowser, wchar_t* id);
 CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wchar_t* name);
-
-﻿#ifndef _FRAME_API_H_
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
@@ -260,8 +252,6 @@ CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoPaste(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoSelectAll(void* frame);
-
-﻿#ifndef __BROWSER_H_
 
 #define BROWSERFLAG_SYNC 0x1
 #define BROWSERFLAG_HEADER_REFERER 0x2
