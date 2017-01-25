@@ -8,6 +8,7 @@
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(CefFrame* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(CefFrame* frame, wchar_t* string, wchar_t* url);
+CKLEXPORT void WINAPI Chrome_FrameExecJS(CefFrame* frame, wchar_t* js_code, wchar_t* url);
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(CefFrame* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(CefFrame* frame);
 CKLEXPORT CefFrame* WINAPI Chrome_GetNameFrame(SimpleHandler* lpBrowser, wchar_t* name);

@@ -28,17 +28,17 @@ NOTIFYICONDATA nid = { 0 };
 #ifdef _WIN32
 extern HANDLE hEvent = 0;
 #endif
-void* v8contextcreate = 0;
 
-BOOL isSetUA = FALSE;
-CefString ua;
-extern CefString szLocalInf("");
+CefString ua("");
 
-extern BOOL bSetProxy = FALSE;
-extern CefString szProxyServer("");
-extern BOOL bEnableFlash = FALSE;
-extern CefString szFlashPath("");
-extern BOOL bDisableGpu = FALSE;
+Chrome_CallBack_V8 v8contextcreate = 0;
+Chrome_CallBack_AddCmdline addCmdlineFunc = 0;
+CefString szLocalInf("");
+
+CefString szProxyServer("");
+BOOL bEnableFlash = FALSE;
+CefString szFlashPath("");
+BOOL bDisableGpu = FALSE;
 
 class MyV8Handler : public CefV8Handler {
 public:
@@ -188,8 +188,11 @@ CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* lo
 		if (flag & INITFLAG_SETUSERAGENT) {
 			CefString(&settings.user_agent) = extData->szUserAgent;
 		}
+		if (flag & INITFLAG_ADDCMDLINECALLBACK) {
+			addCmdlineFunc = extData->lpAddCmdlineFunc;
+		}
 	}
-	else if (isSetUA)
+	else if (!ua.empty())
 		CefString(&settings.user_agent) = ua;
 
 	if (local) {
@@ -424,12 +427,10 @@ CKLEXPORT void WINAPI Chrome_LoadFlashPlugin(wchar_t* ppapi_flash_path, wchar_t*
 }
 
 CKLEXPORT void WINAPI Chrome_SetUserAgent(const wchar_t* _ua) {
-	isSetUA = TRUE;
 	ua = _ua;
 }
 
 CKLEXPORT void WINAPI Chrome_SetProxyServer(const wchar_t* proxy) {
-	bSetProxy = TRUE;
 	szProxyServer = proxy;
 }
 
@@ -540,7 +541,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(SimpleHandler* handler, const wchar_t* js) {
 	}
 }
 
-CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies) {
+CKLEXPORT void WINAPI Chrome_CookieManagerStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies) {
 	if (enable) {
 		CefRefPtr<CefCookieManager> cookiemgr = CefCookieManager::GetGlobalManager(NULL);
 		if (!CookiePath)
@@ -586,15 +587,15 @@ CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, con
 }
 
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath) {
-	EcKeCookieStorageControl(TRUE, CookiePath, false);
+	Chrome_CookieManagerStorageControl(TRUE, CookiePath, false);
 }
 
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage() {
-	EcKeCookieStorageControl(TRUE, 0, false);
+	Chrome_CookieManagerStorageControl(TRUE, 0, false);
 }
 
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage() {
-	EcKeCookieStorageControl(FALSE, 0, false);
+	Chrome_CookieManagerStorageControl(FALSE, 0, false);
 }
 
 CKLEXPORT void WINAPI Chrome_Close(SimpleHandler* handler) {
@@ -625,7 +626,7 @@ CKLEXPORT void WINAPI Chrome_LoadString(SimpleHandler* handler, const wchar_t* s
 
 CKLEXPORT void WINAPI Chrome_SetV8ContextCallback(Chrome_CallBack_V8 contextcreate, V8Handler_CallBack handler) {
 	myV8handle = new MyV8Handler(handler);
-	v8contextcreate = (void*)contextcreate;
+	v8contextcreate = contextcreate;
 }
 
 CKLEXPORT void WINAPI Chrome_ShowDevTools(SimpleHandler* handler) {
@@ -738,5 +739,14 @@ CKLEXPORT void WINAPI Chrome_GetHtmlSource(SimpleHandler* handler, LPVOID lpCont
 			CefRefPtr<Visitor> a = new Visitor(browser, lpContext, lpCallbackFunction);
 			browser->GetMainFrame()->GetSource(a);
 		}
+	}
+}
+
+CKLEXPORT void WINAPI Chrome_CmdlineAppendSwitch(void* cmdline, const wchar_t* name, const wchar_t* value) {
+	if (cmdline) {
+		CefRefPtr<CefCommandLine> command_line = *((CefRefPtr<CefCommandLine>*)cmdline);
+		if(value)
+			command_line->AppendSwitchWithValue(name, value);
+		else command_line->AppendSwitch(name);
 	}
 }

@@ -69,7 +69,7 @@ the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成
 */
 
 typedef BOOL(WINAPI * V8Handler_CallBack)(const wchar_t* name, const void* argu, void* retval);
-typedef void(WINAPI * Chrome_CallBack_V8)(void* context);
+typedef void(WINAPI * Chrome_CallBack_V8)(void *context);
 
 enum BrowserInfomationType
 {
@@ -91,11 +91,15 @@ enum BrowserInfomationType
 #define INITFLAG_EXTDATA 0x40
 #define INITFLAG_SETUSERAGENT 0x80
 #define INITFLAG_SETSUBPROCESS 0x100
+#define INITFLAG_ADDCMDLINECALLBACK 0x200
+
+typedef void (WINAPI * Chrome_CallBack_AddCmdline)(void* cmdline);
 
 typedef struct tagINIT_EXTDATA {
 	SIZE_T cbSzie;
 	const wchar_t* szUserAgent;
 	const wchar_t* szSubProcess;
+	Chrome_CallBack_AddCmdline lpAddCmdlineFunc;
 } INIT_EXTDATA, *LPINIT_EXTDATA;
 
 typedef struct _tagCOOKIE_DESCRIPTOR {
@@ -174,6 +178,7 @@ CKLEXPORT void WINAPI Chrome_ExecJS(void* lpBrowser, const wchar_t* szJavaScript
 CKLEXPORT void WINAPI Chrome_EnableCookieStorageEx(const wchar_t* CookiePath);
 CKLEXPORT void WINAPI Chrome_EnableCookieStorage();
 CKLEXPORT void WINAPI Chrome_DisableCookieStorage();
+CKLEXPORT void WINAPI Chrome_CookieManagerStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies);
 CKLEXPORT void WINAPI Chrome_CookieManagerFlushStore();
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerSetCookie(const wchar_t* szUrl, LPCOOKIE_DESCRIPTOR lpCookieDescriptor);
 CKLEXPORT BOOL WINAPI Chrome_CookieManagerDeleteCookie(const wchar_t* szUrl, const wchar_t* szCookieName);
@@ -196,9 +201,9 @@ CKLEXPORT wchar_t* WINAPI Chrome_DataURIBase64Encode(BYTE* lpData, DWORD dwSize,
 CKLEXPORT void WINAPI Chrome_ReleaseBuffer(void* lpBuffer);
 CKLEXPORT void WINAPI Chrome_GetHtmlSource(void* lpBrowser, LPVOID lpContext, Ec_GetSource_CallBack lpCallbackFunction);
 CKLEXPORT void WINAPI Chrome_QueryBrowserInfomation(void* handler, BrowserInfomationType type, void* buffer);
+CKLEXPORT void WINAPI Chrome_CmdlineAppendSwitch(void* cmdline, const wchar_t* name, const wchar_t* value);
 
 CKLEXPORT int WINAPI EcKeInitialize(HINSTANCE hInstance, DWORD flag, wchar_t* local, wchar_t* cache_path, LPINIT_EXTDATA extData);
-CKLEXPORT void WINAPI EcKeCookieStorageControl(BOOL enable, const wchar_t* CookiePath, bool persist_session_cookies);
 
 CKLEXPORT void WINAPI Chrome_AddJSFunction(void* context, wchar_t* name);
 CKLEXPORT DWORD WINAPI Chrome_GetV8ValueListSize(const void* arguments);
@@ -242,6 +247,7 @@ CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wch
 
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
+CKLEXPORT void WINAPI Chrome_FrameExecJS(void* frame, wchar_t* js_code, wchar_t* url);
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
 CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* lpBrowser, wchar_t* name);

@@ -1,7 +1,6 @@
 LIBRARY
 EXPORTS
 EcKeInitialize
-EcKeCookieStorageControl
 
 Chrome_Initialize
 Chrome_InitializeEx
@@ -51,6 +50,7 @@ Chrome_DisableCookieStorage
 Chrome_CookieManagerFlushStore
 Chrome_CookieManagerSetCookie
 Chrome_CookieManagerDeleteCookie
+Chrome_CookieManagerStorageControl
 
 Chrome_SetUserAgent
 Chrome_SetProxyServer
@@ -67,6 +67,7 @@ Chrome_GetZoomLevel
 Chrome_SetZoomLevel
 Chrome_DataURIBase64Encode
 Chrome_ReleaseBuffer
+Chrome_CmdlineAppendSwitch
 
 Chrome_FrameLoadUrl
 Chrome_FrameLoadString
