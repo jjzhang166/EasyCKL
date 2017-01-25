@@ -10,8 +10,8 @@ header_file_swp=${header_file}.swp
 mkdir -p SDK
 rm -rf ${header_file} ${header_file_swp}
 
-files='ec_portable.h CKLMain.h CustomizeJS.h CustomizeScheme.h EcPackApi.h FrameApi.h browser.h'
-tags='SimpleHandler CefFrame CefV8Context CefV8ValueList CefRefPtr<CefV8Value> CefRequest BytesVector'
+files='ec_portable.h browser.h CKLMain.h CustomizeJS.h CustomizeScheme.h EcPackApi.h FrameApi.h'
+tags='SimpleHandler CefFrame CefV8Context CefV8ValueList CefRefPtr<CefV8Value> CefRequest BytesVector std::wstring'
 
 for file in $files
 do

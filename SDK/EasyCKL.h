@@ -60,9 +60,107 @@ typedef struct tagECMAINARGS {
 #define HINSTANCE LPECMAINARGS
 
 //#define wchar_t char
-//#define std::wstring std::string
+//#define void std::string
 
 #endif							/* DO NOT AUTO REMOVE */
+
+#define BROWSERFLAG_SYNC 0x1
+#define BROWSERFLAG_HEADER_REFERER 0x2
+#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
+#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
+#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
+#define BROWSERFLAG_EXTDATA 0x20
+#define BROWSERFLAG_DEF_ENCODING 0x40
+#define BROWSERFLAG_BACK_COLOR 0x80
+#define BROWSERFLAG_DEF_FONT 0x100
+#define BROWSERFLAG_DEF_FONT_SIZE 0x200
+
+#define BROWSER_LASTERROR_LOADING 0x1
+#define BROWSER_LASTERROR_LOADERROR 0x2
+#define BROWSER_LASTERROR_LOADRESERROR 0x4
+#define BROWSER_LASTERROR_CERTERROR 0x8
+
+typedef struct tagCREATE_BROWSER_EXTDATA {
+	SIZE_T cbSzie;
+	wchar_t* szDefaultEncoding;
+	DWORD dwBackColor;
+	wchar_t* szDefaultFont;
+	DWORD dwDefaultFontSize;
+}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
+
+/* 回调函数中使用的结构 */
+typedef struct tagNEW_WINDOW_INFOMATION {
+	SIZE_T cbSzie;
+	void* lpFrame;
+	const wchar_t* szNewWindowUrl;
+	const wchar_t* szCurrentWindowUrl;
+	const wchar_t* szTargetFrameName;
+	BOOL bUserGesture;
+	DWORD dwOpenDisposition;
+}NEW_WINDOW_INFOMATION, *LPNEW_WINDOW_INFOMATION;
+
+// No node is selected.
+#define MENU_TYPEFLAG_NONE 0
+// The top page is selected.
+#define MENU_TYPEFLAG_PAGE 1 << 0
+// A subframe page is selected.
+#define MENU_TYPEFLAG_FRAME 1 << 1
+// A link is selected.
+#define MENU_TYPEFLAG_LINK 1 << 2
+// A media node is selected.
+#define MENU_TYPEFLAG_MEDIA 1 << 3
+// There is a textual or mixed selection that is selected.
+#define MENU_TYPEFLAG_SELECTION 1 << 4
+// An editable element is selected.
+#define MENU_TYPEFLAG_EDITABLE 1 << 5
+
+typedef struct tagRBUTTON_DOWN_INFOMATION {
+	SIZE_T cbSzie;
+	DWORD dwFlag;
+	void* lpFrame;
+	const wchar_t* szSelectionText;
+	const wchar_t* szLinkUrl;
+	const wchar_t* szSourceUrl;
+	void* Retention;
+}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
+
+typedef struct tagERROR_INFOMATION {
+	SIZE_T cbSzie;
+	void* lpFrame;
+	BOOL bCertError;
+	int iErrorCode;
+	const wchar_t* szFailedUrl;
+	void* lpSslInfo;
+}ERROR_INFOMATION, *LPERROR_INFOMATION;
+
+/* 回调函数的定义 */
+typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
+typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
+typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
+typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
+typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
+typedef BOOL(WINAPI * Chrome_CallBack_ChState)(LONG_PTR id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
+typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg);
+typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
+typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
+typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
+typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
+
+typedef struct tagBROWSER_CALLBACKS {
+	SIZE_T cbSzie;
+	Chrome_CallBack_BrowserCreated created_callback;
+	Chrome_CallBack_ChUrl churl_callback;
+	Chrome_CallBack_NewWindow newwindow_callback;
+	Chrome_CallBack_Download download_callback;
+	Chrome_CallBack_ChState chstate_callback;
+	Chrome_CallBack_JSDialog jsdialog_callback;
+	Chrome_CallBack_Error error_callback;
+	Chrome_CallBack_RButtonDown rbuttondown_callback;
+	Chrome_CallBack_ChTitle chtitle_callback;
+	Chrome_CallBack_CanLoadUrl canloadurl_callback;
+	Chrome_CallBack_CanClose canclose_callback;
+}BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
+
 /*
 Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头文件自动生成脚本 remove the line.
 the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
@@ -218,7 +316,7 @@ Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDK头�
 the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成脚本 remove the line.
 */
 
-typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
+//typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
 CKLEXPORT void WINAPI Chrome_RegisterSchemeInitialize(SchemeProcessRequest callback);
@@ -230,8 +328,8 @@ CKLEXPORT void WINAPI EcCSGetRequestHeaderString(void* lpRequest, wchar_t* szHea
 CKLEXPORT SIZE_T WINAPI EcCSGetRequestPostDataSize(void* lpRequest);
 CKLEXPORT void WINAPI EcCSGetRequestPostData(void* lpRequest, BYTE* lpDataBuffer, ULONG_PTR notused);
 CKLEXPORT void WINAPI EcCSSetData(void* lpData, unsigned char* lpDataBuffer, SIZE_T nSize);
-CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* szMimeType);
-CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
+CKLEXPORT void WINAPI EcCSSetMimeType(void* lpMimeType, const wchar_t* szMimeType);
+CKLEXPORT void WINAPI EcCSSetStatus(UINT* lpStatus, UINT iStatus);
 
 CKLEXPORT void WINAPI EcPkHtmlRefreshContentJumpUrl(void* lpBrowser, wchar_t* url, wchar_t* referer);
 CKLEXPORT void* WINAPI EcPkCreateJSRefererBrowserSync(DWORD id, HWND hParent, RECT* rect, wchar_t* url, wchar_t* referer, LPBROWSER_CALLBACKS callbacks);
@@ -258,102 +356,5 @@ CKLEXPORT void WINAPI Chrome_FrameDoCut(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoDelete(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoPaste(void* frame);
 CKLEXPORT void WINAPI Chrome_FrameDoSelectAll(void* frame);
-
-#define BROWSERFLAG_SYNC 0x1
-#define BROWSERFLAG_HEADER_REFERER 0x2
-#define BROWSERFLAG_DISABLE_JAVASCRIPT 0x4
-#define BROWSERFLAG_DISABLE_LOAD_IMAGE 0x8
-#define BROWSERFLAG_DISABLE_WEB_SECURITY 0x10
-#define BROWSERFLAG_EXTDATA 0x20
-#define BROWSERFLAG_DEF_ENCODING 0x40
-#define BROWSERFLAG_BACK_COLOR 0x80
-#define BROWSERFLAG_DEF_FONT 0x100
-#define BROWSERFLAG_DEF_FONT_SIZE 0x200
-
-#define BROWSER_LASTERROR_LOADING 0x1
-#define BROWSER_LASTERROR_LOADERROR 0x2
-#define BROWSER_LASTERROR_LOADRESERROR 0x4
-#define BROWSER_LASTERROR_CERTERROR 0x8
-
-typedef struct tagCREATE_BROWSER_EXTDATA {
-	SIZE_T cbSzie;
-	wchar_t* szDefaultEncoding;
-	DWORD dwBackColor;
-	wchar_t* szDefaultFont;
-	DWORD dwDefaultFontSize;
-}CREATE_BROWSER_EXTDATA, *LPCREATE_BROWSER_EXTDATA;
-
-/* 回调函数中使用的结构 */
-typedef struct tagNEW_WINDOW_INFOMATION {
-	SIZE_T cbSzie;
-	void* lpFrame;
-	const wchar_t* szNewWindowUrl;
-	const wchar_t* szCurrentWindowUrl;
-	const wchar_t* szTargetFrameName;
-	BOOL bUserGesture;
-	DWORD dwOpenDisposition;
-}NEW_WINDOW_INFOMATION, *LPNEW_WINDOW_INFOMATION;
-
-// No node is selected.
-#define MENU_TYPEFLAG_NONE 0
-// The top page is selected.
-#define MENU_TYPEFLAG_PAGE 1 << 0
-// A subframe page is selected.
-#define MENU_TYPEFLAG_FRAME 1 << 1
-// A link is selected.
-#define MENU_TYPEFLAG_LINK 1 << 2
-// A media node is selected.
-#define MENU_TYPEFLAG_MEDIA 1 << 3
-// There is a textual or mixed selection that is selected.
-#define MENU_TYPEFLAG_SELECTION 1 << 4
-// An editable element is selected.
-#define MENU_TYPEFLAG_EDITABLE 1 << 5
-
-typedef struct tagRBUTTON_DOWN_INFOMATION {
-	SIZE_T cbSzie;
-	DWORD dwFlag;
-	void* lpFrame;
-	const wchar_t* szSelectionText;
-	const wchar_t* szLinkUrl;
-	const wchar_t* szSourceUrl;
-	void* Retention;
-}RBUTTON_DOWN_INFOMATION, *LPRBUTTON_DOWN_INFOMATION;
-
-typedef struct tagERROR_INFOMATION {
-	SIZE_T cbSzie;
-	void* lpFrame;
-	BOOL bCertError;
-	int iErrorCode;
-	const wchar_t* szFailedUrl;
-	void* lpSslInfo;
-}ERROR_INFOMATION, *LPERROR_INFOMATION;
-
-/* 回调函数的定义 */
-typedef void(WINAPI * Chrome_CallBack_BrowserCreated)(LONG_PTR id, void* browser);
-typedef void(WINAPI * Chrome_CallBack_Error)(LONG_PTR id, UINT_PTR uMsg, LPERROR_INFOMATION info, UINT_PTR not_used);
-typedef void(WINAPI * Chrome_CallBack_ChUrl)(LONG_PTR id, const wchar_t* url);
-typedef void(WINAPI * Chrome_CallBack_Download)(LONG_PTR id, const wchar_t* url);
-typedef BOOL(WINAPI * Chrome_CallBack_NewWindow)(LONG_PTR id, UINT_PTR uMsg, LPNEW_WINDOW_INFOMATION info, UINT_PTR not_used);
-typedef BOOL(WINAPI * Chrome_CallBack_ChState)(LONG_PTR id, BOOL isLoading, BOOL canGoBack, BOOL canGoForward);
-typedef void(WINAPI * Chrome_CallBack_JSDialog)(LONG_PTR id, const wchar_t* msg);
-typedef void(WINAPI * Chrome_CallBack_RButtonDown)(LONG_PTR id, UINT_PTR uMsg, LPRBUTTON_DOWN_INFOMATION info, UINT_PTR not_used);
-typedef void(WINAPI * Chrome_CallBack_ChTitle)(LONG_PTR id, const wchar_t* text);
-typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* url);
-typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
-
-typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
-	Chrome_CallBack_BrowserCreated created_callback;
-	Chrome_CallBack_ChUrl churl_callback;
-	Chrome_CallBack_NewWindow newwindow_callback;
-	Chrome_CallBack_Download download_callback;
-	Chrome_CallBack_ChState chstate_callback;
-	Chrome_CallBack_JSDialog jsdialog_callback;
-	Chrome_CallBack_Error error_callback;
-	Chrome_CallBack_RButtonDown rbuttondown_callback;
-	Chrome_CallBack_ChTitle chtitle_callback;
-	Chrome_CallBack_CanLoadUrl canloadurl_callback;
-	Chrome_CallBack_CanClose canclose_callback;
-}BROWSER_CALLBACKS, *LPBROWSER_CALLBACKS;
 
 #endif // __EASY_CKL_H_

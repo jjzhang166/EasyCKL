@@ -71,6 +71,7 @@ Chrome_CmdlineAppendSwitch
 
 Chrome_FrameLoadUrl
 Chrome_FrameLoadString
+Chrome_FrameExecJS
 Chrome_FrameIsMain
 Chrome_ReleaseFrame
 Chrome_GetNameFrame
