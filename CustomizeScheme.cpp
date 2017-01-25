@@ -215,6 +215,6 @@ CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* s
 	(*lpMimeType) = szMimeType;
 }
 
-CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus) {
+CKLEXPORT void WINAPI EcCSSetStatus(UINT* lpStatus, UINT iStatus) {
 	(*lpStatus) = iStatus;
 }

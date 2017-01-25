@@ -12,6 +12,13 @@ CKLEXPORT void WINAPI Chrome_FrameLoadString(CefFrame* frame, wchar_t* string, w
 		else frame->LoadString(string, url);
 }
 
+CKLEXPORT void WINAPI Chrome_FrameExecJS(CefFrame* frame, wchar_t* js_code, wchar_t* url) {
+	if (frame)
+		if (!url)
+			frame->ExecuteJavaScript(js_code, frame->GetURL(), 0);
+		else frame->ExecuteJavaScript(js_code, url, 0);
+}
+
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(CefFrame* frame) {
 	if (frame)
 		return frame->IsMain();

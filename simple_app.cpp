@@ -1,13 +1,12 @@
 ﻿#include "simple_app.h"
-
-typedef void(WINAPI * Chrome_CallBack_V8)(CefV8Context *context);
+#include "CKLMain.h"
 
 #ifdef _WIN32
 extern HANDLE hEvent;
 #endif
-extern void* v8contextcreate;
+extern Chrome_CallBack_V8 v8contextcreate;
+extern Chrome_CallBack_AddCmdline addCmdlineFunc;
 
-extern BOOL bSetProxy;
 extern CefString szProxyServer;
 extern BOOL bEnableFlash;
 extern CefString szFlashPath;
@@ -26,7 +25,7 @@ void SimpleApp::OnContextInitialized() {
 
 void SimpleApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) {
 	if (v8contextcreate) {
-		((Chrome_CallBack_V8)v8contextcreate)(context.get());
+		v8contextcreate(context.get());
 	}
 }
 
@@ -36,8 +35,11 @@ void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, Cef
 			command_line->AppendSwitchWithValue(L"ppapi-flash-path", szFlashPath);
 		else command_line->AppendSwitch(L"enable-system-flash");
 	}
-	if (bSetProxy)
+	if (!szProxyServer.empty())
 		command_line->AppendSwitchWithValue(L"proxy-server", szProxyServer);
 	if(bDisableGpu)
 		command_line->AppendSwitchWithValue(L"disable-gpu", szProxyServer);
+
+	if (addCmdlineFunc)
+		addCmdlineFunc(&command_line);
 }

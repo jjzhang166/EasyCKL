@@ -15,7 +15,7 @@ the "REMOVE IT" in a end of a line means that force the SDK头文件自动生成
 #include "simple_app.h"
 #include "simple_handler.h"
 
-typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
+//typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 typedef std::vector<unsigned char> BytesVector;			/* REMOVE IT */
 typedef bool(WINAPI * SchemeProcessRequest)(void* request, void* data, void* mime_type, UINT* status);
 
@@ -29,6 +29,6 @@ CKLEXPORT SIZE_T WINAPI EcCSGetRequestPostDataSize(CefRequest* lpRequest);
 CKLEXPORT void WINAPI EcCSGetRequestPostData(CefRequest* lpRequest, BYTE* lpDataBuffer, ULONG_PTR notused);
 CKLEXPORT void WINAPI EcCSSetData(BytesVector* lpData, unsigned char* lpDataBuffer, SIZE_T nSize);
 CKLEXPORT void WINAPI EcCSSetMimeType(std::wstring* lpMimeType, const wchar_t* szMimeType);
-CKLEXPORT void WINAPI EcCSSetStatus(int* lpStatus, int iStatus);
+CKLEXPORT void WINAPI EcCSSetStatus(UINT* lpStatus, UINT iStatus);
 
 #endif // _EC_PACK_API_H_
