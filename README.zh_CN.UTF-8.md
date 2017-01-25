@@ -1,4 +1,9 @@
-## EasyCKL
+##EasyCKL
+
+>**警告** 中文页面已经不再维护，但是英文页面却发生过变化，因此内容可能已经与英文版本脱节
+>**Warning** Chinese page is no longer maintained, but the English page has changed, so the content may have been out of touch with the English version
+
+[English](README.md)
 
 EasyCKL 是一个基于 CEF3（嵌入式 Chromium 框架）二次开发的库，支持 Windows 和 Linux 平台。
 
