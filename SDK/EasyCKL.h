@@ -1,4 +1,4 @@
-﻿/*
+/*
 	EasyCKL Interface Header
 
 	BUILD Version: 7.1.?.?
