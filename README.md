@@ -1,6 +1,6 @@
 ##EasyCKL
 
-[简体中文](README.md.zh_CN.UTF-8)
+[简体中文](README.zh_CN.UTF-8.md)
 编译指南已经移至 [Compilation Guide](INSTALL.md)
 
 EasyCKL is a library based on CEF3 (embedded Chromium framework), support for Windows and Linux platforms.
