@@ -346,6 +346,7 @@ CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wch
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameExecJS(void* frame, wchar_t* js_code, wchar_t* url);
+CKLEXPORT void WINAPI Chrome_FrameLoadRequest(void* frame, wchar_t* url, wchar_t* method, wchar_t* referrer, void* postdata, size_t postdata_len);
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
 CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* lpBrowser, wchar_t* name);
