@@ -51,7 +51,7 @@ int       nCmdShow)
         return FALSE;
 
     BROWSER_CALLBACKS BrowserCallbacks = { 0 };
-    BrowserCallbacks.cbSzie = sizeof(BROWSER_CALLBACKS);
+    BrowserCallbacks.cbSize = sizeof(BROWSER_CALLBACKS);
     BrowserCallbacks.chtitle_callback = CallBack_ChTitle;
 
     RECT rcWindowClient, rcWebControl;

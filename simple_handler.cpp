@@ -14,7 +14,7 @@ CefString GetDataURI(const std::string& data,
 }
 
 SimpleHandler::SimpleHandler(DWORD id, LPBROWSER_CALLBACKS _callbacks) : callbacks({ 0 }), is_closing_(false), g_id(id), userData(0), lasterror(0) {
-	SIZE_T length = _callbacks->cbSzie;
+	SIZE_T length = _callbacks->cbSize;
 	if (length > sizeof(BROWSER_CALLBACKS))
 		length = sizeof(BROWSER_CALLBACKS);
 	memcpy(&callbacks, _callbacks, length);
@@ -141,6 +141,8 @@ void SimpleHandler::OnLoadError(CefRefPtr<CefBrowser> browser,
 		"</h2><p>Error: " << errorCode <<
 		"</p><p>Url: " << std::string(failedUrl) <<
 		"</p></body></html>";
+
+	//frame->LoadString(s.str(), failedUrl);
 	frame->LoadURL(GetDataURI(s.str(), L"text/html"));
 }
 
