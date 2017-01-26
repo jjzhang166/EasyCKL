@@ -86,7 +86,7 @@ typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* ur
 typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
 
 typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	Chrome_CallBack_BrowserCreated created_callback;
 	Chrome_CallBack_ChUrl churl_callback;
 	Chrome_CallBack_NewWindow newwindow_callback;

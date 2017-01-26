@@ -21,7 +21,7 @@ Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ
 #include <Windows.h>
 #elif defined __linux__			/* DO NOT AUTO REMOVE */
 #include <X11/Xlib.h>
-#include <stddef.h>
+#include <stddef.h>			/* DO NOT AUTO REMOVE */
 
 typedef unsigned int DWORD;
 typedef bool BOOL;

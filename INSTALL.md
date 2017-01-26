@@ -50,7 +50,7 @@ In the Linux platform: This project is **not** have CEF3 shared library required
 6. You can compile an application that uses EasyCKL, such as demo/1.cpp, with a command similar to the following:
 
 	```
-	$ g++ -o [Target] [Source] -std=c++11 -lEasyCKL -lcef -lX11 `pkg-config --cflags --libs gtk+-3.0` -L. -Wl,-rpath=.
+	$ g++ -o [Target] [Source] -std=c++11 -D __linux__ -lEasyCKL -lcef -lX11 `pkg-config --cflags --libs gtk+-3.0` -L. -Wl,-rpath=.
 	```
 
 	> Note: Support GTK + 3.0 but does not support 2.0

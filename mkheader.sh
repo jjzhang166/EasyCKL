@@ -30,7 +30,8 @@ done
 # 删除 UTF-8 的 BOM(除了 SDK/header.h.begin 中的)
 # 必须要先删除 bom，不然下一句就不能彻底清除除 #define 之外的预处理指令了
 bom=`echo -ne "\0357\0273\0277"`
-sed -i "s/${bom}//g" ${header_file_swp}
+sed -i "s/${bom}//g" ${header_file_swp}			# for MinGW
+sed -i '/^\xEF\xBB\xBF/d' ${header_file_swp}		# for Linux (Test in Ubuntu 16.04 LTS)
 
 # 删除除 #define 之外的预处理指令
 sed -i -e '/^#[^d].*[^\/]$/d' ${header_file_swp}

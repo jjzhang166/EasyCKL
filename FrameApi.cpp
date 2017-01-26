@@ -19,6 +19,28 @@ CKLEXPORT void WINAPI Chrome_FrameExecJS(CefFrame* frame, wchar_t* js_code, wcha
 		else frame->ExecuteJavaScript(js_code, url, 0);
 }
 
+CKLEXPORT void WINAPI Chrome_FrameLoadRequest(CefFrame* frame, wchar_t* url, wchar_t* method, wchar_t* referrer, void* postdata, size_t postdata_len) {
+	if (frame) {
+		CefRefPtr<CefRequest> request = CefRequest::Create();
+		CefRefPtr<CefPostData> _postdata = CefPostData::Create();
+		CefRefPtr<CefPostDataElement> element = CefPostDataElement::Create();
+
+		if (postdata_len) {
+			element->SetToBytes(postdata_len, postdata);
+			_postdata->AddElement(element);
+
+			request->SetPostData(_postdata);
+		}
+
+		request->SetFlags(0);
+		request->SetMethod(CefString(method));
+		request->SetURL(CefString(url));
+		if (referrer) request->SetReferrer(CefString(referrer), REFERRER_POLICY_ALWAYS);
+
+		frame->LoadRequest(request);
+	}
+}
+
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(CefFrame* frame) {
 	if (frame)
 		return frame->IsMain();

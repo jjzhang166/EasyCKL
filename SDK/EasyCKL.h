@@ -26,6 +26,7 @@ Note: the "DO NOT AUTO REMOVE" in a end of a line means that DISABLE the SDKå¤´æ
 
 #ifdef _WIN32					/* DO NOT AUTO REMOVE */
 #elif defined __linux__			/* DO NOT AUTO REMOVE */
+#include <stddef.h>			/* DO NOT AUTO REMOVE */
 
 typedef unsigned int DWORD;
 typedef bool BOOL;
@@ -147,7 +148,7 @@ typedef bool(WINAPI * Chrome_CallBack_CanLoadUrl)(LONG_PTR id, const wchar_t* ur
 typedef bool(WINAPI * Chrome_CallBack_CanClose)(LONG_PTR id, UINT_PTR uMsg, void* not_used, UINT_PTR not_used_);
 
 typedef struct tagBROWSER_CALLBACKS {
-	SIZE_T cbSzie;
+	SIZE_T cbSize;
 	Chrome_CallBack_BrowserCreated created_callback;
 	Chrome_CallBack_ChUrl churl_callback;
 	Chrome_CallBack_NewWindow newwindow_callback;
@@ -346,6 +347,7 @@ CKLEXPORT void WINAPI EcPkJavaScriptClickButtonByObjectName(void* lpBrowser, wch
 CKLEXPORT void WINAPI Chrome_FrameLoadUrl(void* frame, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameLoadString(void* frame, wchar_t* string, wchar_t* url);
 CKLEXPORT void WINAPI Chrome_FrameExecJS(void* frame, wchar_t* js_code, wchar_t* url);
+CKLEXPORT void WINAPI Chrome_FrameLoadRequest(void* frame, wchar_t* url, wchar_t* method, wchar_t* referrer, void* postdata, size_t postdata_len);
 CKLEXPORT bool WINAPI Chrome_FrameIsMain(void* frame);
 CKLEXPORT void WINAPI Chrome_ReleaseFrame(void* frame);
 CKLEXPORT void* WINAPI Chrome_GetNameFrame(void* lpBrowser, wchar_t* name);
